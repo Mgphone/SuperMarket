@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+  app:
+    build: .
+    volumes:
+      - .:/backend
+    ports:
+      - 5000:5000
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/supermarket
+    depends_on:
+      - mongodb
+
+# version: '3.8'
+# services:
+#   mongodb:
+#     image: mongo
+#     ports:
+#       -27017:27017
+#   nodejs:
+#     build: .
+#     volumes:
+#       -.:/backend
+#     ports:
+#       -5000:5000
+#     environment:
+#       - MONGO_URL=mongodb://mongodb:27017/supermarket
