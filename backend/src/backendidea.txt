@@ -1,0 +1,5 @@
+commit 4 master Mongo
+i think i will need 4 schemas for this backend
+1.User 2.Branches 3.Rate 4.Transition
+User----Model username,password,branch,role
+Branches---Model i make as array with branches

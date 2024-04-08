@@ -1,14 +1,11 @@
 const express = require("express");
 const app = express();
 const port = 5000;
-const mongoose = require("mongoose");
-const connection = process.env.MONGO_URL;
-if (!connection) {
-  console.log("no connection");
-}
-mongoose.connect(connection).then(() => console.log("Database is connected"));
+const connectTODatabase = require("./src/config/database");
+connectTODatabase;
+
 app.get("/", (req, res) => {
-  res.send("another test please will you??" + connection);
+  res.send("another test yes??");
 });
 
 app.listen(port, () => {
