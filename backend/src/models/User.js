@@ -6,7 +6,7 @@ const UserSchema = Schema({
   role: {
     type: String,
     enum: ["super_user", "branch_manager", "branch_seller"],
-    require: true,
+    required: true,
   },
   branch: { type: mongoose.Schema.Types.ObjectId, ref: "Branches" },
 });
