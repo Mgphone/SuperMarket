@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const { json } = require("express");
 const jwt = require("jsonwebtoken");
 const userController = {
   createUser: async (req, res) => {
@@ -25,33 +26,54 @@ const userController = {
       res.status(400).json({ message: errorMessage });
     }
   },
-  // getUserName: async (req, res) => {
-  //   try {
-  //     const username = req.params.username;
-  //     // res.send(`Hello ${username} welcome from route`);
-  //     const user = await User.findOne({ username });
-  //     if (!user) {
-  //       return res.status(404).json({ message: "User not found" });
-  //     }
-  //     res.status(200).json({ user });
-  //   } catch (error) {
-  //     console.error(error);
-  //     const errorMessage =
-  //       error.message || "Error occur while finding username";
-  //     res.status(500).json({ message: errorMessage });
-  //   }
-  // },
+  getUserName: async (req, res) => {
+    try {
+      const token = req.headers.authorization;
+      if (!token) {
+        return res.status(401).json({ message: "Login to get Token" });
+      }
+      const username = req.params.username;
+      // const user = await User.findOne({ username });
+      // const user = await User.findOne({ username }, { select: "-password" }); // Exclude password
+      const user = await User.findOne({ username }).select({
+        password: false,
+      });
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      jwt.verify(
+        token.split(" ")[1],
+        process.env.JWT_SECRET,
+        (err, decoded) => {
+          if (err) {
+            return res.status(401).json({ message: "Invalid Token" });
+          }
+
+          if (decoded.role == "super_user" || decoded.username == username) {
+            res.status(200).json({ user });
+          } else {
+            res.status(401).json({ message: "You are no authorized" });
+          }
+        }
+      );
+    } catch (error) {
+      console.error(error);
+      const errorMessage =
+        error.message || "Error occur while finding username";
+      res.status(500).json({ message: errorMessage });
+    }
+  },
   loginUser: async (req, res) => {
     try {
       const { username, password } = req.body;
-      console.log("This is username" + username);
       const userDoc = await User.findOne({ username });
       if (userDoc === null) {
         res.status(400).json({ message: "Wrong Credential" });
       } else {
         const passOk = bcrypt.compareSync(password, userDoc.password);
         if (passOk) {
-          // const token = res.status(200).json({ userDoc });
           const userPayload = {
             userId: userDoc._id,
             username: userDoc.username,
@@ -60,7 +82,8 @@ const userController = {
           const token = jwt.sign(userPayload, process.env.JWT_SECRET, {
             expiresIn: "1h",
           });
-          res.status(200).json({ token });
+          res.setHeader("Authorization", `Bearer ${token}`);
+          res.status(200).json({ message: "Login Successful" });
         } else {
           res.status(400).json({ message: "Password not Correct" });
         }

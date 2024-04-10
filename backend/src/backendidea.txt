@@ -5,3 +5,6 @@ User----Model username,password,branch,role
 Branches---Model i make as array with branches
 Rate--same like branch i will make with array
 transition..array save
+
+mongo can use select(password:1)
+Users.findOne({username}).select({password:0})
