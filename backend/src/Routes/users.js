@@ -4,4 +4,5 @@ const userController = require("../controllers/usersController");
 router.post("/users/register", userController.createUser);
 router.get("/username/:username", userController.getUserName);
 router.post("/users/login", userController.loginUser);
+router.post("/users/update", userController.updatePassword);
 module.exports = router;
