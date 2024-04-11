@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const { json } = require("express");
 const jwt = require("jsonwebtoken");
 const salt = bcrypt.genSaltSync(10);
+const checkSuperUser = require("../utils/checkjwtsuperuser");
 const userController = {
   createUser: async (req, res) => {
     try {
@@ -58,30 +59,19 @@ const userController = {
       if (!token) {
         return res.status(401).json({ message: "Login to get Token" });
       }
-      // const username = req.params.username;
-      // const user = await User.findOne({ username }).select({
-      //   password: false,
-      // });
       const user = await User.find({}).select({ password: false });
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-
-      jwt.verify(
-        token.split(" ")[1],
-        process.env.JWT_SECRET,
-        (err, decoded) => {
-          if (err) {
-            return res.status(401).json({ message: "Invalid Token" });
-          }
-
-          if (decoded.role == "super_user") {
+      checkSuperUser(token)
+        .then((result) => {
+          if (result.role == "super_user") {
             res.status(200).json({ user });
           } else {
             res.status(401).json({ message: "You are no authorized" });
           }
-        }
-      );
+        })
+        .catch((error) => res.status(500).json({ message: error }));
     } catch (error) {
       console.error(error);
       const errorMessage =
@@ -114,8 +104,7 @@ const userController = {
         }
       );
       const hashpassword = bcrypt.hashSync(newpassword, salt);
-      // userDoc.password = hashpassword;
-      // await userDoc.save();
+
       await User.findOneAndUpdate({ username }, { password: hashpassword });
       res.status(200).json({ message: "Password update successful" });
     } catch (error) {
@@ -129,14 +118,12 @@ const userController = {
     try {
       const id = req.params.id;
       const token = req.headers.authorization;
-      // console.log("this is id" + id);
-      console.log("This is token" + token);
+
       if (!token) {
         res.status(400).json({ message: "You have No token" });
         // return;
       }
       const userDoc = await User.findOne({ _id: id });
-      console.log(JSON.stringify(userDoc));
       if (!userDoc) {
         res.status(400).json({ message: "There is No User" });
         return;
@@ -147,6 +134,7 @@ const userController = {
         (err, decoded) => {
           if (err) {
             res.status(400).json({ message: "Invalid Token" });
+            return;
           }
           if (decoded.role === "super_user") {
             User.deleteOne({ _id: id })

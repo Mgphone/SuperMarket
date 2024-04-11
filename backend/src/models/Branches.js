@@ -9,6 +9,7 @@ const BranchesSchema = Schema({
       branch_manager: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
       branch_seller: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
     },
+    // { timestamps: true },
   ],
   branch_balance: {
     type: Number,
@@ -16,7 +17,7 @@ const BranchesSchema = Schema({
       return this.branches[0].opening_amount_bhat;
     },
   },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
+  // createdAt: { type: Date, default: Date.now },
+  // updatedAt: { type: Date, default: Date.now },
 });
 module.exports = mongoose.model("Branches", BranchesSchema);

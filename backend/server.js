@@ -9,6 +9,7 @@ app.get("/", (req, res) => {
   res.send("another test yes??");
 });
 app.use("/", require("./src/Routes/users"));
+app.use("/", require("./src/Routes/branches"));
 app.listen(port, () => {
   console.log("Server is listeing on port" + port);
 });

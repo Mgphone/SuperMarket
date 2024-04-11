@@ -8,3 +8,10 @@ transition..array save
 
 mongo can use select(password:1)
 Users.findOne({username}).select({password:0})
+
+"In promises, you use the resolve and reject functions inside
+ the promise executor function to signal success or failure of 
+ the asynchronous operation, respectively. Then, you employ the 
+ .then() and .catch() methods to handle the outcome of the promise:
+  .then() for successful fulfillment and .catch() for rejection."use 
+  .then and catch to make sure for callback
