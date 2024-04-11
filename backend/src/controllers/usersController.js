@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Branches = require("../models/Branches");
 const bcrypt = require("bcrypt");
 const { json } = require("express");
 const jwt = require("jsonwebtoken");
@@ -8,15 +9,78 @@ const userController = {
   createUser: async (req, res) => {
     try {
       const { username, password, role, branch } = req.body;
-      const newUser = new User({
-        username,
-        password: bcrypt.hashSync(password, salt),
-        role,
-        branch,
-      });
-      await newUser.save();
-
-      res.status(201).json({ message: "User created successful" });
+      if (role === "super_user") {
+        const newUser = new User({
+          username,
+          password: bcrypt.hashSync(password, salt),
+          role,
+          // branch,
+        });
+        await newUser.save();
+        res.status(201).json({ message: "Super User created successful" });
+        return;
+      }
+      if (role === "branch_manager") {
+        if (role == "undefined") {
+          res.status(400).json({ message: "Choose branch type" });
+        }
+        const newUser = new User({
+          username,
+          password: bcrypt.hashSync(password, salt),
+          role,
+          branch,
+        });
+        await newUser.save().then((user) => {
+          return Branches.findById(user.branch)
+            .then((branch) => {
+              if (!branch) {
+                throw new Error("Branch not Found");
+              }
+              branch.branch_manager.push(user._id);
+              branch.save();
+            })
+            .then(() =>
+              res
+                .status(201)
+                .json({ message: "Branch Manager created successful" })
+            )
+            .catch((error) => {
+              res.status(400).json({ message: error });
+            });
+        });
+      }
+      if (role === "branch_seller") {
+        if (role == "undefined") {
+          res.status(400).json({ message: "Choose branch type" });
+        }
+        const newUser = new User({
+          username,
+          password: bcrypt.hashSync(password, salt),
+          role,
+          branch,
+        });
+        await newUser.save().then((user) => {
+          return Branches.findById(user.branch)
+            .then((branch) => {
+              if (!branch) {
+                throw new Error("Branch not Found");
+              }
+              branch.branch_seller.push(user._id);
+              branch.save();
+            })
+            .then(() =>
+              res
+                .status(201)
+                .json({ message: "Branch Seller created successful" })
+            )
+            .catch((error) => {
+              res.status(400).json({ message: error });
+            });
+        });
+      } else {
+        res.status(400).json({ message: "Check your usertype" });
+        return;
+      }
     } catch (error) {
       console.error("Error creating user:", error);
       const errorMessage =
