@@ -9,85 +9,56 @@ const userController = {
   createUser: async (req, res) => {
     try {
       const { username, password, role, branch } = req.body;
+
+      if (typeof role === "undefined") {
+        return res.status(400).json({ message: "Choose branch type" });
+      }
+
+      const hashedPassword = bcrypt.hashSync(password, salt);
+      let newUser;
+
       if (role === "super_user") {
-        const newUser = new User({
-          username,
-          password: bcrypt.hashSync(password, salt),
-          role,
-          // branch,
-        });
-        await newUser.save();
-        res.status(201).json({ message: "Super User created successful" });
-        return;
-      }
-      if (role === "branch_manager") {
-        if (role == "undefined") {
-          res.status(400).json({ message: "Choose branch type" });
+        newUser = new User({ username, password: hashedPassword, role });
+      } else if (role === "branch_manager" || role === "branch_seller") {
+        if (!branch) {
+          return res.status(400).json({ message: "Branch is required" });
         }
-        const newUser = new User({
+
+        const user = new User({
           username,
-          password: bcrypt.hashSync(password, salt),
+          password: hashedPassword,
           role,
           branch,
         });
-        await newUser.save().then((user) => {
-          return Branches.findById(user.branch)
-            .then((branch) => {
-              if (!branch) {
-                throw new Error("Branch not Found");
-              }
-              branch.branch_manager.push(user._id);
-              branch.save();
-            })
-            .then(() =>
-              res
-                .status(201)
-                .json({ message: "Branch Manager created successful" })
-            )
-            .catch((error) => {
-              res.status(400).json({ message: error });
-            });
-        });
-      }
-      if (role === "branch_seller") {
-        if (role == "undefined") {
-          res.status(400).json({ message: "Choose branch type" });
+        await user.save();
+
+        const branchDoc = await Branches.findById(branch);
+        if (!branchDoc) {
+          throw new Error("Branch not found");
         }
-        const newUser = new User({
-          username,
-          password: bcrypt.hashSync(password, salt),
-          role,
-          branch,
-        });
-        await newUser.save().then((user) => {
-          return Branches.findById(user.branch)
-            .then((branch) => {
-              if (!branch) {
-                throw new Error("Branch not Found");
-              }
-              branch.branch_seller.push(user._id);
-              branch.save();
-            })
-            .then(() =>
-              res
-                .status(201)
-                .json({ message: "Branch Seller created successful" })
-            )
-            .catch((error) => {
-              res.status(400).json({ message: error });
-            });
-        });
+
+        if (role === "branch_manager") {
+          branchDoc.branch_manager.push(user._id);
+        } else if (role === "branch_seller") {
+          branchDoc.branch_seller.push(user._id);
+        } else {
+          throw new Error("We accept Only branch_manager or branch_seller");
+        }
+
+        await branchDoc.save();
       } else {
-        res.status(400).json({ message: "Check your usertype" });
-        return;
+        return res.status(400).json({ message: "Check your usertype" });
       }
+
+      return res.status(201).json({ message: `${role} created successfully` });
     } catch (error) {
       console.error("Error creating user:", error);
       const errorMessage =
         error.message || "An error occurred while creating the user";
-      res.status(400).json({ message: errorMessage });
+      return res.status(400).json({ message: errorMessage });
     }
   },
+
   loginUser: async (req, res) => {
     try {
       const { username, password } = req.body;
@@ -156,7 +127,7 @@ const userController = {
         return;
       }
       if (!passOk) {
-        res.status(400).json({ message: "Old Password is Not correct" });
+        return res.status(400).json({ message: "Old Password is Not correct" });
       }
 
       jwt.verify(
@@ -171,7 +142,7 @@ const userController = {
       const hashpassword = bcrypt.hashSync(newpassword, salt);
 
       await User.findOneAndUpdate({ username }, { password: hashpassword });
-      res.status(200).json({ message: "Password update successful" });
+      return res.status(200).json({ message: "Password update successful" });
     } catch (error) {
       console.error(error);
       const errorMessage =
