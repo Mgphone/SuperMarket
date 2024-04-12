@@ -9,8 +9,6 @@ const BranchesController = {
     }
     checkSuperUser(token)
       .then(async (result) => {
-        // console.log("This is result" + JSON.stringify(result));
-
         if (result.role === "super_user") {
           const monitorId = result.userId;
           const { branchname, openingamount, currency } = req.body;
@@ -25,9 +23,7 @@ const BranchesController = {
           const newBranch = new Branches(myBranches);
           await newBranch.save();
 
-          res
-            .status(200)
-            .json({ messsage: "Coming soon for branch", banch: newBranch });
+          res.status(200).json({ branch: newBranch });
         } else {
           res.status(401).json({ message: "You have no authority" });
         }
@@ -53,6 +49,29 @@ const BranchesController = {
       .catch((error) => {
         return res.status(401).json({ message: error });
       });
+  },
+  getSingleBranch: async (req, res) => {
+    const token = req.headers.authorization;
+    const id = req.params.id;
+    if (!token) {
+      res.status(400).json({ message: "Check Your token" });
+    }
+    checkSuperUser(token)
+      .then(async (result) => {
+        // if sueper user or branch manager of this branch
+        const branchDoc = await Branches.findById(id).select({
+          monitorBy: false,
+        });
+
+        if (result.role == "super_user") {
+          res.status(200).json(branchDoc);
+        } else if (result.role == "branch_manager" && result.branch == id) {
+          res.status(200).json(branchDoc);
+        } else {
+          res.status(400).json({ message: "You have no authority" });
+        }
+      })
+      .catch((error) => res.status(400).json(error));
   },
 };
 module.exports = BranchesController;

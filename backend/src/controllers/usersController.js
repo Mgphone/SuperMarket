@@ -101,6 +101,7 @@ const userController = {
             userId: userDoc._id,
             username: userDoc.username,
             role: userDoc.role,
+            ...(userDoc.branch && { branch: userDoc.branch }),
           };
           const token = jwt.sign(userPayload, process.env.JWT_SECRET, {
             expiresIn: "1h",
