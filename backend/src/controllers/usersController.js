@@ -117,7 +117,7 @@ const userController = {
       res.status(500).json({ message: errorMessage });
     }
   },
-  getUserName: async (req, res) => {
+  getUsersName: async (req, res) => {
     try {
       const token = req.headers.authorization;
       if (!token) {
@@ -212,6 +212,38 @@ const userController = {
     } catch (error) {
       console.error(error);
       const errorMessage = error.message || "Error when deleteing ";
+      res.status(500).json({ message: errorMessage });
+    }
+  },
+  getUser: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const token = req.headers.authorization;
+      if (!token) {
+        res.status(400).json({ message: "You don't have token" });
+      }
+      checkSuperUser(token)
+        .then(async (result) => {
+          if (result.role == "super_user") {
+            const userdoc = await User.findById(id)
+              .select({ password: false })
+              .populate({
+                path: "branch",
+                select:
+                  "_id branch_name opening_amount_bhat available_currencies",
+              })
+              .exec();
+
+            res.status(200).json({ userdoc });
+          } else {
+            res.status(400).json({ message: "You not authorize" });
+          }
+        })
+        .catch((error) => res.status(500).json({ message: error }));
+    } catch (error) {
+      console.error(error);
+      const errorMessage =
+        error.message || "Error when get single user details";
       res.status(500).json({ message: errorMessage });
     }
   },
