@@ -71,7 +71,7 @@ const BranchesController = {
           res.status(400).json({ message: "You have no authority" });
         }
       })
-      .catch((error) => res.status(400).json(error));
+      .catch((error) => res.status(400).json({ message: error }));
   },
   deleteBranch: async (req, res) => {
     const token = req.headers.authorization;
@@ -103,7 +103,7 @@ const BranchesController = {
             return res.status(403).json({ message: "You have no authority" });
           }
         })
-        .catch((error) => res.status(400).json(error));
+        .catch((error) => res.status(400).json({ message: error }));
     } catch (error) {
       console.error("Error deleteing branch", error);
       return res.status(500).json({ message: "Internal error" });

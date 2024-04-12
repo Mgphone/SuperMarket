@@ -1,56 +1,112 @@
 const User = require("../models/User");
 const Branches = require("../models/Branches");
 const bcrypt = require("bcrypt");
-const { json } = require("express");
 const jwt = require("jsonwebtoken");
 const salt = bcrypt.genSaltSync(10);
 const checkSuperUser = require("../utils/checkjwtsuperuser");
 const userController = {
+  createSuperUser: async (req, res) => {
+    const { username, password, role } = req.body;
+    const hashedPassword = bcrypt.hashSync(password, salt);
+    if (typeof role === "undefined") {
+      return res
+        .status(400)
+        .json({ message: "Make sure add your super user role" });
+    }
+    if (role === "super_user") {
+      superUser = new User({ username, password: hashedPassword, role });
+      await superUser.save();
+      return res
+        .status(400)
+        .json({ message: `Super User ${username} has created` });
+    }
+  },
   createUser: async (req, res) => {
+    const token = req.headers.authorization;
+    if (!token) {
+      return res
+        .status(401)
+        .json({ message: "Please Sign in as branch manager or super manager" });
+    }
     try {
       const { username, password, role, branch } = req.body;
 
       if (typeof role === "undefined") {
-        return res.status(400).json({ message: "Choose branch type" });
+        return res.status(400).json({ message: "Choose role type" });
       }
-
       const hashedPassword = bcrypt.hashSync(password, salt);
-      let newUser;
+      checkSuperUser(token)
+        .then(async (result) => {
+          if (result.role == "super_user") {
+            if (role === "branch_manager" || role === "branch_seller") {
+              if (!branch) {
+                return res.status(400).json({ message: "Branch is required" });
+              }
 
-      if (role === "super_user") {
-        newUser = new User({ username, password: hashedPassword, role });
-      } else if (role === "branch_manager" || role === "branch_seller") {
-        if (!branch) {
-          return res.status(400).json({ message: "Branch is required" });
-        }
+              const user = new User({
+                username,
+                password: hashedPassword,
+                role,
+                branch,
+              });
+              await user.save();
 
-        const user = new User({
-          username,
-          password: hashedPassword,
-          role,
-          branch,
+              const branchDoc = await Branches.findById(branch);
+              if (!branchDoc) {
+                throw new Error("Branch not found");
+              }
+
+              if (role === "branch_manager") {
+                branchDoc.branch_manager.push(user._id);
+              } else if (role === "branch_seller") {
+                branchDoc.branch_seller.push(user._id);
+              } else {
+                throw new Error(
+                  "We accept Only branch_manager or branch_seller"
+                );
+              }
+              await branchDoc.save();
+              return res
+                .status(201)
+                .json({ message: `${role} created successfully` });
+            } else {
+              return res.status(400).json({ message: "Check your usertype" });
+            }
+          } else if (result.role === "branch_manager") {
+            // return res.status(400).json({ message: "making branch manager" });
+            if (role == "branch_seller") {
+              const branchDoc = await Branches.findById(branch);
+              if (!branchDoc) {
+                throw new Error("Branch not found");
+              }
+
+              const branchseller = new User({
+                username,
+                password: hashedPassword,
+                role,
+                branch,
+              });
+              await branchseller.save();
+              branchDoc.branch_seller.push(branchseller._id);
+              await branchDoc.save();
+
+              // console.log(
+              //   "this is branchseller" + JSON.stringify(branchseller)
+              // );
+              return res
+                .status(201)
+                .json({ message: `${role} created successfully` });
+            } else {
+              return res.status(400).json({
+                message:
+                  "You have no authroize to create another level just your branch seller",
+              });
+            }
+          }
+        })
+        .catch((error) => {
+          res.status(400).json({ message: error });
         });
-        await user.save();
-
-        const branchDoc = await Branches.findById(branch);
-        if (!branchDoc) {
-          throw new Error("Branch not found");
-        }
-
-        if (role === "branch_manager") {
-          branchDoc.branch_manager.push(user._id);
-        } else if (role === "branch_seller") {
-          branchDoc.branch_seller.push(user._id);
-        } else {
-          throw new Error("We accept Only branch_manager or branch_seller");
-        }
-
-        await branchDoc.save();
-      } else {
-        return res.status(400).json({ message: "Check your usertype" });
-      }
-
-      return res.status(201).json({ message: `${role} created successfully` });
     } catch (error) {
       console.error("Error creating user:", error);
       const errorMessage =
@@ -129,20 +185,17 @@ const userController = {
       if (!passOk) {
         return res.status(400).json({ message: "Old Password is Not correct" });
       }
-
-      jwt.verify(
-        token.split(" ")[1],
-        process.env.JWT_SECRET,
-        (err, decoded) => {
-          if (err) {
-            res.status(401).json({ message: "Invalid token" });
-          }
-        }
-      );
-      const hashpassword = bcrypt.hashSync(newpassword, salt);
-
-      await User.findOneAndUpdate({ username }, { password: hashpassword });
-      return res.status(200).json({ message: "Password update successful" });
+      checkSuperUser(token)
+        .then(async (result) => {
+          const hashpassword = bcrypt.hashSync(newpassword, salt);
+          await User.findOneAndUpdate({ username }, { password: hashpassword });
+          return res
+            .status(200)
+            .json({ message: "Password updated Successful" });
+        })
+        .catch((error) => {
+          res.status(400).json({ message: error });
+        });
     } catch (error) {
       console.error(error);
       const errorMessage =
@@ -156,31 +209,61 @@ const userController = {
       const token = req.headers.authorization;
 
       if (!token) {
-        res.status(400).json({ message: "You have No token" });
-        // return;
+        return res.status(400).json({ message: "You have No token" });
       }
       const userDoc = await User.findOne({ _id: id });
       if (!userDoc) {
-        res.status(400).json({ message: "There is No User" });
-        return;
+        return res.status(400).json({ message: "There is No User" });
       }
-      jwt.verify(
-        token.split(" ")[1],
-        process.env.JWT_SECRET,
-        (err, decoded) => {
-          if (err) {
-            res.status(400).json({ message: "Invalid Token" });
-            return;
-          }
-          if (decoded.role === "super_user") {
-            User.deleteOne({ _id: id })
-              .then(res.status(200).json({ message: "You have deleted" }))
-              .catch((err) => res.status(400).json({ message: err.message }));
-          } else {
-            res.status(401).json({ message: "You have no authorize" });
-          }
-        }
-      );
+      if (userDoc.role == "super_user") {
+        checkSuperUser(token)
+          .then(async (result) => {
+            if (result.role == "super_user") {
+              await User.deleteOne({ _id: id });
+              return res.status(200).json({ message: "Super User Deleted" });
+            } else {
+              return res.status(401).json({
+                message: "You don't have authorize to delete super user",
+              });
+            }
+          })
+          .catch((error) => {
+            return res.status(500).json({ message: error });
+          });
+      } else {
+        checkSuperUser(token)
+          .then(async (result) => {
+            // console.log("This is result" + JSON.stringify(result));
+            const branchDoc = await Branches.findById({
+              _id: userDoc.branch,
+            }).select("branch_seller");
+
+            const checkingCurrent =
+              (result.role == "branch_manager" &&
+                result.branch == userDoc.branch &&
+                branchDoc.branch_seller.includes(id)) ||
+              result.role == "super_user";
+            //  console.log("this is checkingCurrent" + checkingCurrent);
+            // console.log(result.role == "branch_manager");
+            // console.log(result.branch == userDoc.branch);
+            // console.log(branchDoc);
+            // console.log("checkingcurrent" + checkingCurrent);
+            if (checkingCurrent) {
+              await User.deleteOne({ _id: id });
+              await Branches.findByIdAndUpdate(
+                { _id: userDoc.branch },
+                { $pull: { branch_seller: id } }
+              );
+
+              return res.status(200).json({ message: "User has been deleted" });
+            } else {
+              throw new Error("You are not authorized to delete");
+            }
+          })
+          .catch((error) => {
+            return res.status(500).json({ message: error });
+          });
+      }
     } catch (error) {
       console.error(error);
       const errorMessage = error.message || "Error when deleteing ";
