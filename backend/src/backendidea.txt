@@ -15,3 +15,6 @@ Users.findOne({username}).select({password:0})
  .then() and .catch() methods to handle the outcome of the promise:
   .then() for successful fulfillment and .catch() for rejection."use 
   .then and catch to make sure for callback
+
+res.status(200).json(rate);vs      res.status(200).json({rate}); that is totally difference
+
