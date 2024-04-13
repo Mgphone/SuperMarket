@@ -11,8 +11,6 @@ const RateController = {
       }
       checkSuperUser(token)
         .then(async (result) => {
-          // console.long(JSON.stringify(result));
-          // res.status(200).json({ result });
           if (result.role == "super_user") {
             const { USDSMALL, USDBIG, GBP, YEN, KYAT, SINDOLLAR } = req.body;
             const currentRate = {
@@ -24,10 +22,8 @@ const RateController = {
               SINDOLLAR: SINDOLLAR,
               createdBy: result.userId,
             };
-            // res.status(200).json(currentRate);
             const new_CurrentRate = new Rate(currentRate);
             await new_CurrentRate.save();
-            // res.status(200).json(new_CurrentRate);
             res.status(200).json(new_CurrentRate);
           } else {
             return res
@@ -39,7 +35,6 @@ const RateController = {
     } catch (error) {
       return res.status(401).json({ message: "Error while creating the rate" });
     }
-    // res.status(200).json({ message: "Welcome from create Rate" });
   },
   getlatestRate: async (req, res) => {
     try {
@@ -52,29 +47,103 @@ const RateController = {
       return res.status(401).json({ message: "Error when fetching the rate" });
     }
   },
-  deleteRate: async (req, res) => {
+  updateRate: async (req, res) => {
     try {
+      const { USDSMALL, USDBIG, GBP, YEN, KYAT, SINDOLLAR } = req.body;
       const token = req.headers.authorization;
-      const id = req.params.id;
       if (!token) {
         return res
           .status(400)
           .json({ message: "Please sign in for super user" });
       }
-      const result = await checkSuperUser(token);
-      if (result.role !== "super_user") {
-        res.status(400).json({ message: "User have no autority" });
+      try {
+        checkSuperUser(token)
+          .then(async (result) => {
+            if (result.role !== "super_user") {
+              res.status(400).json({ message: "User have no autority" });
+            }
+            const createdBy = result.userId;
+            const rate = await Rate.findOne();
+            if (!rate) {
+              return res
+                .status(404)
+                .json({ message: "Not found the rate directory" });
+            }
+            const updatedRate = await Rate.findOneAndUpdate(
+              // Filter criteria
+              {},
+              // Update fields and values
+              {
+                USD: { smallNote: USDSMALL, bigNote: USDBIG },
+                GBP: GBP,
+                YEN: YEN,
+                KYAT: KYAT,
+                SINDOLLAR: SINDOLLAR,
+                createdBy: createdBy,
+                // updatedAt: new Date(),
+              },
+              // Options to return the updated document
+              { new: true }
+            );
+            if (!updatedRate) {
+              return res
+                .status(404)
+                .json({ message: "Message directory not found" });
+            }
+            res.status(200).json(updatedRate);
+          })
+          .catch((error) => {
+            return res.status(401).json({ message: error });
+          });
+      } catch (error) {
+        return res
+          .status(500)
+          .json({ message: "Error happen while checking the superuser" });
       }
-      await Rate.findByIdAndDelete(id)
-        .then((deleteRate) => {
-          if (!deleteRate) {
-            return res
-              .status(404)
-              .json({ message: "Rate collection not found" });
-          }
-          return res.status(200).json({ message: "You delete the collection" });
-        })
-        .catch((error) => res.status(400).json(error));
+    } catch (error) {
+      console.error(error);
+      const errorMessage =
+        error.message || "Error Happen when updating the rate";
+      return res.status(500).json({ message: errorMessage });
+    }
+  },
+  deleteRate: async (req, res) => {
+    try {
+      const token = req.headers.authorization;
+      const id = req.params.id;
+
+      if (!token) {
+        return res
+          .status(400)
+          .json({ message: "Please sign in for super user" });
+      }
+      try {
+        checkSuperUser(token)
+          .then(async (result) => {
+            if (result.role !== "super_user") {
+              res.status(400).json({ message: "User have no autority" });
+            }
+
+            try {
+              const rateDelete = await Rate.deleteOne({});
+              if (rateDelete === 0) {
+                return res
+                  .status(404)
+                  .json({ message: "Rate collection not found" });
+              }
+              return res
+                .status(200)
+                .json({ message: "You delete the rate collection" });
+            } catch (error) {
+              return res
+                .status(500)
+                .json({ message: "Error happen when deleting the rate" });
+            }
+          })
+          .catch((error) => res.status(401).json({ message: error }));
+      } catch (error) {
+        res.status(500).json({ message: "Error while checking super user" });
+      }
     } catch (error) {
       return res
         .status(401)
