@@ -52,5 +52,34 @@ const RateController = {
       return res.status(401).json({ message: "Error when fetching the rate" });
     }
   },
+  deleteRate: async (req, res) => {
+    try {
+      const token = req.headers.authorization;
+      const id = req.params.id;
+      if (!token) {
+        return res
+          .status(400)
+          .json({ message: "Please sign in for super user" });
+      }
+      const result = await checkSuperUser(token);
+      if (result.role !== "super_user") {
+        res.status(400).json({ message: "User have no autority" });
+      }
+      await Rate.findByIdAndDelete(id)
+        .then((deleteRate) => {
+          if (!deleteRate) {
+            return res
+              .status(404)
+              .json({ message: "Rate collection not found" });
+          }
+          return res.status(200).json({ message: "You delete the collection" });
+        })
+        .catch((error) => res.status(400).json(error));
+    } catch (error) {
+      return res
+        .status(401)
+        .json({ message: "Error when deleting the rate collections" });
+    }
+  },
 };
 module.exports = RateController;
