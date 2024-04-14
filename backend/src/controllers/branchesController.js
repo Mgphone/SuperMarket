@@ -76,7 +76,6 @@ const BranchesController = {
   deleteBranch: async (req, res) => {
     const token = req.headers.authorization;
     const id = req.params.id;
-    // console.log("this is id" + id);
     if (!token) {
       res.status(400).json({ message: "Check your token" });
     }

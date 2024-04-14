@@ -18,7 +18,7 @@ const userController = {
       await superUser.save();
       return res
         .status(400)
-        .json({ message: `Super User ${username} has created` });
+        .json({ message: `Super User ${username.toLowerCase()} has created` });
     }
   },
   createUser: async (req, res) => {
@@ -66,9 +66,9 @@ const userController = {
                 );
               }
               await branchDoc.save();
-              return res
-                .status(201)
-                .json({ message: `${role} created successfully` });
+              return res.status(201).json({
+                message: `${role} and ${username.toLowerCase()} created successfully`,
+              });
             } else {
               return res.status(400).json({ message: "Check your usertype" });
             }
@@ -90,12 +90,9 @@ const userController = {
               branchDoc.branch_seller.push(branchseller._id);
               await branchDoc.save();
 
-              // console.log(
-              //   "this is branchseller" + JSON.stringify(branchseller)
-              // );
-              return res
-                .status(201)
-                .json({ message: `${role} created successfully` });
+              return res.status(201).json({
+                message: `${role} and ${username.toLowerCase()} created successfully`,
+              });
             } else {
               return res.status(400).json({
                 message:
@@ -131,7 +128,7 @@ const userController = {
             ...(userDoc.branch && { branch: userDoc.branch }),
           };
           const token = jwt.sign(userPayload, process.env.JWT_SECRET, {
-            expiresIn: "1h",
+            expiresIn: "2h",
           });
           res.setHeader("Authorization", `Bearer ${token}`);
           res.status(200).json({ message: "Login Successful" });
@@ -189,9 +186,9 @@ const userController = {
         .then(async (result) => {
           const hashpassword = bcrypt.hashSync(newpassword, salt);
           await User.findOneAndUpdate({ username }, { password: hashpassword });
-          return res
-            .status(200)
-            .json({ message: "Password updated Successful" });
+          return res.status(200).json({
+            message: `Password updated Successful for ${username.toLowerCase()}`,
+          });
         })
         .catch((error) => {
           res.status(400).json({ message: error });
@@ -243,11 +240,7 @@ const userController = {
                 result.branch == userDoc.branch &&
                 branchDoc.branch_seller.includes(id)) ||
               result.role == "super_user";
-            //  console.log("this is checkingCurrent" + checkingCurrent);
-            // console.log(result.role == "branch_manager");
-            // console.log(result.branch == userDoc.branch);
-            // console.log(branchDoc);
-            // console.log("checkingcurrent" + checkingCurrent);
+
             if (checkingCurrent) {
               await User.deleteOne({ _id: id });
               await Branches.findByIdAndUpdate(

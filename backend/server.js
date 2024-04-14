@@ -11,6 +11,7 @@ app.get("/", (req, res) => {
 app.use("/", require("./src/Routes/users"));
 app.use("/", require("./src/Routes/branches"));
 app.use("/", require("./src/Routes/rate"));
+app.use("/", require("./src/Routes/transition"));
 app.use((req, res, next) => {
   console.log(`404 not found request:${req.method} respond:${req.originalUrl}`);
   res.status(404).json({ message: "Not Found" });
