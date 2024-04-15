@@ -19,7 +19,7 @@ const BranchesSchema = new Schema(
     },
     transition: [
       {
-        rate: { type: mongoose.Schema.Types.ObjectId, ref: "Rates" },
+        rateId: { type: mongoose.Schema.Types.ObjectId, ref: "Rates" },
         currency: { type: String },
         amount: { type: Number },
       },

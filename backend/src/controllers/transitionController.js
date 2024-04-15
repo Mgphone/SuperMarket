@@ -3,6 +3,7 @@ const Branches = require("../models/Branches");
 const Rate = require("../models/Rate");
 const checkSuperUser = require("../utils/checkjwtsuperuser");
 const Transition = require("../models/Transition");
+const getISODate = require("../utils/getISODate");
 const TransitionController = {
   createTransition: async (req, res) => {
     try {
@@ -71,18 +72,25 @@ const TransitionController = {
               .status(403)
               .json({ message: "You have no money on your balance" });
           }
+          await newTransition.save();
           try {
             const updateData = {
               $inc: {
                 selling_amout_bhat: totalamountbhat,
                 branch_balance: -totalamountbhat,
               },
-              $push: { transition: { amount: amount, currency: currency } },
+              $push: {
+                transition: {
+                  amount: amount,
+                  currency: currency,
+                  rateId: newTransition._id,
+                },
+              },
             };
+
             await Branches.findByIdAndUpdate(transitionBranch, updateData);
             const findBranch = await Branches.findById(transitionBranch);
 
-            await newTransition.save();
             res.status(200).json({ newTransition, findBranch });
           } catch (error) {
             return res.status(500).json({
@@ -96,6 +104,47 @@ const TransitionController = {
       return res
         .status(500)
         .json({ message: "Error Happen when creating transation" });
+    }
+  },
+  getTransitionBranchManager: async (req, res) => {
+    try {
+      const token = req.headers.authorization;
+      const { date } = req.body;
+      if (!token) {
+        return res
+          .status(403)
+          .json({ message: "Please check sign in details" });
+      }
+      checkSuperUser(token)
+        .then(async (result) => {
+          if (result.role === "branch_manager") {
+            try {
+              const findTransition = await Transition.find({
+                branch: result.branch,
+                createdAt: { $gte: getISODate(date) },
+              }).sort({ createdAt: 1 });
+              return res.status(200).json(findTransition);
+            } catch (error) {
+              return res
+                .status(403)
+                .json({
+                  message:
+                    "Can not find your searching please choose difference Date",
+                });
+            }
+          } else {
+            return res
+              .status(403)
+              .json({ message: "You have to be branch manager" });
+          }
+        })
+        .catch((error) => {
+          return res.status(403).json({ message: error });
+        });
+    } catch (error) {
+      const errorMessage =
+        error || "Error happen when branch manager taking Branch Transition";
+      return res.status(500).json({ message: errorMessage });
     }
   },
 };

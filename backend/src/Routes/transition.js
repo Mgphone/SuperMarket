@@ -5,4 +5,8 @@ router.post(
   "/transition/createtransition",
   TransitionController.createTransition
 );
+router.get(
+  "/transition/branchmanagergettransition",
+  TransitionController.getTransitionBranchManager
+);
 module.exports = router;
