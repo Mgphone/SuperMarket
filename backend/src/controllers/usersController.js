@@ -35,6 +35,12 @@ const userController = {
         return res.status(400).json({ message: "Choose role type" });
       }
       const hashedPassword = bcrypt.hashSync(password, salt);
+      const findBranch = await Branches.findById(branch);
+      if (!findBranch) {
+        return res
+          .status(403)
+          .json({ message: "There is no branch change the branchId detail" });
+      }
       checkSuperUser(token)
         .then(async (result) => {
           if (result.role == "super_user") {

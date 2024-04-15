@@ -8,7 +8,7 @@ const TransitionController = {
     try {
       const token = req.headers.authorization;
       if (!token) {
-        return res.status(401).json({ message: "Please check your singin" });
+        return res.status(401).json({ message: "Please check your SignIn" });
       }
       checkSuperUser(token)
         .then(async (result) => {
@@ -62,8 +62,34 @@ const TransitionController = {
             total_amount_in_bhat: totalamountbhat,
             Note: currency === "USD" ? Note : "",
           });
-          await newTransition.save();
-          res.status(200).json(newTransition);
+
+          //selling_amout_bhat increase total_amount_inBhat,transition(rate(objectId),currency,currencyAmount),decrease amout in bhat
+          //if(branch amount low can not sell)
+          const findBranch = await Branches.findById(transitionBranch);
+          if (findBranch.branch_balance - totalamountbhat < 0) {
+            return res
+              .status(403)
+              .json({ message: "You have no money on your balance" });
+          }
+          try {
+            const updateData = {
+              $inc: {
+                selling_amout_bhat: totalamountbhat,
+                branch_balance: -totalamountbhat,
+              },
+              $push: { transition: { amount: amount, currency: currency } },
+            };
+            await Branches.findByIdAndUpdate(transitionBranch, updateData);
+            const findBranch = await Branches.findById(transitionBranch);
+
+            await newTransition.save();
+            res.status(200).json({ newTransition, findBranch });
+          } catch (error) {
+            return res.status(500).json({
+              message:
+                "Error happen when creating the transition and updating to branch",
+            });
+          }
         })
         .catch((err) => res.status(403).json({ message: err }));
     } catch (error) {

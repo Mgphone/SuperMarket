@@ -10,12 +10,20 @@ const BranchesSchema = new Schema(
     branch_manager: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
     branch_seller: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
     monitorBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
-    // branch_balance: {
-    //   type: Number,
-    //   default: function () {
-    //     return this.branches[0].opening_amount_bhat;
-    //   },
-    // },
+    branch_balance: {
+      type: Number,
+      default: function () {
+        return this.opening_amount_bhat;
+      },
+      required: true,
+    },
+    transition: [
+      {
+        rate: { type: mongoose.Schema.Types.ObjectId, ref: "Rates" },
+        currency: { type: String },
+        amount: { type: Number },
+      },
+    ],
   },
   { timestamps: true }
 );
