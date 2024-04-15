@@ -9,4 +9,12 @@ router.get(
   "/transition/branchmanagergettransition",
   TransitionController.getTransitionBranchManager
 );
+router.get(
+  "/transition/supertransitionfromallbranches",
+  TransitionController.getAllTransitionbyDay
+);
+router.get(
+  "/transition/supertransitionfromonebranch",
+  TransitionController.getTransitionByBranch
+);
 module.exports = router;

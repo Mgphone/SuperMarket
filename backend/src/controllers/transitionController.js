@@ -125,12 +125,10 @@ const TransitionController = {
               }).sort({ createdAt: 1 });
               return res.status(200).json(findTransition);
             } catch (error) {
-              return res
-                .status(403)
-                .json({
-                  message:
-                    "Can not find your searching please choose difference Date",
-                });
+              return res.status(403).json({
+                message:
+                  "Can not find your searching please choose difference Date",
+              });
             }
           } else {
             return res
@@ -146,6 +144,55 @@ const TransitionController = {
         error || "Error happen when branch manager taking Branch Transition";
       return res.status(500).json({ message: errorMessage });
     }
+  },
+  getAllTransitionbyDay: async (req, res) => {
+    const token = req.headers.authorization;
+    const { date } = req.body;
+    if (!token) {
+      return res.status(403).json({ message: "Please check sign in details" });
+    }
+    checkSuperUser(token)
+      .then(async (result) => {
+        if (result.role === "super_user") {
+          const findTransition = await Transition.find({
+            createdAt: { $gte: getISODate(date) },
+          }).sort({
+            createdAt: 1,
+          });
+          return res.status(200).json(findTransition);
+        } else
+          return res
+            .status(403)
+            .json({ message: "You don't have super user authority" });
+      })
+      .catch((error) => {
+        return res.status(403).json({ message: error });
+      });
+  },
+  getTransitionByBranch: async (req, res) => {
+    const token = req.headers.authorization;
+    const { branchId, date } = req.body;
+    if (!token) {
+      return res.status(403).json({ message: "Please check sign in details" });
+    }
+    checkSuperUser(token)
+      .then(async (result) => {
+        if (result.role === "super_user") {
+          const findTransition = await Transition.find({
+            branch: branchId,
+            createdAt: { $gte: getISODate(date) },
+          }).sort({
+            createdAt: 1,
+          });
+          return res.status(200).json(findTransition);
+        } else
+          return res
+            .status(403)
+            .json({ message: "You don't have super user authority" });
+      })
+      .catch((error) => {
+        return res.status(403).json({ message: error });
+      });
   },
 };
 module.exports = TransitionController;

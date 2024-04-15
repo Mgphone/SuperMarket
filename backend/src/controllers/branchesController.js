@@ -65,8 +65,11 @@ const BranchesController = {
 
         if (result.role == "super_user") {
           res.status(200).json(branchDoc);
-        } else if (result.role == "branch_manager" && result.branch == id) {
-          res.status(200).json(branchDoc);
+        } else if (result.role == "branch_manager") {
+          const managerBranch = await Branches.findById(result.branch).select({
+            monitorBy: false,
+          });
+          res.status(200).json(managerBranch);
         } else {
           res.status(400).json({ message: "You have no authority" });
         }

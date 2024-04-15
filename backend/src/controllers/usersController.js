@@ -278,20 +278,16 @@ const userController = {
       }
       checkSuperUser(token)
         .then(async (result) => {
-          if (result.role == "super_user") {
-            const userdoc = await User.findById(id)
-              .select({ password: false })
-              .populate({
-                path: "branch",
-                select:
-                  "_id branch_name opening_amount_bhat available_currencies",
-              })
-              .exec();
+          const userdoc = await User.findById(result.userId)
+            .select({ password: false })
+            .populate({
+              path: "branch",
+              select:
+                "_id branch_name opening_amount_bhat available_currencies",
+            })
+            .exec();
 
-            res.status(200).json({ userdoc });
-          } else {
-            res.status(400).json({ message: "You not authorize" });
-          }
+          res.status(200).json({ userdoc });
         })
         .catch((error) => res.status(500).json({ message: error }));
     } catch (error) {
