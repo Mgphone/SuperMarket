@@ -7,9 +7,6 @@ const BranchesSchema = new Schema(
     opening_amount_bhat: { type: Number, required: true },
     selling_amout_bhat: { type: Number, default: 0 },
     available_currencies: { type: [String], required: true },
-    branch_manager: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
-    branch_seller: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
-    monitorBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
     branch_balance: {
       type: Number,
       default: function () {
@@ -17,13 +14,10 @@ const BranchesSchema = new Schema(
       },
       required: true,
     },
-    transition: [
-      {
-        rateId: { type: mongoose.Schema.Types.ObjectId, ref: "Rates" },
-        currency: { type: String },
-        amount: { type: Number },
-      },
-    ],
+    branch_manager: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
+    branch_seller: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
+    monitorBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
+    transition: [{ type: mongoose.Schema.Types.ObjectId, ref: "Transitions" }],
   },
   { timestamps: true }
 );

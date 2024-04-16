@@ -291,7 +291,7 @@ const userController = {
               await User.deleteOne({ _id: id });
               await Branches.findByIdAndUpdate(
                 { _id: userDoc.branch },
-                { $pull: { branch_seller: id } }
+                { $pull: { branch_seller: id, branch_manager: id } }
               );
 
               return res.status(200).json({ message: "User has been deleted" });

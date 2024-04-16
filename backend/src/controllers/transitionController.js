@@ -80,18 +80,16 @@ const TransitionController = {
                 branch_balance: -totalamountbhat,
               },
               $push: {
-                transition: {
-                  amount: amount,
-                  currency: currency,
-                  rateId: newTransition._id,
-                },
+                transition: newTransition._id,
               },
             };
 
             await Branches.findByIdAndUpdate(transitionBranch, updateData);
-            const findBranch = await Branches.findById(transitionBranch);
-
-            res.status(200).json({ newTransition, findBranch });
+            // const findBranch = await Branches.findById(transitionBranch);
+            // findBranch.transition.push(newTransition._id);
+            // await findBranch.save();
+            const showBranch = await Branches.findById(transitionBranch);
+            res.status(200).json({ newTransition, showBranch });
           } catch (error) {
             return res.status(500).json({
               message:
@@ -233,28 +231,21 @@ const TransitionController = {
             const findTransitionPromise = Transition.findOne({
               _id: transitionid,
             });
-            const findBranchPromise = Branches.findOne({ _id: result.branch });
-            const [findTransition, findBranch] = await Promise.all([
-              findTransitionPromise,
-              findBranchPromise,
-            ]);
-            // $pull: { transition: { rateId: findTransition._id } },
-            //    $pull: {
-            //     ["transition"]: { rateId: transitionid },
-            //   },
-            // };
+            const [findTransition] = await Promise.all([findTransitionPromise]);
 
-            // await Branches.findOneAndDelete(transitionid, updateData);
             const updateData = {
               $inc: {
                 selling_amout_bhat: -findTransition.total_amount_in_bhat,
                 branch_balance: +findTransition.total_amount_in_bhat,
               },
-              $pull: { rateId: findTransition._id },
+              $pull: { transition: transitionid },
             };
-            await Branches.findByIdAndUpdate(transitionid, updateData);
-            await Transition.deleteOne({ _id: transitionid });
 
+            await Branches.findByIdAndUpdate(
+              { _id: findTransition.branch },
+              updateData
+            );
+            await Transition.deleteOne({ _id: transitionid });
             return res
               .status(200)
               .json({ message: "Transition delete and branch updated" });
