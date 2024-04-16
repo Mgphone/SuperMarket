@@ -206,6 +206,46 @@ const userController = {
       res.status(500).json({ message: errorMessage });
     }
   },
+  resetPassword: async (req, res) => {
+    const token = req.headers.authorization;
+    const { newpassword, username } = req.body;
+    const userDoc = await User.findOne({ username });
+    console.log("this is usname to change" + userDoc.branch);
+    if (!newpassword || !username) {
+      return res
+        .status(404)
+        .json({ message: "Plese enter username and new password" });
+    }
+    if (!userDoc) {
+      return res.status(404).json({ message: "No username " });
+    }
+    const hashedPassword = bcrypt.hashSync(newpassword, salt);
+    checkSuperUser(token)
+      .then(async (result) => {
+        console.log(userDoc.branch + " " + result.branch);
+
+        if (
+          result.role == "super_user" ||
+          (result.role == "branch_manager" &&
+            String(result.branch) == userDoc.branch)
+        ) {
+          await User.findOneAndUpdate(
+            { username },
+            { password: hashedPassword }
+          );
+          return res.status(200).json({
+            message: `Password updated Successful for ${username.toLowerCase()}`,
+          });
+        } else {
+          return res.status(403).json({
+            message: "You have no authority to change user password",
+          });
+        }
+      })
+      .catch((error) => {
+        return res.status(403).json(error);
+      });
+  },
   deleteUser: async (req, res) => {
     try {
       const id = req.params.id;
