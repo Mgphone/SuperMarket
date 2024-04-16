@@ -1,5 +1,6 @@
 
 FROM node:21.6.2-alpine
+# FROM node:18-alpine
 WORKDIR /backend
 RUN npm install nodemon -g
 COPY package*.json /backend/

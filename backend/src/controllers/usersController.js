@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const Branches = require("../models/Branches");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const salt = bcrypt.genSaltSync(10);
 const checkSuperUser = require("../utils/checkjwtsuperuser");

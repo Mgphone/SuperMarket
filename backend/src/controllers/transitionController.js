@@ -238,6 +238,13 @@ const TransitionController = {
               findTransitionPromise,
               findBranchPromise,
             ]);
+            // $pull: { transition: { rateId: findTransition._id } },
+            //    $pull: {
+            //     ["transition"]: { rateId: transitionid },
+            //   },
+            // };
+
+            // await Branches.findOneAndDelete(transitionid, updateData);
             const updateData = {
               $inc: {
                 selling_amout_bhat: -findTransition.total_amount_in_bhat,
