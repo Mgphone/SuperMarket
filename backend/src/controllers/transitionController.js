@@ -194,5 +194,77 @@ const TransitionController = {
         return res.status(403).json({ message: error });
       });
   },
+  editTransition: async (req, res) => {
+    const token = req.headers.authorization;
+    const { transitionid } = req.body;
+    if (!token) {
+      return res
+        .status(403)
+        .json({ message: "Please check your sign in details" });
+    }
+    checkSuperUser(token)
+      .then(async (result) => {
+        if (result.role == "branch_manager") {
+          const findTransition = await Transition.find({ _id: transitionid });
+          const findBranch = await Branches.find({ _id: result.branch });
+          return res.status(200).json({ findTransition, findBranch, result });
+        } else {
+          return res
+            .status(403)
+            .json({ message: "Yoo have to be branch manager" });
+        }
+      })
+      .catch((error) => {
+        return res.status(500).json({ message: error });
+      });
+  },
+  deleteTransition: async (req, res) => {
+    const token = req.headers.authorization;
+    const { transitionid } = req.body;
+    if (!token) {
+      return res
+        .status(403)
+        .json({ message: "Please check your sign in details" });
+    }
+    checkSuperUser(token)
+      .then(async (result) => {
+        if (result.role == "branch_manager") {
+          try {
+            const findTransitionPromise = Transition.findOne({
+              _id: transitionid,
+            });
+            const findBranchPromise = Branches.findOne({ _id: result.branch });
+            const [findTransition, findBranch] = await Promise.all([
+              findTransitionPromise,
+              findBranchPromise,
+            ]);
+            const updateData = {
+              $inc: {
+                selling_amout_bhat: -findTransition.total_amount_in_bhat,
+                branch_balance: +findTransition.total_amount_in_bhat,
+              },
+              $pull: { rateId: findTransition._id },
+            };
+            await Branches.findByIdAndUpdate(transitionid, updateData);
+            await Transition.deleteOne({ _id: transitionid });
+
+            return res
+              .status(200)
+              .json({ message: "Transition delete and branch updated" });
+          } catch (error) {
+            return res
+              .status(200)
+              .json({ message: "There is no either branch or transition" });
+          }
+        } else {
+          return res
+            .status(403)
+            .json({ message: "Yoo have to be branch manager" });
+        }
+      })
+      .catch((error) => {
+        return res.status(500).json({ message: error });
+      });
+  },
 };
 module.exports = TransitionController;

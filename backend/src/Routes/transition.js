@@ -17,4 +17,9 @@ router.get(
   "/transition/supertransitionfromonebranch",
   TransitionController.getTransitionByBranch
 );
+router.patch("/transition/edittransition", TransitionController.editTransition);
+router.delete(
+  "/transition/deletetransition",
+  TransitionController.deleteTransition
+);
 module.exports = router;
