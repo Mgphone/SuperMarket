@@ -1,0 +1,485 @@
+{
+	"info": {
+		"_postman_id": "05fffe88-6b1f-4d46-8082-31ee5d2ddb31",
+		"name": "MoneyExchange",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24444142"
+	},
+	"item": [
+		{
+			"name": "UserAPI",
+			"item": [
+				{
+					"name": "Login(all)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\":\"mgphone\",\"password\":\"password\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:5000/users/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Register(all)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE5YmIwNmEwZjYxN2I4Mzk0ZDBiMGIiLCJ1c2VybmFtZSI6IkJyYW5jaEFfbWFuYWdlciIsInJvbGUiOiJicmFuY2hfbWFuYWdlciIsImJyYW5jaCI6IjY2MTlhZDdiZGYyYWYxNzIxOTE4NmVhOCIsImlhdCI6MTcxMjk2MjM3MCwiZXhwIjoxNzEyOTY1OTcwfQ._oqsyE4KHz7aemJpGbxTpRC4B9Ffr-sQcTWruz2Zlmg"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\":\"BranchA_seller\", \"password\":\"password\", \"role\":\"branch_seller\",\"branch\":\"6619ad7bdf2af17219186ea8\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:5000/users/register"
+					},
+					"response": []
+				},
+				{
+					"name": "registerSuperUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\":\"superuser\", \"password\":\"password\", \"role\":\"super_user\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:5000/users/superregister"
+					},
+					"response": []
+				},
+				{
+					"name": "editPassword(all)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE1ZTk2MGU5YWVhYTI3YTBhMmI3NjkiLCJ1c2VybmFtZSI6InBob25lYnJhbmNoIiwicm9sZSI6ImJyYW5jaF9tYW5hZ2VyIiwiaWF0IjoxNzEyNzY5MDgwLCJleHAiOjE3MTI3NzI2ODB9.ClogdZWr2bEMG1gQjFFibJGoJ7j7Pmeqj9TK0ENf9HY"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\":\"phonebranch\", \"oldpassword\":\"password\", \"newpassword\":\"newpassword\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:5000/users/update"
+					},
+					"response": []
+				},
+				{
+					"name": "resetPassword(super)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFkNzg3MzIwMmFkZDFhYmM2MTM5N2EiLCJ1c2VybmFtZSI6Im1ncGhvbmUiLCJyb2xlIjoic3VwZXJfdXNlciIsImlhdCI6MTcxMzIyNTE5NiwiZXhwIjoxNzEzMjMyMzk2fQ.HvtOpKZuO701IYNP0q4ZZWB2drfvIqrK58jqbO6Bdds"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": "localhost:5000/users/resetpassword"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllUsers(super)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE5YzY4ZTJhNDlkMmNiZGE2ZWUzMDUiLCJ1c2VybmFtZSI6Im1ncGhvbmUiLCJyb2xlIjoic3VwZXJfdXNlciIsImlhdCI6MTcxMzA0MjM5MywiZXhwIjoxNzEzMDQ1OTkzfQ.uTXTZrLJE4i7d-QRjDczv2ybNCosxIE3r6YWrf8IEg4"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:5000/username/findalluser"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser(super/branch)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "2232"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "localhost:5000/users/delete/6616dc10e61a1ec5029d624a"
+					},
+					"response": []
+				},
+				{
+					"name": "getSingleUserDetails(all who is signin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFkOTJhZjI5OWQ4NDExZjE0ZWI0ZDQiLCJ1c2VybmFtZSI6ImJyYWNoYm1hbmFnZXIiLCJyb2xlIjoiYnJhbmNoX21hbmFnZXIiLCJicmFuY2giOiI2NjFkOTI4MTI5OWQ4NDExZjE0ZWI0Y2MiLCJpYXQiOjE3MTMyMjI0ODYsImV4cCI6MTcxMzIyOTY4Nn0.DuYdH4IkiDJcFuNl76NZzgA4YosadtBoZekkqEMGKCs"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:5000/username/getsingleuser"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Branches",
+			"item": [
+				{
+					"name": "createBranch(super)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE2Yzk5ZGQwMTMzMmFiMTNjOTYwMzAiLCJ1c2VybmFtZSI6Im1ncGhvbmUiLCJyb2xlIjoic3VwZXJfdXNlciIsImlhdCI6MTcxMjc5OTEyNywiZXhwIjoxNzEyODAyNzI3fQ.pdqKSJ6ZpOXen6I5uvdPFnxsGwR-_wN1jj-awuxyVes"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"branchname\":\"branchB\", \"openingamount\":10000, \"currency\":[\"USD\", \"GBP\", \"YEN\", \"KYAT\", \"SINGDOLLAR\"]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:5000/branches/createbranch"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllBranches(super)",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getSingleBranch(super,manager)",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteBranch(super)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE2Yzk5ZGQwMTMzMmFiMTNjOTYwMzAiLCJ1c2VybmFtZSI6Im1ncGhvbmUiLCJyb2xlIjoic3VwZXJfdXNlciIsImlhdCI6MTcxMjk2NTA4MSwiZXhwIjoxNzEyOTY4NjgxfQ.W90U43wKqgtqMKeybGRb1yVZFb6SfIt-ZST-HLhkiNU"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "localhost:5000/branches/deletebranch/6619ad7bdf2af17219186ea8"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rate",
+			"item": [
+				{
+					"name": "CreateRate(super)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE5YzY4ZTJhNDlkMmNiZGE2ZWUzMDUiLCJ1c2VybmFtZSI6Im1ncGhvbmUiLCJyb2xlIjoic3VwZXJfdXNlciIsImlhdCI6MTcxMjk3MDQxNywiZXhwIjoxNzEyOTc0MDE3fQ.vpe0ELTNMeyCskqSys5OA1M76_HMWr1d6Xcxoe72Wbw"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"USDSMALL\":30,\"USDBIG\":40,\"GBP\":50,\"YEN\":800,\"KYAT\":1200,\"SINDOLLAR\":20}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:5000/rate/createrate"
+					},
+					"response": []
+				},
+				{
+					"name": "getRate(all)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:5000/rate/getrate"
+					},
+					"response": []
+				},
+				{
+					"name": "updateRate(super)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE5YzY4ZTJhNDlkMmNiZGE2ZWUzMDUiLCJ1c2VybmFtZSI6Im1ncGhvbmUiLCJyb2xlIjoic3VwZXJfdXNlciIsImlhdCI6MTcxMzAzNjgwNSwiZXhwIjoxNzEzMDQwNDA1fQ.lS0_dUKfAxa_3R_bYXSB_xdQjbjVyKx_MYFEGhe_35Q"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"USDSMALL\":50,\"USDBIG\":50,\"GBP\":50,\"YEN\":500,\"KYAT\":1500,\"SINDOLLAR\":100}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:5000/rate/updaterate"
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteRate(super)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE5YzY4ZTJhNDlkMmNiZGE2ZWUzMDUiLCJ1c2VybmFtZSI6Im1ncGhvbmUiLCJyb2xlIjoic3VwZXJfdXNlciIsImlhdCI6MTcxMzAzNjgwNSwiZXhwIjoxNzEzMDQwNDA1fQ.lS0_dUKfAxa_3R_bYXSB_xdQjbjVyKx_MYFEGhe_35Q"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "localhost:5000/rate/deleterate"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transition",
+			"item": [
+				{
+					"name": "Create Transition(branchmanager,branchseller)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFhZmJkMmIyZjA5MjNmZGU0YzQwYzEiLCJ1c2VybmFtZSI6ImJyYWNoYW1hbmFnZXIiLCJyb2xlIjoiYnJhbmNoX21hbmFnZXIiLCJicmFuY2giOiI2NjFhZmFkY2IyZjA5MjNmZGU0YzQwYjQiLCJpYXQiOjE3MTMwNTc4MzAsImV4cCI6MTcxMzA2NTAzMH0.tYcFADS2Y73ZpHK-W5yPSP7ab8R-uc2w9JI-jwqG_Fc"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"buyer_name\":\"hellobuyer\",\"buyer_identity\":\"link for cloudinary\",\r\n\"currency\":\"GBP\",\"Note\":\"bigNote\",\"amount\":\"\"}\r\n// buyer_name, byer_identity, currency",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:5000/transition/createtransition"
+					},
+					"response": []
+				},
+				{
+					"name": "BranchManagerTransition(branch-manager)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFkOTJhZjI5OWQ4NDExZjE0ZWI0ZDQiLCJ1c2VybmFtZSI6ImJyYWNoYm1hbmFnZXIiLCJyb2xlIjoiYnJhbmNoX21hbmFnZXIiLCJicmFuY2giOiI2NjFkOTI4MTI5OWQ4NDExZjE0ZWI0Y2MiLCJpYXQiOjE3MTMyMTQxNDMsImV4cCI6MTcxMzIyMTM0M30.6Gjz1CEyTx1O9WAtDpTdF3ikiHV-HrzHve5qJn8m8Hs"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"date\":1}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:5000/transition/branchmanagergettransition"
+					},
+					"response": []
+				},
+				{
+					"name": "allBranchesTransition(super)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFkNzg3MzIwMmFkZDFhYmM2MTM5N2EiLCJ1c2VybmFtZSI6Im1ncGhvbmUiLCJyb2xlIjoic3VwZXJfdXNlciIsImlhdCI6MTcxMzIyOTcxNSwiZXhwIjoxNzEzMjM2OTE1fQ.FBCDrzNu16LbBqMrn8pvK5X5zaqBrRVQXK7ApDyK0Hw"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// {\"date\":0}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:5000/transition/supertransitionfromallbranches"
+					},
+					"response": []
+				},
+				{
+					"name": "OneBranchTransition(super)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFkNzg3MzIwMmFkZDFhYmM2MTM5N2EiLCJ1c2VybmFtZSI6Im1ncGhvbmUiLCJyb2xlIjoic3VwZXJfdXNlciIsImlhdCI6MTcxMzIyMTI5MSwiZXhwIjoxNzEzMjI4NDkxfQ.1-hNxXwpA4IskSSFsypx2-QThx1_uNSxrWBdYGRzGWI"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"branchId\":\"661d9281299d8411f14eb4cc\",\"date\":1}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:5000/transition/supergetbranchtransition"
+					},
+					"response": []
+				},
+				{
+					"name": "EditTransition(branchmanager)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFlZTczYTEzZjJhOWM2MDgzZTJjYmUiLCJ1c2VybmFtZSI6ImJyYW5jaGFtYW5hZ2VyIiwicm9sZSI6ImJyYW5jaF9tYW5hZ2VyIiwiYnJhbmNoIjoiNjYxZWU2YzUxM2YyYTljNjA4M2UyY2I3IiwiaWF0IjoxNzEzMzAyMjAwLCJleHAiOjE3MTMzMDk0MDB9.0UTHKC-BO-sRoBPG0dEFJCmi7hl6dCvO7alId2IBePc"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"transitionid\":\"661ee8126220644c0a778a8c\",\"buyer_name\":\"hellobuyer\",\"buyer_identity\":\"link for cloudinary\",\r\n\"currency\":\"USD\",\"Note\":\"bigNote\",\"amount\":\"4\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:5000/transition/edittransition"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTransition(branchmanager)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFkNzlmNDMyZTY5ZjMxNDhhNzRmNDMiLCJ1c2VybmFtZSI6ImJyYWNoYW1hbmFnZXIiLCJyb2xlIjoiYnJhbmNoX21hbmFnZXIiLCJicmFuY2giOiI2NjFkNzg5ZDIwMmFkZDFhYmM2MTM5N2UiLCJpYXQiOjE3MTMyNTIzMzcsImV4cCI6MTcxMzI1OTUzN30.kNlz9mUteMRkw57nmsCPZVBZND3dMqyVkKcYv72NAqM"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"transitionid\":\"661e2a994e186cd1999feb6a\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:5000/transition/deletetransition"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "QueryForRate",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
