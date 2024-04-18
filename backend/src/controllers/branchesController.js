@@ -148,27 +148,25 @@ const BranchesController = {
         .status(400)
         .json({ message: "You have to check your sign in" });
     }
-    const {
-      opening_amount_bhat,
-      available_currencies,
-      selling_amout_bhat,
-      transition,
-    } = req.body;
     checkSuperUser(token)
       .then(async (result) => {
         if (result.role == "branch_manager") {
-          const findBranch = await Branches.find({ _id: result.branch });
+          const { openingamount, currency } = req.body;
           const updateBranch = {
-            opening_amount_bhat: opening_amount_bhat,
-            available_currencies: available_currencies,
-            selling_amout_bhat: selling_amout_bhat,
+            opening_amount_bhat: openingamount,
+            available_currencies: currency,
+            selling_amout_bhat: 0,
             transition: [],
+            branch_balance: openingamount, // Calculate branch_balance manually
           };
+
           await Branches.findByIdAndUpdate(
             { _id: result.branch },
             updateBranch
           );
-          return res.status(200).json({ findBranch });
+
+          const findBranch = await Branches.findOne({ _id: result.branch });
+          return res.status(200).json(findBranch);
         } else {
           return res
             .status(403)
