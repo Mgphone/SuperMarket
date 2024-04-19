@@ -111,5 +111,41 @@ const BranchesController = {
       return res.status(500).json({ message: "Internal error" });
     }
   },
+ 
+
+  editBranch: async (req, res) => {
+    const token = req.headers.authorization;
+    if (!token) {
+      return res
+        .status(400)
+        .json({ message: "You have to check your sign in" });
+    }
+    checkSuperUser(token)
+      .then(async (result) => {
+        if (result.role == "branch_manager") {
+          const { openingamount, currency } = req.body;
+          const updateBranch = {
+            opening_amount_bhat: openingamount,
+            available_currencies: currency,
+            selling_amout_bhat: 0,
+            transition: [],
+            branch_balance: openingamount, // Calculate branch_balance manually
+          };
+
+          await Branches.findByIdAndUpdate(
+            { _id: result.branch },
+            updateBranch
+          );
+
+          const findBranch = await Branches.findOne({ _id: result.branch });
+          return res.status(200).json(findBranch);
+        } else {
+          return res
+            .status(403)
+            .json({ message: "You have to be branch Manager" });
+        }
+      })
+      .catch((error) => res.status(400).json({ message: error }));
+  },
 };
 module.exports = BranchesController;
