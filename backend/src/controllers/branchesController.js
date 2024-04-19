@@ -111,35 +111,7 @@ const BranchesController = {
       return res.status(500).json({ message: "Internal error" });
     }
   },
-  // this is for editbranch
-  // "opening_amount_bhat": 1000000,
-  // "selling_amout_bhat": 640,
-  // "available_currencies": [
-  //     "USD",
-  //     "GBP",
-  //     "YEN",
-  //     "KYAT",
-  //     "SINGDOLLAR"
-  // ],
-  // "branch_manager": [
-  //     "661f152081a46e5ef18aa953"
-  // ],
-  // "branch_seller": [],
-  // "monitorBy": [
-  //     "661ecb3602fa3a5f6c6db379"
-  // ],
-  // "transition": [
-  //     "661f154881a46e5ef18aa95a",
-  //     "661f154c81a46e5ef18aa961",
-  //     "661f154f81a46e5ef18aa968",
-  //     "661f155281a46e5ef18aa96f",
-  //     "661f155581a46e5ef18aa976"
-  // ],
-  // "branch_balance": 999360,
-
-  // opening_amount_bhat,available_currencies(array),
-  // // save another database
-  // selling_amout_bhat(number),transition(array),date?
+ 
 
   editBranch: async (req, res) => {
     const token = req.headers.authorization;
