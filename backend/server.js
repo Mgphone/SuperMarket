@@ -2,8 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const port = 5000;
-const connectTODatabase = require("./src/config/database");
-connectTODatabase;
+const { connectToDatabase } = require("./src/config/database");
+connectToDatabase;
 app.use(express.json());
 app.get("/", (req, res) => {
   res.send("another test yes??");

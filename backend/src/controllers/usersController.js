@@ -1,9 +1,12 @@
+const mongoose = require("mongoose");
 const User = require("../models/User");
 const Branches = require("../models/Branches");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const salt = bcrypt.genSaltSync(10);
 const checkSuperUser = require("../utils/checkjwtsuperuser");
+const sessionsManager = require("../utils/sessionsManager");
+// const { getSession } = require("../config/database");
 const userController = {
   checkingmiddleware: async (req, res) => {
     const token = req.headers.authorization;
@@ -47,68 +50,61 @@ const userController = {
       }
       checkSuperUser(token)
         .then(async (result) => {
-          if (result.role == "super_user") {
+          if (result.role === "super_user") {
             if (role === "branch_manager" || role === "branch_seller") {
               if (!branch) {
                 return res.status(400).json({ message: "Branch is required" });
               }
+              // Start a transaction
+              const session = await mongoose.startSession();
+              session.startTransaction();
+              sessionsManager.sessionStart;
+              try {
+                const user = new User({
+                  username,
+                  password: hashedPassword,
+                  role,
+                  branch,
+                });
+                await user.save();
 
-              const user = new User({
-                username,
-                password: hashedPassword,
-                role,
-                branch,
-              });
-              await user.save();
+                const branchDoc = await Branches.findById(branch);
+                if (!branchDoc) {
+                  throw new Error("Branch not found");
+                }
 
-              const branchDoc = await Branches.findById(branch);
-              if (!branchDoc) {
-                throw new Error("Branch not found");
+                if (role === "branch_manager") {
+                  branchDoc.branch_manager.push(user._id);
+                } else if (role === "branch_seller") {
+                  branchDoc.branch_seller.push(user._id);
+                } else {
+                  throw new Error(
+                    "We accept Only branch_manager or branch_seller"
+                  );
+                }
+                await branchDoc.save();
+
+                // Commit the transaction
+                await session.commitTransaction();
+                // End the session
+                session.endSession();
+                return res.status(201).json({
+                  message: `${role} and ${username.toLowerCase()} created successfully`,
+                });
+              } catch (error) {
+                // Abort the transaction if an error occurs
+                await session.abortTransaction();
+                // End the session
+                session.endSession();
+                const errormessage =
+                  "There is something wrong with transitions";
+                return res.status(500).json({ errormessage });
               }
-
-              if (role === "branch_manager") {
-                branchDoc.branch_manager.push(user._id);
-              } else if (role === "branch_seller") {
-                branchDoc.branch_seller.push(user._id);
-              } else {
-                throw new Error(
-                  "We accept Only branch_manager or branch_seller"
-                );
-              }
-              await branchDoc.save();
-              return res.status(201).json({
-                message: `${role} and ${username.toLowerCase()} created successfully`,
-              });
-            } else {
-              return res.status(400).json({ message: "Check your usertype" });
             }
           } else if (result.role === "branch_manager") {
-            // return res.status(400).json({ message: "making branch manager" });
-            if (role == "branch_seller") {
-              const branchDoc = await Branches.findById(branch);
-              if (!branchDoc) {
-                throw new Error("Branch not found");
-              }
-
-              const branchseller = new User({
-                username,
-                password: hashedPassword,
-                role,
-                branch,
-              });
-              await branchseller.save();
-              branchDoc.branch_seller.push(branchseller._id);
-              await branchDoc.save();
-
-              return res.status(201).json({
-                message: `${role} and ${username.toLowerCase()} created successfully`,
-              });
-            } else {
-              return res.status(400).json({
-                message:
-                  "You have no authroize to create another level just your branch seller",
-              });
-            }
+            // Handle branch manager logic
+          } else {
+            return res.status(400).json({ message: "Check your usertype" });
           }
         })
         .catch((error) => {
@@ -147,7 +143,6 @@ const userController = {
         }
       }
     } catch (error) {
-      console.error(error);
       const errorMessage = error.message || "Error occur while login";
       res.status(500).json({ message: errorMessage });
     }
