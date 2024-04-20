@@ -5,6 +5,7 @@ const checkSuperUser = require("../utils/checkjwtsuperuser");
 const Transition = require("../models/Transition");
 const getISODate = require("../utils/getISODate");
 const exchange_rate_value = require("../utils/exchangerate");
+const mongoose = require("mongoose");
 const TransitionController = {
   createTransition: async (req, res) => {
     try {
@@ -69,7 +70,7 @@ const TransitionController = {
               .status(403)
               .json({ message: "You have no money on your balance" });
           }
-          await newTransition.save();
+
           try {
             const updateData = {
               $inc: {
@@ -80,19 +81,32 @@ const TransitionController = {
                 transition: newTransition._id,
               },
             };
+            const session = await mongoose.startSession();
+            session.startTransaction();
 
-            await Branches.findByIdAndUpdate(transitionBranch, updateData);
+            try {
+              await newTransition.save();
+              await Branches.findByIdAndUpdate(transitionBranch, updateData);
+              await session.commitTransaction();
+              session.endSession();
+            } catch (error) {
+              res
+                .status(403)
+                .json({ message: "Can not process the transations" });
+            }
 
             const showBranch = await Branches.findById(transitionBranch);
-            res.status(200).json({ newTransition, showBranch });
+            res.status(200).json({ showBranch });
           } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
             return res.status(500).json({
               message:
                 "Error happen when creating the transition and updating to branch",
             });
           }
         })
-        .catch((err) => res.status(403).json({ message: err }));
+        .catch((err) => res.status(403).json({ message: "err" }));
     } catch (error) {
       return res
         .status(500)
@@ -224,32 +238,45 @@ const TransitionController = {
             try {
               const oldTotalAmount = findTransition.total_amount_in_bhat;
               const newTotalAMount = totalamountbhat;
-              if (oldTotalAmount !== newTotalAMount) {
-                const increment = {
-                  selling_amout_bhat: newTotalAMount - oldTotalAmount,
-                  branch_balance: oldTotalAmount - newTotalAMount,
-                };
 
-                await Branches.findOneAndUpdate(
-                  { _id: findTransition.branch },
-                  { $inc: increment },
+              const session = await mongoose.startSession();
+              session.startTransaction();
+              try {
+                if (oldTotalAmount !== newTotalAMount) {
+                  const increment = {
+                    selling_amout_bhat: newTotalAMount - oldTotalAmount,
+                    branch_balance: oldTotalAmount - newTotalAMount,
+                  };
+                  await Branches.findOneAndUpdate(
+                    { _id: findTransition.branch },
+                    { $inc: increment },
+                    { new: true }
+                  );
+                }
+                const newTransitionData = {
+                  buyer_name: buyer_name,
+                  buyer_identity: buyer_identity,
+                  currency: currency,
+                  amount: amount,
+                  exchange_rate: rate,
+                  total_amount_in_bhat: totalamountbhat,
+                  Note: currency === "USD" ? Note : "",
+                };
+                await Transition.findByIdAndUpdate(
+                  transitionid,
+                  newTransitionData,
                   { new: true }
                 );
+                await session.commitTransaction();
+                session.endSession;
+              } catch (error) {
+                await session.abortTransaction();
+                session.endSession();
+                return res
+                  .status(403)
+                  .json({ message: "Error happen when transitions" });
               }
-              const newTransitionData = {
-                buyer_name: buyer_name,
-                buyer_identity: buyer_identity,
-                currency: currency,
-                amount: amount,
-                exchange_rate: rate,
-                total_amount_in_bhat: totalamountbhat,
-                Note: currency === "USD" ? Note : "",
-              };
-              await Transition.findByIdAndUpdate(
-                transitionid,
-                newTransitionData,
-                { new: true }
-              );
+
               return res
                 .status(200)
                 .json({ message: "You updated the transitons" });
@@ -293,20 +320,32 @@ const TransitionController = {
               const [findTransition] = await Promise.all([
                 findTransitionPromise,
               ]);
+              const session = await mongoose.startSession();
+              session.startTransaction();
+              try {
+                const updateData = {
+                  $inc: {
+                    selling_amout_bhat: -findTransition.total_amount_in_bhat,
+                    branch_balance: +findTransition.total_amount_in_bhat,
+                  },
+                  $pull: { transition: transitionid },
+                };
 
-              const updateData = {
-                $inc: {
-                  selling_amout_bhat: -findTransition.total_amount_in_bhat,
-                  branch_balance: +findTransition.total_amount_in_bhat,
-                },
-                $pull: { transition: transitionid },
-              };
+                await Branches.findByIdAndUpdate(
+                  { _id: findTransition.branch },
+                  updateData
+                );
+                await Transition.deleteOne({ _id: transitionid });
+                await session.commitTransaction();
+                session.endSession();
+              } catch (error) {
+                await session.abortTransaction();
+                session.endSession();
+                return res
+                  .status(403)
+                  .json({ message: "Error happen when in Transaction" });
+              }
 
-              await Branches.findByIdAndUpdate(
-                { _id: findTransition.branch },
-                updateData
-              );
-              await Transition.deleteOne({ _id: transitionid });
               return res
                 .status(200)
                 .json({ message: "Transition delete and branch updated" });

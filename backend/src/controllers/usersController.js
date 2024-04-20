@@ -5,8 +5,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const salt = bcrypt.genSaltSync(10);
 const checkSuperUser = require("../utils/checkjwtsuperuser");
-const sessionsManager = require("../utils/sessionsManager");
-// const { getSession } = require("../config/database");
 const userController = {
   checkingmiddleware: async (req, res) => {
     const token = req.headers.authorization;
@@ -58,7 +56,7 @@ const userController = {
               // Start a transaction
               const session = await mongoose.startSession();
               session.startTransaction();
-              sessionsManager.sessionStart;
+              // sessionsManager.sessionStart;
               try {
                 const user = new User({
                   username,
@@ -271,11 +269,23 @@ const userController = {
               result.role == "super_user";
 
             if (checkingCurrent) {
-              await User.deleteOne({ _id: id });
-              await Branches.findByIdAndUpdate(
-                { _id: userDoc.branch },
-                { $pull: { branch_seller: id, branch_manager: id } }
-              );
+              const session = await mongoose.startSession();
+              session.startTransaction();
+              try {
+                await User.deleteOne({ _id: id });
+                await Branches.findByIdAndUpdate(
+                  { _id: userDoc.branch },
+                  { $pull: { branch_seller: id, branch_manager: id } }
+                );
+                await session.commitTransaction();
+                session.endSession();
+              } catch (error) {
+                await session.abortTransaction();
+                session.endSession();
+                return res
+                  .status(403)
+                  .json({ message: "Can not process the transations" });
+              }
 
               return res.status(200).json({ message: "User has been deleted" });
             } else {

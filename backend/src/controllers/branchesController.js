@@ -1,6 +1,7 @@
 const checkSuperUser = require("../utils/checkjwtsuperuser");
 const Branches = require("../models/Branches");
 const Users = require("../models/User");
+const mongoose = require("mongoose");
 const BranchesController = {
   createBranches: async (req, res) => {
     const token = req.headers.authorization;
@@ -84,13 +85,25 @@ const BranchesController = {
             const merge = branchmanager.branch_manager.concat(
               branchmanager.branch_seller
             );
-
-            for (let i = 0; i < merge.length; i++) {
-              Users.findByIdAndDelete(merge[i])
-                .then((result) => console.log("Deletedone" + result))
-                .catch((error) => console.error(error));
+            const session = await mongoose.startSession();
+            session.startTransaction();
+            try {
+              for (let i = 0; i < merge.length; i++) {
+                Users.findByIdAndDelete(merge[i])
+                  .then((result) => console.log("Deletedone" + result))
+                  .catch((error) => console.error(error));
+              }
+              await Branches.deleteOne({ _id: id });
+              await session.commitTransaction();
+              session.endSession();
+            } catch (error) {
+              await session.abortTransaction();
+              session.endSession;
+              res
+                .status(403)
+                .json({ message: "Error Happen in the transition" });
             }
-            await Branches.deleteOne({ _id: id });
+
             res.status(200).json({ message: "You have deleted branch" });
           } else {
             return res.status(403).json({ message: "You have no authority" });
