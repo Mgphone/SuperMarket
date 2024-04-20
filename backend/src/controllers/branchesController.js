@@ -4,10 +4,7 @@ const Users = require("../models/User");
 const BranchesController = {
   createBranches: async (req, res) => {
     const token = req.headers.authorization;
-    if (!token) {
-      res.status(400).json({ message: "You have no token" });
-      return;
-    }
+
     checkSuperUser(token)
       .then(async (result) => {
         if (result.role === "super_user") {
@@ -34,9 +31,7 @@ const BranchesController = {
   },
   getAllBranches: async (req, res) => {
     const token = req.headers.authorization;
-    if (!token) {
-      res.status(400).json({ message: "Check your token" });
-    }
+
     checkSuperUser(token)
       .then(async (result) => {
         if (result.role == "super_user") {
@@ -53,9 +48,7 @@ const BranchesController = {
   getSingleBranch: async (req, res) => {
     const token = req.headers.authorization;
     const id = req.params.id;
-    if (!token) {
-      res.status(400).json({ message: "Check Your token" });
-    }
+
     checkSuperUser(token)
       .then(async (result) => {
         // if sueper user or branch manager of this branch
@@ -79,9 +72,7 @@ const BranchesController = {
   deleteBranch: async (req, res) => {
     const token = req.headers.authorization;
     const id = req.params.id;
-    if (!token) {
-      res.status(400).json({ message: "Check your token" });
-    }
+
     try {
       checkSuperUser(token)
         .then(async (result) => {
@@ -111,15 +102,10 @@ const BranchesController = {
       return res.status(500).json({ message: "Internal error" });
     }
   },
- 
 
   editBranch: async (req, res) => {
     const token = req.headers.authorization;
-    if (!token) {
-      return res
-        .status(400)
-        .json({ message: "You have to check your sign in" });
-    }
+
     checkSuperUser(token)
       .then(async (result) => {
         if (result.role == "branch_manager") {
@@ -129,7 +115,7 @@ const BranchesController = {
             available_currencies: currency,
             selling_amout_bhat: 0,
             transition: [],
-            branch_balance: openingamount, // Calculate branch_balance manually
+            branch_balance: openingamount,
           };
 
           await Branches.findByIdAndUpdate(

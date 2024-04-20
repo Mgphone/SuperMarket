@@ -5,29 +5,33 @@ const jwt = require("jsonwebtoken");
 const salt = bcrypt.genSaltSync(10);
 const checkSuperUser = require("../utils/checkjwtsuperuser");
 const userController = {
+  checkingmiddleware: async (req, res) => {
+    const token = req.headers.authorization;
+    return res.status(400).json({ token });
+  },
   createSuperUser: async (req, res) => {
-    const { username, password, role } = req.body;
-    const hashedPassword = bcrypt.hashSync(password, salt);
-    if (typeof role === "undefined") {
-      return res
-        .status(400)
-        .json({ message: "Make sure add your super user role" });
-    }
-    if (role === "super_user") {
-      superUser = new User({ username, password: hashedPassword, role });
-      await superUser.save();
-      return res
-        .status(400)
-        .json({ message: `Super User ${username.toLowerCase()} has created` });
+    try {
+      const { username, password, role } = req.body;
+      const hashedPassword = bcrypt.hashSync(password, salt);
+      if (typeof role === "undefined") {
+        return res
+          .status(400)
+          .json({ message: "Make sure add your super user role" });
+      }
+      if (role === "super_user") {
+        superUser = new User({ username, password: hashedPassword, role });
+        await superUser.save();
+        return res.status(400).json({
+          message: `Super User ${username.toLowerCase()} has created`,
+        });
+      }
+    } catch (error) {
+      return res.status(400).json({ message: error });
     }
   },
   createUser: async (req, res) => {
     const token = req.headers.authorization;
-    if (!token) {
-      return res
-        .status(401)
-        .json({ message: "Please Sign in as branch manager or super manager" });
-    }
+
     try {
       const { username, password, role, branch } = req.body;
 
@@ -151,9 +155,7 @@ const userController = {
   getUsersName: async (req, res) => {
     try {
       const token = req.headers.authorization;
-      if (!token) {
-        return res.status(401).json({ message: "Login to get Token" });
-      }
+
       const user = await User.find({}).select({ password: false });
       if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -177,7 +179,6 @@ const userController = {
   updatePassword: async (req, res) => {
     try {
       const { newpassword, oldpassword, username } = req.body;
-      const token = req.headers.authorization;
 
       const userDoc = await User.findOne({ username });
       const passOk = bcrypt.compareSync(oldpassword, userDoc.password);
@@ -188,17 +189,11 @@ const userController = {
       if (!passOk) {
         return res.status(400).json({ message: "Old Password is Not correct" });
       }
-      checkSuperUser(token)
-        .then(async (result) => {
-          const hashpassword = bcrypt.hashSync(newpassword, salt);
-          await User.findOneAndUpdate({ username }, { password: hashpassword });
-          return res.status(200).json({
-            message: `Password updated Successful for ${username.toLowerCase()}`,
-          });
-        })
-        .catch((error) => {
-          res.status(400).json({ message: error });
-        });
+      const hashpassword = bcrypt.hashSync(newpassword, salt);
+      await User.findOneAndUpdate({ username }, { password: hashpassword });
+      return res.status(200).json({
+        message: `Password updated Successful for ${username.toLowerCase()}`,
+      });
     } catch (error) {
       console.error(error);
       const errorMessage =
@@ -210,7 +205,6 @@ const userController = {
     const token = req.headers.authorization;
     const { newpassword, username } = req.body;
     const userDoc = await User.findOne({ username });
-    console.log("this is usname to change" + userDoc.branch);
     if (!newpassword || !username) {
       return res
         .status(404)
@@ -222,8 +216,6 @@ const userController = {
     const hashedPassword = bcrypt.hashSync(newpassword, salt);
     checkSuperUser(token)
       .then(async (result) => {
-        console.log(userDoc.branch + " " + result.branch);
-
         if (
           result.role == "super_user" ||
           (result.role == "branch_manager" &&
@@ -251,9 +243,6 @@ const userController = {
       const id = req.params.id;
       const token = req.headers.authorization;
 
-      if (!token) {
-        return res.status(400).json({ message: "You have No token" });
-      }
       const userDoc = await User.findOne({ _id: id });
       if (!userDoc) {
         return res.status(400).json({ message: "There is No User" });
@@ -276,7 +265,6 @@ const userController = {
       } else {
         checkSuperUser(token)
           .then(async (result) => {
-            // console.log("This is result" + JSON.stringify(result));
             const branchDoc = await Branches.findById({
               _id: userDoc.branch,
             }).select("branch_seller");
@@ -313,9 +301,7 @@ const userController = {
     try {
       const id = req.params.id;
       const token = req.headers.authorization;
-      if (!token) {
-        res.status(400).json({ message: "You don't have token" });
-      }
+
       checkSuperUser(token)
         .then(async (result) => {
           const userdoc = await User.findById(result.userId)

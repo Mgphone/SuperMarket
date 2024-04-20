@@ -4,11 +4,7 @@ const RateController = {
   createRate: async (req, res) => {
     try {
       const token = req.headers.authorization;
-      if (!token) {
-        return res
-          .status(400)
-          .json({ message: "Please sign in for super user" });
-      }
+
       checkSuperUser(token)
         .then(async (result) => {
           if (result.role == "super_user") {
@@ -24,14 +20,14 @@ const RateController = {
             };
             const new_CurrentRate = new Rate(currentRate);
             await new_CurrentRate.save();
-            res.status(200).json(new_CurrentRate);
+            return res.status(200).json({ new_CurrentRate });
           } else {
             return res
               .status(403)
               .json({ message: "You are unauthorised zone" });
           }
         })
-        .catch((error) => res.status(400).json(error));
+        .catch((error) => res.status(400).json({ message: error }));
     } catch (error) {
       return res.status(401).json({ message: "Error while creating the rate" });
     }
@@ -42,7 +38,7 @@ const RateController = {
       if (!rate) {
         throw new Error("There is no rate");
       }
-      res.status(200).json(rate);
+      return res.status(200).json(rate);
     } catch (error) {
       return res.status(401).json({ message: "Error when fetching the rate" });
     }
@@ -51,11 +47,7 @@ const RateController = {
     try {
       const { USDSMALL, USDBIG, GBP, YEN, KYAT, SINDOLLAR } = req.body;
       const token = req.headers.authorization;
-      if (!token) {
-        return res
-          .status(400)
-          .json({ message: "Please sign in for super user" });
-      }
+
       try {
         checkSuperUser(token)
           .then(async (result) => {
@@ -70,9 +62,7 @@ const RateController = {
                 .json({ message: "Not found the rate directory" });
             }
             const updatedRate = await Rate.findOneAndUpdate(
-              // Filter criteria
               {},
-              // Update fields and values
               {
                 USD: { smallNote: USDSMALL, bigNote: USDBIG },
                 GBP: GBP,
@@ -80,9 +70,7 @@ const RateController = {
                 KYAT: KYAT,
                 SINDOLLAR: SINDOLLAR,
                 createdBy: createdBy,
-                // updatedAt: new Date(),
               },
-              // Options to return the updated document
               { new: true }
             );
             if (!updatedRate) {
@@ -112,11 +100,6 @@ const RateController = {
       const token = req.headers.authorization;
       const id = req.params.id;
 
-      if (!token) {
-        return res
-          .status(400)
-          .json({ message: "Please sign in for super user" });
-      }
       try {
         checkSuperUser(token)
           .then(async (result) => {

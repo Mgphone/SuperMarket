@@ -9,9 +9,7 @@ const TransitionController = {
   createTransition: async (req, res) => {
     try {
       const token = req.headers.authorization;
-      if (!token) {
-        return res.status(401).json({ message: "Please check your SignIn" });
-      }
+
       checkSuperUser(token)
         .then(async (result) => {
           if (!result.branch) {
@@ -65,8 +63,6 @@ const TransitionController = {
             Note: currency === "USD" ? Note : "",
           });
 
-          //selling_amout_bhat increase total_amount_inBhat,transition(rate(objectId),currency,currencyAmount),decrease amout in bhat
-          //if(branch amount low can not sell)
           const findBranch = await Branches.findById(transitionBranch);
           if (findBranch.branch_balance - totalamountbhat < 0) {
             return res
@@ -86,9 +82,7 @@ const TransitionController = {
             };
 
             await Branches.findByIdAndUpdate(transitionBranch, updateData);
-            // const findBranch = await Branches.findById(transitionBranch);
-            // findBranch.transition.push(newTransition._id);
-            // await findBranch.save();
+
             const showBranch = await Branches.findById(transitionBranch);
             res.status(200).json({ newTransition, showBranch });
           } catch (error) {
@@ -109,11 +103,7 @@ const TransitionController = {
     try {
       const token = req.headers.authorization;
       const { date } = req.body;
-      if (!token) {
-        return res
-          .status(403)
-          .json({ message: "Please check sign in details" });
-      }
+
       checkSuperUser(token)
         .then(async (result) => {
           if (result.role === "branch_manager") {
@@ -145,240 +135,198 @@ const TransitionController = {
     }
   },
   getAllTransitionbyDay: async (req, res) => {
-    const token = req.headers.authorization;
-    const { date } = req.body;
-    if (!token) {
-      return res.status(403).json({ message: "Please check sign in details" });
-    }
-    checkSuperUser(token)
-      .then(async (result) => {
-        if (result.role === "super_user") {
-          const findTransition = await Transition.find({
-            createdAt: { $gte: getISODate(date) },
-          }).sort({
-            createdAt: 1,
-          });
-          return res.status(200).json(findTransition);
-        } else
-          return res
-            .status(403)
-            .json({ message: "You don't have super user authority" });
-      })
-      .catch((error) => {
-        return res.status(403).json({ message: error });
-      });
-  },
-  getTransitionByBranch: async (req, res) => {
-    const token = req.headers.authorization;
-    const { branchId, date } = req.body;
-    if (!token) {
-      return res.status(403).json({ message: "Please check sign in details" });
-    }
-    checkSuperUser(token)
-      .then(async (result) => {
-        if (result.role === "super_user") {
-          const findTransition = await Transition.find({
-            branch: branchId,
-            createdAt: { $gte: getISODate(date) },
-          }).sort({
-            createdAt: 1,
-          });
-          return res.status(200).json(findTransition);
-        } else
-          return res
-            .status(403)
-            .json({ message: "You don't have super user authority" });
-      })
-      .catch((error) => {
-        return res.status(403).json({ message: error });
-      });
-  },
-  editTransition: async (req, res) => {
-    const token = req.headers.authorization;
-    // const { transitionid } = req.body;
-    const { transitionid, buyer_name, buyer_identity, currency, Note, amount } =
-      req.body;
-    if (!token) {
-      return res
-        .status(403)
-        .json({ message: "Please check your sign in details" });
-    }
-    // const findBranch = await Branches.findOne({ _id: result.branch });
+    try {
+      const token = req.headers.authorization;
+      const { date } = req.body;
 
-    checkSuperUser(token)
-      .then(async (result) => {
-        if (result.role == "branch_manager") {
-          const findBranch = await Branches.findOne({ _id: result.branch });
-          const TransitionValue = findBranch.transition;
-          // if (result.branch !== findBranch) {
-          //   return res
-          //     .status(403)
-          //     .json({
-          //       message: `Hello ${result.username} You are not authorised to other branches`,
-          //     });
-          // }
-          if (!TransitionValue.includes(transitionid)) {
-            return res.status(403).json({
-              message: "We not refund or not change for over one day period",
+      checkSuperUser(token)
+        .then(async (result) => {
+          if (result.role === "super_user") {
+            const findTransition = await Transition.find({
+              createdAt: { $gte: getISODate(date) },
+            }).sort({
+              createdAt: 1,
             });
-          }
-          //this is for deleting or updating
-          const findTransition = await Transition.findOne({
-            _id: transitionid,
-          });
-
-          // Update the fields other than the increment fields
-          const rate = await exchange_rate_value(currency, Note);
-          if (typeof rate !== "number") {
-            return res
-              .status(404)
-              .json({ message: "Make sure to enter currency correct" });
-          }
-          const totalamountbhat = rate * amount;
-          try {
-            const oldTotalAmount = findTransition.total_amount_in_bhat;
-            const newTotalAMount = totalamountbhat;
-            if (oldTotalAmount !== newTotalAMount) {
-              const increment = {
-                selling_amout_bhat: newTotalAMount - oldTotalAmount,
-                branch_balance: oldTotalAmount - newTotalAMount,
-              };
-
-              await Branches.findOneAndUpdate(
-                { _id: findTransition.branch },
-                { $inc: increment },
-                { new: true }
-              );
-            }
-            const newTransitionData = {
-              buyer_name: buyer_name,
-              buyer_identity: buyer_identity,
-              currency: currency,
-              amount: amount,
-              exchange_rate: rate,
-              total_amount_in_bhat: totalamountbhat,
-              Note: currency === "USD" ? Note : "",
-            };
-            await Transition.findByIdAndUpdate(
-              transitionid,
-              newTransitionData,
-              { new: true }
-            );
-            return res
-              .status(200)
-              .json({ message: "You updated the transitons" });
-          } catch (error) {
+            return res.status(200).json(findTransition);
+          } else
             return res
               .status(403)
-              .json({ message: `Error happen updating the database ${error}` });
-          }
-        } else {
-          return res
-            .status(403)
-            .json({ message: "Yoo have to be branch manager" });
-        }
-      })
-      .catch((error) => {
-        return res.status(500).json({ message: error });
-      });
-    //     // Calculate the increment values
-    //     const incrementData = {
-    //       selling_amout_bhat: -findTransition.total_amount_in_bhat,
-    //       branch_balance: +findTransition.total_amount_in_bhat,
-    //     };
-    //     const newTransitionData = {
-    //       buyer_name: buyer_name,
-    //       buyer_identity: buyer_identity,
-    //       currency: currency,
-    //       amount: amount,
-    //       exchange_rate: rate,
-    //       total_amount_in_bhat: totalamountbhat,
-    //       Note: currency === "USD" ? Note : "",
-    //     };
-
-    //     try {
-    //       // Update the Branches collection
-    //       await Branches.findOneAndUpdate(
-    //         { _id: findTransition.branch },
-    //         { $inc: incrementData },
-    //         { new: true } // To return the updated document
-    //       );
-
-    //       // Update the Transitions collection
-    //       await Transition.findOneAndUpdate(
-    //         { _id: transitionid },
-    //         { $set: newTransitionData },
-    //         { new: true } // To return the updated document
-    //       );
-
-    //       return res
-    //         .status(200)
-    //         .json({ message: "Transition updated successfully" });
-    //     } catch (error) {
-    //       return res.status(500).json({ message: error.message });
-    //     }
-
-    //     // return res.status(200).json({
-    //     //   message: "You edit the transition",
-    //     //   totalamountbhat,
-    //     //   rate,
-    //     //   amount,
-    //     // });
+              .json({ message: "You don't have super user authority" });
+        })
+        .catch((error) => {
+          return res.status(403).json({ message: error });
+        });
+    } catch (error) {
+      return res.status(403).json({ message: error });
+    }
   },
-  deleteTransition: async (req, res) => {
-    const token = req.headers.authorization;
-    const { transitionid } = req.body;
-    if (!token) {
-      return res
-        .status(403)
-        .json({ message: "Please check your sign in details" });
+  getTransitionByBranch: async (req, res) => {
+    try {
+      const token = req.headers.authorization;
+      const { branchId, date } = req.body;
+
+      checkSuperUser(token)
+        .then(async (result) => {
+          if (result.role === "super_user") {
+            const findTransition = await Transition.find({
+              branch: branchId,
+              createdAt: { $gte: getISODate(date) },
+            }).sort({
+              createdAt: 1,
+            });
+            return res.status(200).json(findTransition);
+          } else
+            return res
+              .status(403)
+              .json({ message: "You don't have super user authority" });
+        })
+        .catch((error) => {
+          return res.status(403).json({ message: error });
+        });
+    } catch (error) {
+      return res.status(403).json({ message: error });
     }
-    const findBranch = await Branches.findOne({ _id: result.branch });
-    const TransitionValue = findBranch.transition;
-    if (!TransitionValue.includes(transitionid)) {
-      return res.status(403).json({
-        message: "We not refund or not change for over one day period",
-      });
-    }
-    checkSuperUser(token)
-      .then(async (result) => {
-        if (result.role == "branch_manager") {
-          try {
-            const findTransitionPromise = Transition.findOne({
+  },
+  editTransition: async (req, res) => {
+    try {
+      const token = req.headers.authorization;
+      const {
+        transitionid,
+        buyer_name,
+        buyer_identity,
+        currency,
+        Note,
+        amount,
+      } = req.body;
+
+      checkSuperUser(token)
+        .then(async (result) => {
+          if (result.role == "branch_manager") {
+            const findBranch = await Branches.findOne({ _id: result.branch });
+            const TransitionValue = findBranch.transition;
+
+            if (!TransitionValue.includes(transitionid)) {
+              return res.status(403).json({
+                message: "We not refund or not change for over one day period",
+              });
+            }
+            const findTransition = await Transition.findOne({
               _id: transitionid,
             });
-            const [findTransition] = await Promise.all([findTransitionPromise]);
 
-            const updateData = {
-              $inc: {
-                selling_amout_bhat: -findTransition.total_amount_in_bhat,
-                branch_balance: +findTransition.total_amount_in_bhat,
-              },
-              $pull: { transition: transitionid },
-            };
+            const rate = await exchange_rate_value(currency, Note);
+            if (typeof rate !== "number") {
+              return res
+                .status(404)
+                .json({ message: "Make sure to enter currency correct" });
+            }
+            const totalamountbhat = rate * amount;
+            try {
+              const oldTotalAmount = findTransition.total_amount_in_bhat;
+              const newTotalAMount = totalamountbhat;
+              if (oldTotalAmount !== newTotalAMount) {
+                const increment = {
+                  selling_amout_bhat: newTotalAMount - oldTotalAmount,
+                  branch_balance: oldTotalAmount - newTotalAMount,
+                };
 
-            await Branches.findByIdAndUpdate(
-              { _id: findTransition.branch },
-              updateData
-            );
-            await Transition.deleteOne({ _id: transitionid });
+                await Branches.findOneAndUpdate(
+                  { _id: findTransition.branch },
+                  { $inc: increment },
+                  { new: true }
+                );
+              }
+              const newTransitionData = {
+                buyer_name: buyer_name,
+                buyer_identity: buyer_identity,
+                currency: currency,
+                amount: amount,
+                exchange_rate: rate,
+                total_amount_in_bhat: totalamountbhat,
+                Note: currency === "USD" ? Note : "",
+              };
+              await Transition.findByIdAndUpdate(
+                transitionid,
+                newTransitionData,
+                { new: true }
+              );
+              return res
+                .status(200)
+                .json({ message: "You updated the transitons" });
+            } catch (error) {
+              return res.status(403).json({
+                message: `Error happen updating the database ${error}`,
+              });
+            }
+          } else {
             return res
-              .status(200)
-              .json({ message: "Transition delete and branch updated" });
-          } catch (error) {
-            return res
-              .status(200)
-              .json({ message: "There is no either branch or transition" });
+              .status(403)
+              .json({ message: "Yoo have to be branch manager" });
           }
-        } else {
-          return res
-            .status(403)
-            .json({ message: "Yoo have to be branch manager" });
-        }
-      })
-      .catch((error) => {
-        return res.status(500).json({ message: error });
-      });
+        })
+        .catch((error) => {
+          return res.status(500).json({ message: error });
+        });
+    } catch (error) {
+      return res.status(403).json({ message: error });
+    }
+  },
+  deleteTransition: async (req, res) => {
+    try {
+      const token = req.headers.authorization;
+      const { transitionid } = req.body;
+
+      checkSuperUser(token)
+        .then(async (result) => {
+          if (result.role == "branch_manager") {
+            const findBranch = await Branches.findOne({ _id: result.branch });
+            const TransitionValue = findBranch.transition;
+            if (!TransitionValue.includes(transitionid)) {
+              return res.status(403).json({
+                message: "We not refund or not change for over one day period",
+              });
+            }
+            try {
+              const findTransitionPromise = Transition.findOne({
+                _id: transitionid,
+              });
+              const [findTransition] = await Promise.all([
+                findTransitionPromise,
+              ]);
+
+              const updateData = {
+                $inc: {
+                  selling_amout_bhat: -findTransition.total_amount_in_bhat,
+                  branch_balance: +findTransition.total_amount_in_bhat,
+                },
+                $pull: { transition: transitionid },
+              };
+
+              await Branches.findByIdAndUpdate(
+                { _id: findTransition.branch },
+                updateData
+              );
+              await Transition.deleteOne({ _id: transitionid });
+              return res
+                .status(200)
+                .json({ message: "Transition delete and branch updated" });
+            } catch (error) {
+              return res
+                .status(200)
+                .json({ message: "There is no either branch or transition" });
+            }
+          } else {
+            return res
+              .status(403)
+              .json({ message: "Yoo have to be branch manager" });
+          }
+        })
+        .catch((error) => {
+          return res.status(500).json({ message: error });
+        });
+    } catch (error) {
+      return res.status(403).json({ message: error });
+    }
   },
 };
 module.exports = TransitionController;

@@ -1,9 +1,30 @@
 const express = require("express");
 const router = express.Router();
 const BranchesController = require("../controllers/branchesController");
-router.post("/branches/createbranch", BranchesController.createBranches);
-router.get("/branches/getallbranch", BranchesController.getAllBranches);
-router.get("/branches/getsinglebranch/:id", BranchesController.getSingleBranch);
-router.delete("/branches/deletebranch/:id", BranchesController.deleteBranch);
-router.patch("/branches/updatebranch", BranchesController.editBranch);
+const { checkingToken } = require("../middleware/checkingToken");
+router.post(
+  "/branches/createbranch",
+  checkingToken,
+  BranchesController.createBranches
+);
+router.get(
+  "/branches/getallbranch",
+  checkingToken,
+  BranchesController.getAllBranches
+);
+router.get(
+  "/branches/getsinglebranch/:id",
+  checkingToken,
+  BranchesController.getSingleBranch
+);
+router.delete(
+  "/branches/deletebranch/:id",
+  checkingToken,
+  BranchesController.deleteBranch
+);
+router.patch(
+  "/branches/updatebranch",
+  checkingToken,
+  BranchesController.editBranch
+);
 module.exports = router;
