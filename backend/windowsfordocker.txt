@@ -5,3 +5,8 @@ docker run -d \
 that is windows path when i mount
 i can run the same without \ 
  docker run -d -p 5000:5000 -v "C:/Users/kokophone/Documents/MEGAsync/Mystudy/Web/PersonalProject/superMarket/backend:/backend" superman1
+
+ there is three type of volumes
+ one is binded using ./:name
+ annonymouse volumes: only folder
+ named volumes..

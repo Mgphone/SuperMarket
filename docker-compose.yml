@@ -5,16 +5,33 @@ services:
     ports:
       - 27017:27017
   app:
-    build: .
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     volumes:
-      - .:/backend
+      - ./backend:/backend
     ports:
       - 5000:5000
     environment:
       - MONGO_URL=mongodb://mongodb:27017/supermarket
     depends_on:
       - mongodb
+  front:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+      # - .:/frontend
+    ports:
+      - 5173:5173
 
+    # name volumes 
+    # volumes:
+    #   - frontend-file:/frontend
+# volumes:
+#       frontend-file:    
 # version: '3.8'
 # services:
 #   mongodb:
