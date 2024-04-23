@@ -12,19 +12,23 @@ const userController = {
   },
   createSuperUser: async (req, res) => {
     try {
-      const { username, password, role } = req.body;
+      const { username, password, role, secret } = req.body;
       const hashedPassword = bcrypt.hashSync(password, salt);
       if (typeof role === "undefined") {
         return res
           .status(400)
           .json({ message: "Make sure add your super user role" });
       }
-      if (role === "super_user") {
+      if (role === "super_user" && secret === process.env.SUPER_SECRET) {
         superUser = new User({ username, password: hashedPassword, role });
         await superUser.save();
         return res.status(400).json({
           message: `Super User ${username.toLowerCase()} has created`,
         });
+      } else {
+        return res
+          .status(400)
+          .json({ message: "You have no authority to get superuser" });
       }
     } catch (error) {
       return res.status(400).json({ message: error });
