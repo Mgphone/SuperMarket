@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 function Home() {
   const [loginError, setLoginError] = useState(false);
+  const { logIn } = useAuth();
+  const navigate = useNavigate();
   // const handleregister = () => {
   //   return <Link to="/register" />;
   // };
@@ -36,19 +40,20 @@ function Home() {
       });
       if (response.ok) {
         const token = response.headers.get("Authorization");
-
-        // alert("Okay you are login");
-        // console.log(response);
-        // const responseData = await response.json();
-        // console.log(responseData);
-        // const token = responseData.payload;
         if (token) {
-          alert("You are login");
+          logIn(token);
+          const decode = jwtDecode(token);
+          if (decode.role == "super_user") {
+            console.log("CHecking you are in superuser");
+            navigate("/homesuper");
+          } else {
+            navigate("/homenormal");
+          }
         } else if (!token) {
           setLoginError(true);
         }
       } else {
-        console.log("Login Failed");
+        setLoginError(true);
       }
     } catch (error) {
       console.error("Error during login", error);
@@ -94,15 +99,20 @@ function Home() {
           ) : null}
         </div>
         <button type="submit">Login</button>
+        <div className="forgotgroup">
+          <Link to="/forgotpassword">
+            <button>Forgot Password</button>
+          </Link>
+          {/* <button onClick={() => handleregister}>Register</button> */}
+          {/* <Link to="/register">
+            {" "}
+            <button>Register</button>
+          </Link> */}
+          {/* <Link to="/registersuper">
+            <button>Register SuperUser</button>
+          </Link> */}
+        </div>
       </form>
-      <div className="forgotgroup">
-        <button>Forgot Password</button>
-        {/* <button onClick={() => handleregister}>Register</button> */}
-        <Link to="/register">
-          {" "}
-          <button>Register</button>
-        </Link>
-      </div>
     </div>
   );
 }

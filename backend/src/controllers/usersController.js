@@ -200,7 +200,7 @@ const userController = {
   },
   resetPassword: async (req, res) => {
     const token = req.headers.authorization;
-    const { newpassword, username } = req.body;
+    const { newpassword, username, secret } = req.body;
     const userDoc = await User.findOne({ username });
     if (!newpassword || !username) {
       return res
@@ -217,6 +217,8 @@ const userController = {
           result.role == "super_user" ||
           (result.role == "branch_manager" &&
             String(result.branch) == userDoc.branch)
+          // &&
+          // secret == process.env.SUPER_SECRET)
         ) {
           await User.findOneAndUpdate(
             { username },
