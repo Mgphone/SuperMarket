@@ -1,0 +1,27 @@
+.notfound {
+  text-align: center;
+  margin-top: 100px;
+  /* height: 100vh; */
+}
+
+.notfound h1,
+p,
+button {
+  color: red;
+  margin: 20px 0;
+}
+
+.notfound button {
+  background-color: red;
+  padding: 10px;
+}
+
+.notfound button a {
+  text-decoration: none;
+
+}
+
+.notfound button:hover {
+  background-color: rgb(202, 7, 7);
+  color: white;
+}

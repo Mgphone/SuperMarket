@@ -1,12 +1,12 @@
-import { useAuth } from "../contexts/AuthContext";
+import Nav from "../components/Nav";
+
 function HomeSuperUser() {
-  const { token } = useAuth();
   return (
-    <div>
+    <>
+      <Nav />
       HomeSuperUser
       <p>This is your token:</p>
-      {token}
-    </div>
+    </>
   );
 }
 
