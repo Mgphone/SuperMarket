@@ -1,11 +1,15 @@
 import Nav from "../components/Nav";
-
+import { useAuth } from "../contexts/AuthContext";
 function HomeSuperUser() {
+  const { decodedToken } = useAuth();
+  // let decode;
+  // if (token) {
+  //   decode = jwtDecode(token);
+  // }
   return (
     <>
       <Nav />
-      HomeSuperUser
-      <p>This is your token:</p>
+      Home {decodedToken && decodedToken.role}
     </>
   );
 }

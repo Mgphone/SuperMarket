@@ -6,14 +6,17 @@ import { useAuth } from "../contexts/AuthContext";
 
 function Nav() {
   const navigate = useNavigate();
-  const { token, logOut } = useAuth();
+  const { token, logOut, setDecodedToken, decodedToken } = useAuth();
 
   useEffect(() => {
     if (!token) {
       navigate("/");
+    } else {
+      const tokenValue = token ? jwtDecode(token) : null;
+      setDecodedToken(tokenValue);
     }
-  }, [token]);
-  const tokenValue = token ? jwtDecode(token) : null;
+  }, [token, navigate, setDecodedToken]);
+
   return (
     <header>
       <div className="logo">
@@ -23,26 +26,26 @@ function Nav() {
       </div>
       <nav>
         <ul>
-          {tokenValue && tokenValue.role == "super_user" && (
+          {decodedToken && decodedToken.role == "super_user" && (
             <>
-              <li>{tokenValue.username}</li>
+              <li>{decodedToken.username}</li>
               <li>Aera Manager</li>
               <li>
                 <Link>Admin Dashboard</Link>
               </li>
             </>
           )}
-          {tokenValue && tokenValue.role == "branch_manager" && (
+          {decodedToken && decodedToken.role == "branch_manager" && (
             <>
-              <li>{tokenValue.username}</li>
+              <li>{decodedToken.username}</li>
               <li>Branch Manager</li>
               <li>Register Branch Seller</li>
             </>
           )}
-          {tokenValue && tokenValue.role == "branch_seller" && (
+          {decodedToken && decodedToken.role == "branch_seller" && (
             <>
-              <li>{tokenValue.username}</li>
-              <li>{tokenValue.role}</li>
+              <li>{decodedToken.username}</li>
+              <li>{decodedToken.role == "branch_seller" ? "Sales" : ""}</li>
             </>
           )}
 

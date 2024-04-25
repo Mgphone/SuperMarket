@@ -1,11 +1,12 @@
 import Nav from "../components/Nav";
+import { useAuth } from "../contexts/AuthContext";
 
 function HomeNormalUser() {
+  const { decodedToken } = useAuth();
   return (
     <div>
-      {" "}
       <Nav />
-      ;HomeNormalUser
+      Home {decodedToken && decodedToken.role}
     </div>
   );
 }
