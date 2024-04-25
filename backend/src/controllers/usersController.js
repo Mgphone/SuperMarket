@@ -44,18 +44,16 @@ const userController = {
         return res.status(400).json({ message: "Choose role type" });
       }
       const hashedPassword = bcrypt.hashSync(password, salt);
-      const findBranch = await Branches.findById(branch);
-      if (!findBranch) {
-        return res
-          .status(403)
-          .json({ message: "There is no branch change the branchId detail" });
-      }
+
       checkSuperUser(token)
         .then(async (result) => {
           if (result.role === "super_user") {
             if (role === "branch_manager" || role === "branch_seller") {
-              if (!branch) {
-                return res.status(400).json({ message: "Branch is required" });
+              const findBranch = await Branches.findById(branch);
+              if (!findBranch) {
+                return res.status(403).json({
+                  message: "There is no branch change the branchId detail",
+                });
               }
               // Start a transaction
               const session = await mongoose.startSession();
@@ -105,6 +103,38 @@ const userController = {
             }
           } else if (result.role === "branch_manager") {
             if (role === "branch_seller") {
+              //start a session
+              const sellerBranch = result.branch;
+              const session = await mongoose.startSession();
+              session.startTransaction();
+              try {
+                const branchSeller = new User({
+                  username,
+                  password: hashedPassword,
+                  role,
+                  branch: sellerBranch,
+                });
+                await branchSeller.save();
+                const branchDoc = await Branches.findById(sellerBranch);
+                if (!branchDoc) {
+                  throw new Error("Branch Not Found");
+                }
+
+                branchDoc.branch_seller.push(branchSeller._id);
+                await branchDoc.save();
+                await session.commitTransaction();
+                session.endSession();
+                return res.status(200).json({
+                  message: `${role} and ${username.toLowerCase()} created successfully`,
+                });
+              } catch (error) {
+                await session.abortTransaction();
+                session.endSession();
+                return res.status(500).json({
+                  message:
+                    "Error happen when branch manager creating branch seller",
+                });
+              }
               return res.status(200).json(result);
             } else {
               return res
