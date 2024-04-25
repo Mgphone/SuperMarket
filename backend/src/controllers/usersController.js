@@ -104,6 +104,13 @@ const userController = {
               }
             }
           } else if (result.role === "branch_manager") {
+            if (role === "branch_seller") {
+              return res.status(200).json(result);
+            } else {
+              return res
+                .status(401)
+                .json({ message: "You can create only your branch seller" });
+            }
             // Handle branch manager logic
           } else {
             return res.status(400).json({ message: "Check your usertype" });
