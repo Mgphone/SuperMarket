@@ -190,14 +190,16 @@ const userController = {
     try {
       const token = req.headers.authorization;
 
-      const user = await User.find({}).select({ password: false });
+      const user = await User.find({})
+        .sort({ branch: 1 })
+        .select({ password: false });
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
       checkSuperUser(token)
         .then((result) => {
           if (result.role == "super_user") {
-            res.status(200).json({ user });
+            res.status(200).json(user);
           } else {
             res.status(401).json({ message: "You are no authorized" });
           }
