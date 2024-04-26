@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import "./Nav.css";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -30,16 +30,12 @@ function Nav() {
             <>
               <li>{decodedToken.username}</li>
               <li>Aera Manager</li>
-              <li>
-                <Link>Admin Dashboard</Link>
-              </li>
             </>
           )}
           {decodedToken && decodedToken.role == "branch_manager" && (
             <>
               <li>{decodedToken.username}</li>
               <li>Branch Manager</li>
-              <li>Register Branch Seller</li>
             </>
           )}
           {decodedToken && decodedToken.role == "branch_seller" && (

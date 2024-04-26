@@ -103,6 +103,12 @@
   text-decoration: none;
 }
 
+.maindisplay {
+  position: fixed;
+  right: 300px;
+  z-index: 10;
+}
+
 @media (max-width:800px) {
 
   .loginform,

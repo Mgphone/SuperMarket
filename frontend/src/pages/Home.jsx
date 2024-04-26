@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext.jsx";
+import Notfound from "../components/Notfound.jsx";
 
 function Home() {
   const [loginError, setLoginError] = useState(false);
@@ -44,10 +45,13 @@ function Home() {
           logIn(token);
           const decode = jwtDecode(token);
           if (decode.role == "super_user") {
-            console.log("CHecking you are in superuser");
             navigate("/homesuper");
-          } else {
+          } else if (decode.role == "branch_seller") {
             navigate("/homenormal");
+          } else if (decode.role == "branch_manager") {
+            navigate("/homebranch");
+          } else {
+            <Notfound />;
           }
         } else if (!token) {
           setLoginError(true);

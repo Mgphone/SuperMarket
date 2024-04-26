@@ -1,0 +1,21 @@
+.sidebar {
+  width: 300px;
+  position: fixed;
+  top: 15vh;
+  left: 0;
+  height: 100vh;
+  background-color: orange;
+
+}
+
+.sidebar ul li {
+
+  background-color: yellow;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.sidebar ul li:hover {
+  background-color: red;
+  cursor: pointer;
+}
