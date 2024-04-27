@@ -11,7 +11,7 @@ router.post("/users/register", checkingToken, userController.createUser);
 router.post("/users/login", userController.loginUser);
 router.patch("/users/update", userController.updatePassword);
 router.patch(
-  "/users/resetpassword",
+  "/users/resetpassword/:id",
   checkingToken,
   userController.resetPassword
 );

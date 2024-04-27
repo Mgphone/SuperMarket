@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import "./superusermanage.css";
+import UserResetPassword from "./UserResetPassword";
 function SuperUserManage() {
   const { token, decodedToken } = useAuth();
   const [dataUser, setUserData] = useState();
   const [branchData, setBranchData] = useState();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isResetPassword, setIsResetPassword] = useState(false);
+  const [resetValue, setResetValue] = useState("");
   const headers = { Authorization: token };
   const fetchData = async () => {
     try {
@@ -36,9 +39,12 @@ function SuperUserManage() {
     const foundBranch = branchArray.find((branch) => branch._id === branchId);
     return foundBranch ? foundBranch.branch_name : branchId;
   };
+
   const handleEdit = (value) => {
-    console.log("Edit value" + value);
+    setIsResetPassword(true);
+    setResetValue(value);
   };
+
   const handleDelete = async (value) => {
     try {
       const response = await fetch(`/api/users/delete/${value}`, {
@@ -105,6 +111,14 @@ function SuperUserManage() {
               </tr>
             ))}
           </table>
+          {isResetPassword && (
+            <UserResetPassword
+              setIsResetPassword={setIsResetPassword}
+              resetValue={resetValue}
+              headers={headers}
+              setError={setError}
+            />
+          )}
         </div>
       )}
     </>

@@ -11,3 +11,53 @@
 .superusermanage tr:hover {
   background-color: #ccc;
 }
+
+.userreset {
+  position: fixed;
+  top: 20%;
+  left: 25%;
+  width: 50%;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.userreset h2 {
+  padding-bottom: 3px;
+}
+
+
+.userreset form {
+  display: flex;
+  flex-direction: column;
+}
+
+.userreset input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.userreset button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.userreset button:hover {
+  background-color: #0056b3;
+}
+
+.error {
+  color: red;
+  margin-top: 5px;
+}

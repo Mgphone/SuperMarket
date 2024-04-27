@@ -239,9 +239,10 @@ const userController = {
   },
   resetPassword: async (req, res) => {
     const token = req.headers.authorization;
-    const { newpassword, username, secret } = req.body;
-    const userDoc = await User.findOne({ username });
-    if (!newpassword || !username) {
+    const { newpassword } = req.body;
+    const id = req.params.id;
+    const userDoc = await User.findOne({ _id: id });
+    if (!newpassword) {
       return res
         .status(404)
         .json({ message: "Plese enter username and new password" });
@@ -256,16 +257,22 @@ const userController = {
           result.role == "super_user" ||
           (result.role == "branch_manager" &&
             String(result.branch) == userDoc.branch)
-          // &&
-          // secret == process.env.SUPER_SECRET)
         ) {
-          await User.findOneAndUpdate(
-            { username },
-            { password: hashedPassword }
-          );
-          return res.status(200).json({
-            message: `Password updated Successful for ${username.toLowerCase()}`,
-          });
+          // await User.findOneAndUpdate(
+          //   { username },
+          //   { password: hashedPassword }
+          // );
+          try {
+            await User.findOneAndUpdate(
+              { _id: id },
+              { password: hashedPassword }
+            );
+            return res.status(200).json({
+              message: `Password updated Successful`,
+            });
+          } catch (error) {
+            return res.status(403).json({ message: error });
+          }
         } else {
           return res.status(403).json({
             message: "You have no authority to change user password",
