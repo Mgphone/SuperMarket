@@ -1,0 +1,13 @@
+.superusermanage table {
+  width: 100%;
+}
+
+.superusermanage th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+
+.superusermanage tr:hover {
+  background-color: #ccc;
+}

@@ -103,10 +103,21 @@
   text-decoration: none;
 }
 
-.maindisplay {
+/* .maindisplay {
   position: fixed;
   right: 300px;
   z-index: 10;
+  background-color: red;
+} */
+/* body side wrapper */
+.body-wrapper {
+  display: flex;
+  /* grid-template-columns: 2/3fr 1fr; */
+}
+
+.maindisplay {
+  flex-grow: 1;
+  padding-left: 20px;
 }
 
 @media (max-width:800px) {

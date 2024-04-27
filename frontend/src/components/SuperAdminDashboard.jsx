@@ -1,5 +1,14 @@
+import { useAuth } from "../contexts/AuthContext";
+
 function SuperAdminDashboard() {
-  return <div>SuperAdminDashboard</div>;
+  const { token } = useAuth();
+
+  return (
+    <div>
+      SuperAdminDashboard
+      {token.replace("Bearer", "")}
+    </div>
+  );
 }
 
 export default SuperAdminDashboard;

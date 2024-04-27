@@ -5,27 +5,29 @@ import SuperAdminDashboard from "../components/SuperAdminDashboard";
 import SuperBranchManage from "../components/SuperBranchManage";
 import SuperUserManage from "../components/SuperUserManage";
 import SideNav from "../components/SideNav";
-// const SideNav = lazy(() => import("../components/SideNav"));
+import AreaManagerPortal from "../components/AreaManagerPortal";
 function HomeSuperUser() {
-  // const { decodedToken } = useAuth();
   const [isAdminDashboard, setIsAdminDashboard] = useState(false);
   const [isManageBranch, setIsManageBranch] = useState(false);
   const [isManageUser, setIsManageUser] = useState(false);
   return (
     <>
       <Nav />
-      <div className="maindisplay">
-        {" "}
-        {/* Home {decodedToken && decodedToken.role} */}
-        {isAdminDashboard && <SuperAdminDashboard />}
-        {isManageBranch && <SuperBranchManage />}
-        {isManageUser && <SuperUserManage />}
+      <div className="body-wrapper">
+        <SideNav
+          setIsAdminDashboard={setIsAdminDashboard}
+          setIsManageBranch={setIsManageBranch}
+          setIsManageuser={setIsManageUser}
+        />
+        <div className="maindisplay">
+          {!isAdminDashboard && !isManageBranch && !isManageUser && (
+            <AreaManagerPortal />
+          )}
+          {isAdminDashboard && <SuperAdminDashboard />}
+          {isManageBranch && <SuperBranchManage />}
+          {isManageUser && <SuperUserManage />}
+        </div>
       </div>
-      <SideNav
-        setIsAdminDashboard={setIsAdminDashboard}
-        setIsManageBranch={setIsManageBranch}
-        setIsManageuser={setIsManageUser}
-      />
     </>
   );
 }
