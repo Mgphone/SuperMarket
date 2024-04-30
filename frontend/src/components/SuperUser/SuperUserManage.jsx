@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import "./superusermanage.css";
-import UserResetPassword from "./UserResetPassword";
+import UserResetPassword from "../UserAuthenticationFront/UserResetPassword";
+import { useNavigate } from "react-router-dom";
 function SuperUserManage() {
   const { token, decodedToken } = useAuth();
   const [dataUser, setUserData] = useState();
@@ -11,6 +12,7 @@ function SuperUserManage() {
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [resetValue, setResetValue] = useState("");
   const headers = { Authorization: token };
+  const navigate = useNavigate();
   const fetchData = async () => {
     try {
       // const response = await fetch("/api/username/findalluser", { headers });
@@ -70,11 +72,14 @@ function SuperUserManage() {
   if (error) {
     return <div>Error:{error}</div>;
   }
+  const handleCreateNewUser = () => {
+    navigate("/register");
+  };
   return (
     <>
       {branchData && dataUser && (
         <div className="superusermanage">
-          <button>Create New User</button>
+          <button onClick={handleCreateNewUser}>Create New User</button>
           <table>
             <tr>
               <th>Number</th>

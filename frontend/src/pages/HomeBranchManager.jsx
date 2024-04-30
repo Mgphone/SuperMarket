@@ -1,10 +1,11 @@
 import { useState } from "react";
-import Nav from "../components/Nav";
-import SideNav from "../components/SideNav";
+import Nav from "../components/Nav/Nav";
+import SideNav from "../components/SIdeNav/SideNav";
 // import { useAuth } from "../contexts/AuthContext";
-import BranchManagerDashboard from "../components/BranchManagerDashboard";
-import BranchManagerUser from "../components/BranchManagerUser";
+import BranchManagerDashboard from "../components/BranchManager/BranchManagerDashboard";
+import BranchManagerUser from "../components/BranchManager/BranchManagerUser";
 import SellingBoard from "../components/SellingBoard";
+import BranchManagerPortal from "../components/BranchManager/BranchManagerPortal";
 
 function HomeBranchManager() {
   // const { decodedToken } = useAuth();
@@ -14,17 +15,20 @@ function HomeBranchManager() {
   return (
     <div>
       <Nav />
-      <SideNav
-        setIsManagerDashboard={setIsManagerDashboard}
-        setIsManageBranchUser={setIsManageBranchUser}
-        setIsSellingBoard={setIsSellingBoard}
-      />
-      <div className="maindisplay">
-        {" "}
-        {/* Home {decodedToken && decodedToken.role} */}
-        {isManagerDashboard && <BranchManagerDashboard />}
-        {isManageBranchUser && <BranchManagerUser />}
-        {isSellingBoard && <SellingBoard />}
+      <div className="body-wrapper">
+        <SideNav
+          setIsManagerDashboard={setIsManagerDashboard}
+          setIsManageBranchUser={setIsManageBranchUser}
+          setIsSellingBoard={setIsSellingBoard}
+        />
+        <div className="maindisplay">
+          {!isManagerDashboard && !isManageBranchUser && !isSellingBoard && (
+            <BranchManagerPortal />
+          )}
+          {isManagerDashboard && <BranchManagerDashboard />}
+          {isManageBranchUser && <BranchManagerUser />}
+          {isSellingBoard && <SellingBoard />}
+        </div>
       </div>
     </div>
   );

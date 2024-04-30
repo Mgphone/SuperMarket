@@ -2,9 +2,12 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Signup() {
   const [registerError, setRegisterError] = useState("");
+  const { decodedToken } = useAuth();
+  console.log("this is token" + JSON.stringify(decodedToken));
   const validationSchema = Yup.object({
     username: Yup.string()
       .email("username should be email address")
@@ -30,7 +33,7 @@ function Signup() {
       ),
     name: Yup.string()
       .required("Please fill out this field")
-      .matches(/^[a-zA-Z]+$/, "Name must contain only characters")
+      // .matches(/^[a-zA-Z]+$/, "Name must contain only characters")
       .min(3, "Name must be at lease 3 characters"),
   });
 
@@ -41,8 +44,9 @@ function Signup() {
       password: values.password2,
       name: values.name,
     };
+    console.log(formData);
     try {
-      const response = await fetch(`/api/v1/users`, {
+      const response = await fetch(`/api/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -145,10 +149,21 @@ function Signup() {
         </div>
         {registerError && <div className="errors">{registerError}</div>}
         <p className="checking-signup">
-          Already a Member?
-          <Link to="/">
-            <button>Login</button>
-          </Link>
+          {decodedToken.role == "super_user" && (
+            <Link to="/homesuper">
+              <button>Back Home!</button>
+            </Link>
+          )}
+          {decodedToken.role == "branch_manager" && (
+            <Link to="/homebranch">
+              <button>Back Home</button>
+            </Link>
+          )}
+          {decodedToken.role == "branch_seller" && (
+            <Link to="/homenormal">
+              <button>Back Home</button>
+            </Link>
+          )}
         </p>
         <button type="submit">Signup</button>
       </form>

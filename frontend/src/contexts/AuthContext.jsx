@@ -3,7 +3,7 @@ const AuthContext = createContext();
 // eslint-disable-next-line react/prop-types
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
-  const [decodedToken, setDecodedToken] = useState(null);
+  const [decodedToken, setDecodedToken] = useState("");
   const logIn = (token) => {
     setToken(token);
   };

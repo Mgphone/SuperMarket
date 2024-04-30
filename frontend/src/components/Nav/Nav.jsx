@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import "./Nav.css";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Nav() {
   const navigate = useNavigate();
@@ -16,13 +16,22 @@ function Nav() {
       setDecodedToken(tokenValue);
     }
   }, [token, navigate, setDecodedToken]);
-
   return (
     <header>
       <div className="logo">
-        <Link to="/">
-          <h1>Money Exchange</h1>
-        </Link>
+        {decodedToken && (
+          <Link
+            to={`/${
+              decodedToken.role === "super_user"
+                ? "homesuper"
+                : decodedToken.role === "branch_manager"
+                ? "homebranch"
+                : "homenormal"
+            }`}
+          >
+            <h1>Money Exchange</h1>
+          </Link>
+        )}
       </div>
       <nav>
         <ul>

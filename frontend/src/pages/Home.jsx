@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext.jsx";
-import Notfound from "../components/Notfound.jsx";
+import Notfound from "../components/NotFound/Notfound.jsx";
 
 function Home() {
   const [loginError, setLoginError] = useState(false);
@@ -107,14 +107,6 @@ function Home() {
           <Link to="/forgotpassword">
             <button>Forgot Password</button>
           </Link>
-          {/* <button onClick={() => handleregister}>Register</button> */}
-          {/* <Link to="/register">
-            {" "}
-            <button>Register</button>
-          </Link> */}
-          {/* <Link to="/registersuper">
-            <button>Register SuperUser</button>
-          </Link> */}
         </div>
       </form>
     </div>

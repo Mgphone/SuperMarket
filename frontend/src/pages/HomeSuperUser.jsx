@@ -1,11 +1,11 @@
 import { useState } from "react";
-import Nav from "../components/Nav";
+import Nav from "../components/Nav/Nav";
 // import { useAuth } from "../contexts/AuthContext";
-import SuperAdminDashboard from "../components/SuperAdminDashboard";
-import SuperBranchManage from "../components/SuperBranchManage";
-import SuperUserManage from "../components/SuperUserManage";
-import SideNav from "../components/SideNav";
-import AreaManagerPortal from "../components/AreaManagerPortal";
+import SuperAdminDashboard from "../components/SuperUser/SuperAdminDashboard";
+import SuperBranchManage from "../components/SuperUser/SuperBranchManage";
+import SuperUserManage from "../components/SuperUser/SuperUserManage";
+import SideNav from "../components/SIdeNav/SideNav";
+import AreaManagerPortal from "../components/SuperUser/AreaManagerPortal";
 function HomeSuperUser() {
   const [isAdminDashboard, setIsAdminDashboard] = useState(false);
   const [isManageBranch, setIsManageBranch] = useState(false);

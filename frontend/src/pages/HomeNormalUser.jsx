@@ -1,9 +1,10 @@
 import { useState } from "react";
-import Nav from "../components/Nav";
-import SideNav from "../components/SideNav";
+import Nav from "../components/Nav/Nav";
+import SideNav from "../components/SIdeNav/SideNav";
 // import { useAuth } from "../contexts/AuthContext";
 import SellingBoard from "../components/SellingBoard";
-import NormalUserDetail from "../components/NormalUserDetail";
+import NormalUserDetail from "../components/BranchSeller/NormalUserDetail";
+import NormalUserPortal from "../components/BranchSeller/NormalUserPortal";
 
 function HomeNormalUser() {
   // const { decodedToken } = useAuth();
@@ -13,15 +14,19 @@ function HomeNormalUser() {
   return (
     <div>
       <Nav />
-      <SideNav
-        setIsNormalUserDetails={setIsNormalUserDetails}
-        setIsNormalUserSellingBoard={setIsNormalUserSellingBoard}
-      />
-      <div className="maindisplay">
-        {" "}
-        {/* Home {decodedToken && decodedToken.role} */}
-        {isNormalUserDetails && <NormalUserDetail />}
-        {isNormalUserSellingBoard && <SellingBoard />}
+      <div className="body-wrapper">
+        <SideNav
+          setIsNormalUserDetails={setIsNormalUserDetails}
+          setIsNormalUserSellingBoard={setIsNormalUserSellingBoard}
+        />
+        <div className="maindisplay">
+          {!isNormalUserDetails && !isNormalUserSellingBoard && (
+            <NormalUserPortal />
+          )}
+          {/* Home {decodedToken && decodedToken.role} */}
+          {isNormalUserDetails && <NormalUserDetail />}
+          {isNormalUserSellingBoard && <SellingBoard />}
+        </div>
       </div>
     </div>
   );

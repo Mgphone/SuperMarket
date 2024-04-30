@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import Register from "./components/Register.jsx";
+import Register from "./components/UserAuthenticationFront/Register.jsx";
 import HomeSuperUser from "./pages/HomeSuperUser";
-import RegisterSuper from "./components/RegisterSuper.jsx";
+import RegisterSuper from "./components/UserAuthenticationFront/RegisterSuper.jsx";
 import "./App.css";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import HomeNormalUser from "./pages/HomeNormalUser";
-import Notfound from "./components/Notfound.jsx";
+import Notfound from "./components/NotFound/Notfound.jsx";
 import HomeBranchManager from "./pages/HomeBranchManager.jsx";
 function App() {
   return (
