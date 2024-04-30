@@ -14,15 +14,26 @@ const userController = {
     try {
       const { username, password, role, secret } = req.body;
       const hashedPassword = bcrypt.hashSync(password, salt);
+      const checkduplicate = await User.find({ username });
+      if (secret !== process.env.SUPER_SECRET) {
+        return res
+          .status(403)
+          .json({ message: "Make sure your secret is correct" });
+      }
       if (typeof role === "undefined") {
         return res
           .status(400)
           .json({ message: "Make sure add your super user role" });
       }
+      if (checkduplicate.length === 1) {
+        return res.status(400).json({
+          message: `Your name ${username} is duplicate find another name`,
+        });
+      }
       if (role === "super_user" && secret === process.env.SUPER_SECRET) {
         superUser = new User({ username, password: hashedPassword, role });
         await superUser.save();
-        return res.status(400).json({
+        return res.status(200).json({
           message: `Super User ${username.toLowerCase()} has created`,
         });
       } else {

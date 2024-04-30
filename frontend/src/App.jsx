@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Register from "./components/Register.jsx";
 import HomeSuperUser from "./pages/HomeSuperUser";
-
+import RegisterSuper from "./components/RegisterSuper.jsx";
 import "./App.css";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import HomeNormalUser from "./pages/HomeNormalUser";
@@ -13,6 +13,10 @@ function App() {
     <AuthProvider>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route
+          path="/registersuper"
+          element={<RegisterSuper role="super_user" />}
+        />
         <Route path="/register" element={<Register />} />
         <Route path="/homesuper" element={<HomeSuperUser />} />
         <Route path="/homenormal" element={<HomeNormalUser />} />
