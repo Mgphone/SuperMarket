@@ -18,16 +18,29 @@ const BranchesController = {
             available_currencies: currency,
             monitorBy: monitorId,
           };
+          const duplicateBranch = await Branches.find({
+            branch_name: branchname,
+          });
+          if (duplicateBranch.length > 0) {
+            return res.status(400).json({
+              message: `${branchname} got already on the system choose another one`,
+            });
+          }
           const newBranch = new Branches(myBranches);
           await newBranch.save();
 
-          res.status(200).json({ branch: newBranch });
+          res.status(200).json({
+            message: `You have created the branch name call ${branchname}`,
+          });
         } else {
           res.status(401).json({ message: "You have no authority" });
         }
       })
       .catch((error) => {
-        return res.status(401).json({ message: error });
+        console.error(error);
+        return res
+          .status(500)
+          .json({ message: "An Expected error happen when creating branch" });
       });
   },
   getAllBranches: async (req, res) => {
@@ -43,7 +56,10 @@ const BranchesController = {
         }
       })
       .catch((error) => {
-        return res.status(401).json({ message: error });
+        console.error(error);
+        return res
+          .status(500)
+          .json({ message: "An error happen when geting all branches" });
       });
   },
   getSingleBranch: async (req, res) => {
@@ -68,7 +84,13 @@ const BranchesController = {
           res.status(400).json({ message: "You have no authority" });
         }
       })
-      .catch((error) => res.status(400).json({ message: error }));
+      .catch((error) => {
+        console.error(error);
+        return;
+        res
+          .status(500)
+          .json({ message: "Error happen when getting single branch" });
+      });
   },
   deleteBranch: async (req, res) => {
     const token = req.headers.authorization;
