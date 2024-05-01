@@ -10,9 +10,6 @@ function Home() {
   const [loginError, setLoginError] = useState(false);
   const { logIn } = useAuth();
   const navigate = useNavigate();
-  // const handleregister = () => {
-  //   return <Link to="/register" />;
-  // };
 
   const validationSchema = Yup.object({
     username: Yup.string()

@@ -80,10 +80,24 @@
 
 .checking-signup {
   display: flex;
-  /* flex-direction: row; */
-  align-items: center;
+  flex-direction: column;
   /* padding: 30px; */
-  width: 20vw;
+}
+
+.checking-signup a {
+  text-decoration: none;
+}
+
+.checking-signup>a>button {
+  padding: 20px;
+  background-color: #007bff;
+  color: #fff;
+}
+
+.checking-signup>a>button:hover {
+  background-color: #0056b3;
+
+
 }
 
 .checking-signup button {

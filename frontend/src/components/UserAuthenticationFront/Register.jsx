@@ -44,7 +44,7 @@ function Signup() {
       password: values.password2,
       name: values.name,
     };
-    console.log(formData);
+    // console.log(formData);
     try {
       const response = await fetch(`/api/users/register`, {
         method: "POST",

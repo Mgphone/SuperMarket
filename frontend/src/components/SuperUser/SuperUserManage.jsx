@@ -75,18 +75,26 @@ function SuperUserManage() {
   const handleCreateNewUser = () => {
     navigate("/register");
   };
+  const handleCreateNewAreaManager = () => {
+    navigate("/registersuper");
+  };
   return (
     <>
       {branchData && dataUser && (
         <div className="superusermanage">
-          <button onClick={handleCreateNewUser}>Create New User</button>
+          <div className="superbuttongroup">
+            <button onClick={handleCreateNewUser}>Create New User</button>
+            <button onClick={handleCreateNewAreaManager}>
+              Create Area Manager
+            </button>
+          </div>
           <table>
             <tr>
               <th>Number</th>
               <th>UserName</th>
               <th>Role</th>
               <th>Branch</th>
-              <th>Edit</th>
+              <th>Reset Password</th>
               <th>Delete</th>
             </tr>
 
@@ -103,7 +111,7 @@ function SuperUserManage() {
                 </td>
                 <td>
                   {item._id !== decodedToken.userId && (
-                    <button onClick={() => handleEdit(item._id)}>Edit</button>
+                    <button onClick={() => handleEdit(item._id)}>Reset</button>
                   )}
                 </td>
                 <td>
