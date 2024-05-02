@@ -56,7 +56,7 @@ function RegisterSuper({ role }) {
       if (response.ok) {
         const responseData = await response.json();
         alert(`${responseData.message}`);
-        navigate("/");
+        navigate("/homesuper");
       } else if (!response.ok) {
         const dataresponse = await response.json();
         setRegisterError(`${dataresponse.message}`);
@@ -147,10 +147,6 @@ function RegisterSuper({ role }) {
         </div>
         {registerError && <div className="errors">{registerError}</div>}
         <div className="checking-signup">
-          Already a Member?
-          <Link to="/">
-            <button>Login</button>
-          </Link>
           Back Home?
           <Link to="/homesuper">
             <button>Home</button>

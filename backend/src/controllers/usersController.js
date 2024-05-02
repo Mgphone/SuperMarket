@@ -47,12 +47,16 @@ const userController = {
   },
   createUser: async (req, res) => {
     const token = req.headers.authorization;
-
     try {
       const { username, password, role, branch } = req.body;
-
       if (typeof role === "undefined") {
         return res.status(400).json({ message: "Choose role type" });
+      }
+      const checkDuplicateUser = await User.find({ username });
+      if (checkDuplicateUser.length === 1) {
+        return res
+          .status(403)
+          .json({ message: "You have got duplicate username please check it" });
       }
       const hashedPassword = bcrypt.hashSync(password, salt);
 
@@ -146,7 +150,7 @@ const userController = {
                     "Error happen when branch manager creating branch seller",
                 });
               }
-              return res.status(200).json(result);
+              // return res.status(200).json(result);
             } else {
               return res
                 .status(401)

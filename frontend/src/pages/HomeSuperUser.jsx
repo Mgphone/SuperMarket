@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Nav from "../components/Nav/Nav";
-// import { useAuth } from "../contexts/AuthContext";
 import SuperAdminDashboard from "../components/SuperUser/SuperAdminDashboard";
 import SuperBranchManage from "../components/SuperUser/SuperBranchManage";
 import SuperUserManage from "../components/SuperUser/SuperUserManage";

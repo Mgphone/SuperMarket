@@ -10,7 +10,6 @@ function SuperBranchManage() {
   const { token } = useAuth();
   const headers = { Authorization: token };
   const handleNewBranch = () => {
-    // setOpenNewBranch(true);
     setOpenNewBranch((prev) => !prev);
     setALlCheckBranches(false);
   };

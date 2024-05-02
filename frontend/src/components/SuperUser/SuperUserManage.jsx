@@ -94,40 +94,45 @@ function SuperUserManage() {
             </button>
           </div>
           <table>
-            <tr>
-              <th>Number</th>
-              <th>UserName</th>
-              <th>Role</th>
-              <th>Branch</th>
-              <th>Reset Password</th>
-              <th>Delete</th>
-            </tr>
-
-            {dataUser.map((item, index) => (
-              <tr key={item._id}>
-                <td>{index + 1}</td>
-                <td>{item.username}</td>
-                <td>{item.role}</td>
-                <td>
-                  {item.branch
-                    ? findBranchName(branchData, item.branch) ||
-                      "Branch Not Found"
-                    : "Area Manager"}
-                </td>
-                <td>
-                  {item._id !== decodedToken.userId && (
-                    <button onClick={() => handleEdit(item._id)}>Reset</button>
-                  )}
-                </td>
-                <td>
-                  {item._id !== decodedToken.userId && (
-                    <button onClick={() => handleDelete(item._id)}>
-                      Delete
-                    </button>
-                  )}
-                </td>
+            <thead>
+              <tr>
+                <th>Number</th>
+                <th>UserName</th>
+                <th>Role</th>
+                <th>Branch</th>
+                <th>Reset Password</th>
+                <th>Delete</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {dataUser.map((item, index) => (
+                <tr key={item._id}>
+                  <td>{index + 1}</td>
+                  <td>{item.username}</td>
+                  <td>{item.role}</td>
+                  <td>
+                    {item.branch
+                      ? findBranchName(branchData, item.branch) ||
+                        "Branch Not Found"
+                      : "Area Manager"}
+                  </td>
+                  <td>
+                    {item._id !== decodedToken.userId && (
+                      <button onClick={() => handleEdit(item._id)}>
+                        Reset
+                      </button>
+                    )}
+                  </td>
+                  <td>
+                    {item._id !== decodedToken.userId && (
+                      <button onClick={() => handleDelete(item._id)}>
+                        Delete
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
           {isResetPassword && (
             <UserResetPassword

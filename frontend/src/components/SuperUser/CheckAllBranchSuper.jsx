@@ -10,7 +10,7 @@ function CheckAllBranchSuper({ headers }) {
   //   ...headers,
   //   "Content-Type": "application/json",
   // };
-
+  // i add extra fetech for users but still not using yet
   const fetchData = async () => {
     try {
       const [users, branches] = await Promise.all([
@@ -36,8 +36,6 @@ function CheckAllBranchSuper({ headers }) {
   const handleDelete = async (value) => {
     const confirmDelete = window.confirm("Are you sure to Delete?");
     if (confirmDelete) {
-      // console.log(`Delete ${value}`);
-      // branches/deletebranch/661eeb4e6220644c0a778acc
       try {
         const url = `/api/branches/deletebranch/${value}`;
         const response = await fetch(url, { method: "DELETE", headers });
@@ -57,7 +55,6 @@ function CheckAllBranchSuper({ headers }) {
     }
   };
   const handleViewBranch = async (value) => {
-    console.log(`View ${value}`);
     setAllBranches(false);
     setSingleBranch(value);
   };
@@ -73,26 +70,32 @@ function CheckAllBranchSuper({ headers }) {
       {allbranches && (
         <>
           <table>
-            <tr>
-              <th>Number</th>
-              <th>Branch Name</th>
-              <th>View Branch</th>
-              <th>Delete Branch</th>
-            </tr>
-            {allbranches.map((item, index) => (
-              <tr key={item._id}>
-                <td>{index + 1}</td>
-                <td>{item.branch_name}</td>
-                <td>
-                  <button onClick={() => handleViewBranch(item._id)}>
-                    View Branch
-                  </button>
-                </td>
-                <td>
-                  <button onClick={() => handleDelete(item._id)}>Delete</button>
-                </td>
+            <thead>
+              <tr>
+                <th>Number</th>
+                <th>Branch Name</th>
+                <th>View Branch</th>
+                <th>Delete Branch</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {allbranches.map((item, index) => (
+                <tr key={item._id}>
+                  <td>{index + 1}</td>
+                  <td>{item.branch_name}</td>
+                  <td>
+                    <button onClick={() => handleViewBranch(item._id)}>
+                      View Branch
+                    </button>
+                  </td>
+                  <td>
+                    <button onClick={() => handleDelete(item._id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </>
       )}

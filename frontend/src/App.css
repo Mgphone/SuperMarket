@@ -46,6 +46,15 @@
 
 }
 
+.input-container-radio {
+  display: flex;
+  justify-content: center;
+}
+
+.input-container-radio h3 {
+  color: blue;
+}
+
 .input-container.error input[type="text"],
 .input-container.error input[type="password"] {
   border-color: red;

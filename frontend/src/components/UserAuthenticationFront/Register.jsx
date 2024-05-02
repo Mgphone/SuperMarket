@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 function Signup() {
   const [registerError, setRegisterError] = useState("");
-  const { decodedToken } = useAuth();
-
+  const [iserror, setIserror] = useState("");
+  const [allBranch, setAllBranch] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const { decodedToken, token } = useAuth();
+  const headers = { Authorization: token };
+  const headersWithContent = { ...headers, "Content-Type": "application/json" };
+  const navigate = useNavigate();
   const validationSchema = Yup.object({
     username: Yup.string()
       .email("username should be email address")
@@ -31,10 +36,10 @@ function Signup() {
           return /^(?=.*[a-zA-Z]).{4,}$/.test(value);
         }
       ),
-    name: Yup.string()
-      .required("Please fill out this field")
-      // .matches(/^[a-zA-Z]+$/, "Name must contain only characters")
-      .min(3, "Name must be at lease 3 characters"),
+    name: Yup.string().required("Please fill out this field"),
+    // .matches(/^[a-zA-Z]+$/, "Name must contain only characters")
+    // .min(3, "Name must be at lease 3 characters"),
+    choosebranch: Yup.string().required("Please fill out this field"),
   });
 
   const handleSubmit = async (values) => {
@@ -42,26 +47,27 @@ function Signup() {
     const formData = {
       username: values.username,
       password: values.password2,
-      name: values.name,
+      role: values.name,
+      branch: values.choosebranch,
     };
-    // console.log(formData);
+
     try {
       const response = await fetch(`/api/users/register`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: headersWithContent,
         body: JSON.stringify(formData),
       });
-      if (response.ok) {
+      if (!response.ok) {
         const responseData = await response.json();
-        if (responseData.code === "FAILED") {
-          setRegisterError(responseData.message);
-        } else if (responseData.code === "OK") {
-          alert("Register Successful plese login with your details");
+        setRegisterError(`${responseData.message}`);
+      } else if (response.ok) {
+        const responseData = await response.json();
+        alert(`${responseData.message}`);
+        if (decodedToken.role === "super_user") {
+          navigate("/homesuper");
+        } else {
+          navigate("/homebranch");
         }
-      } else if (!response.ok) {
-        setRegisterError("Register Error");
       }
     } catch (error) {
       console.error(error);
@@ -73,12 +79,40 @@ function Signup() {
       password1: "",
       password2: "",
       name: "",
+      choosebranch: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       handleSubmit(values);
     },
   });
+
+  const radioValue = ["branch_manager", "branch_seller"];
+  const fetchBranch = async () => {
+    try {
+      const response = await fetch("api/branches/getallbranch", { headers });
+      if (!response.ok) {
+        throw new Error("Failed to fetch branch");
+      }
+      const branches = await response.json();
+      branches;
+      setAllBranch(branches);
+      setIsLoading(false);
+    } catch (error) {
+      console.error;
+      setIserror(error);
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchBranch();
+  }, []);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (iserror) {
+    return <div>{iserror}</div>;
+  }
   return (
     <div>
       <form className="signupform" onSubmit={formik.handleSubmit}>
@@ -127,24 +161,54 @@ function Signup() {
             value={formik.values.password2}
             onChange={formik.handleChange}
           />
+
           {formik.touched.password2 && formik.errors.password2 ? (
             <div className="errors">{formik.errors.password2}</div>
           ) : null}
         </div>
         <div
-          className={`input-container ${
-            formik.touched.name && formik.errors.name ? "error" : ""
-          }`}
+          className={`input-container-radio
+           ${formik.touched.name && formik.errors.name ? "error" : ""}`}
         >
-          <input
-            type="text"
-            name="name"
-            placeholder="role *"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-          />
+          <h3>Role:</h3>
+          {radioValue.map((value) => (
+            <label key={value}>
+              <input
+                type="radio"
+                name="name"
+                value={value}
+                checked={formik.values.name === value}
+                onChange={formik.handleChange}
+              />
+              {value}
+            </label>
+          ))}
           {formik.touched.name && formik.errors.name ? (
             <div className="errors">{formik.errors.name}</div>
+          ) : null}
+        </div>
+        <div
+          className={`input-container-radio ${
+            formik.touched.choosebranch && formik.errors.choosebranch
+              ? "error"
+              : ""
+          }`}
+        >
+          <h3>Choose Branch</h3>
+          {allBranch.map((value) => (
+            <label key={value._id}>
+              <input
+                type="radio"
+                name="choosebranch"
+                value={value._id}
+                checked={formik.values.choosebranch === value._id}
+                onChange={formik.handleChange}
+              />
+              {value.branch_name}
+            </label>
+          ))}
+          {formik.touched.choosebranch && formik.errors.choosebranch ? (
+            <div className="errors">{formik.errors.choosebranch}</div>
           ) : null}
         </div>
         {registerError && <div className="errors">{registerError}</div>}
