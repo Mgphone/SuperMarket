@@ -48,23 +48,28 @@ function SuperUserManage() {
   };
 
   const handleDelete = async (value) => {
-    try {
-      const response = await fetch(`/api/users/delete/${value}`, {
-        method: "DELETE",
-        headers,
-      });
-      if (!response.ok) {
-        throw new Error("Failed to delete user");
+    const confirmDelete = window.confirm("Are you ready to delete?");
+    if (confirmDelete) {
+      try {
+        const response = await fetch(`/api/users/delete/${value}`, {
+          method: "DELETE",
+          headers,
+        });
+        if (!response.ok) {
+          throw new Error("Failed to delete user");
+        }
+        const deleteJson = await response.json();
+        deleteJson;
+        alert(deleteJson.message);
+      } catch (error) {
+        setError(error.message);
+        setIsLoading(false);
       }
-      const deleteJson = await response.json();
-      deleteJson;
-      alert(deleteJson.message);
-    } catch (error) {
-      setError(error.message);
-      setIsLoading(false);
+      setIsLoading(true);
+      fetchData();
+    } else {
+      alert("Delete Cancel");
     }
-    setIsLoading(true);
-    fetchData();
   };
   if (isLoading) {
     return <div>Loading...</div>;
