@@ -7,7 +7,7 @@ import { useAuth } from "../../contexts/AuthContext";
 function Signup() {
   const [registerError, setRegisterError] = useState("");
   const { decodedToken } = useAuth();
-  console.log("this is token" + JSON.stringify(decodedToken));
+
   const validationSchema = Yup.object({
     username: Yup.string()
       .email("username should be email address")

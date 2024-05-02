@@ -32,7 +32,7 @@ function SuperBranchManage() {
       {openNewBranch && (
         <OpenNewBranchSuper handleclose={handleclose} headers={headers} />
       )}
-      {checkAllBranches && <CheckAllBranchSuper />}
+      {checkAllBranches && <CheckAllBranchSuper headers={headers} />}
     </div>
   );
 }

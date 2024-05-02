@@ -1,0 +1,29 @@
+.checkallbranchsuper table {
+  width: 80%;
+  margin: 0 auto;
+
+}
+
+.checkallbranchsuper table th {
+  background-color: red;
+  text-align: left;
+  padding: 15px 0;
+}
+
+.checkallbranchsuper table tr {
+  text-align: center;
+  margin: 10px;
+}
+
+.checkallbranchsuper table tr:hover {
+  background-color: #ccc;
+  /* cursor: pointer; */
+}
+
+.checkallbranchsuper table tr th td {
+  border: 10px solid blue;
+}
+
+.checkallbranchsuper button {
+  cursor: pointer;
+}
