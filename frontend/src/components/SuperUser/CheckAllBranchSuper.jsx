@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./checkallbranchsuper.css";
+import ViewBranch from "./ViewBranch";
 function CheckAllBranchSuper({ headers }) {
   const [allbranches, setAllBranches] = useState("");
   const [singleBranch, setSingleBranch] = useState("");
@@ -55,7 +56,7 @@ function CheckAllBranchSuper({ headers }) {
     }
   };
   const handleViewBranch = async (value) => {
-    setAllBranches(false);
+    // setAllBranches(false);
     setSingleBranch(value);
   };
 
@@ -67,7 +68,7 @@ function CheckAllBranchSuper({ headers }) {
   }
   return (
     <div className="checkallbranchsuper">
-      {allbranches && (
+      {allbranches && !singleBranch && (
         <>
           <table>
             <thead>
@@ -99,7 +100,13 @@ function CheckAllBranchSuper({ headers }) {
           </table>
         </>
       )}
-      {singleBranch && <div>Single Branch of {singleBranch}</div>}
+      {singleBranch && (
+        <ViewBranch
+          singleBranch={singleBranch}
+          headers={headers}
+          setAllBranches={setAllBranches}
+        />
+      )}
     </div>
   );
 }

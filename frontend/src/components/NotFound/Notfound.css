@@ -4,9 +4,7 @@
   /* height: 100vh; */
 }
 
-.notfound h1,
-p,
-button {
+.notfound h1 p button {
   color: red;
   margin: 20px 0;
 }
