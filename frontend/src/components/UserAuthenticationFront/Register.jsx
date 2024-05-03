@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-
+import "./userauthentication.css";
 function Signup() {
   const [registerError, setRegisterError] = useState("");
   const [iserror, setIserror] = useState("");
@@ -50,7 +50,7 @@ function Signup() {
       role: values.name,
       branch: values.choosebranch,
     };
-
+    console.log(formData);
     try {
       const response = await fetch(`/api/users/register`, {
         method: "POST",
@@ -167,46 +167,49 @@ function Signup() {
           ) : null}
         </div>
         <div
-          className={`input-container-radio
+          className={`input-container-select
            ${formik.touched.name && formik.errors.name ? "error" : ""}`}
         >
-          <h3>Role:</h3>
-          {radioValue.map((value) => (
-            <label key={value}>
-              <input
-                type="radio"
-                name="name"
-                value={value}
-                checked={formik.values.name === value}
-                onChange={formik.handleChange}
-              />
-              {value}
-            </label>
-          ))}
+          <div className="register-select">
+            <label htmlFor="ChooseRole">Choose Your Role</label>
+            <select
+              name="name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+            >
+              {radioValue.map((value, index) => (
+                <option key={index} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {formik.touched.name && formik.errors.name ? (
             <div className="errors">{formik.errors.name}</div>
           ) : null}
         </div>
         <div
-          className={`input-container-radio ${
+          className={`input-container-select ${
             formik.touched.choosebranch && formik.errors.choosebranch
               ? "error"
               : ""
           }`}
         >
-          <h3>Choose Branch</h3>
-          {allBranch.map((value) => (
-            <label key={value._id}>
-              <input
-                type="radio"
-                name="choosebranch"
-                value={value._id}
-                checked={formik.values.choosebranch === value._id}
-                onChange={formik.handleChange}
-              />
-              {value.branch_name}
-            </label>
-          ))}
+          <div className="register-select">
+            <label htmlFor="ChooseBranch">Choose Branch</label>
+            <select
+              name="choosebranch"
+              value={formik.values.choosebranch}
+              onChange={formik.handleChange}
+            >
+              {allBranch.map((value) => (
+                <option key={value._id} value={value._id}>
+                  {value.branch_name}
+                </option>
+              ))}
+            </select>
+          </div>
           {formik.touched.choosebranch && formik.errors.choosebranch ? (
             <div className="errors">{formik.errors.choosebranch}</div>
           ) : null}

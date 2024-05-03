@@ -1,0 +1,161 @@
+.loginform,
+.signupform {
+  width: 50vw;
+  /* margin: 0 auto 20px auto; */
+  margin: 10% auto;
+  text-align: center;
+  padding: 0 50px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  height: auto;
+  /* overflow: scroll; */
+  border-bottom: solid 1px #ccc;
+}
+
+.loginform h1,
+.signupform h1 {
+  text-align: left;
+  padding-bottom: 20px;
+}
+
+
+.loginform input,
+.signupform input {
+  width: 80%;
+  padding: 20px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+}
+
+.input-container {
+  position: relative;
+}
+
+.input-container input[type="text"],
+.input-container input[type="password"] {
+  border: 2px solid #ccc;
+
+}
+
+.input-container-select {
+  width: 80%;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  margin: 10px auto;
+}
+
+.register-select {
+  display: flex;
+  justify-content: space-between;
+}
+
+.register-select select {
+  width: 50%;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.input-container.error input[type="text"],
+.input-container.error input[type="password"] {
+  border-color: red;
+}
+
+.errors {
+  color: red;
+}
+
+.loginform button,
+.signupform button,
+.forgotgroup button {
+  width: 50%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.loginform button:hover,
+.signupform button:hover {
+  background-color: #0056b3;
+}
+
+
+
+.checking-signup {
+  display: flex;
+  flex-direction: column;
+  /* padding: 30px; */
+}
+
+.checking-signup a {
+  text-decoration: none;
+}
+
+.checking-signup>a>button {
+  padding: 20px;
+  background-color: #007bff;
+  color: #fff;
+}
+
+.checking-signup>a>button:hover {
+  background-color: #0056b3;
+
+
+}
+
+.checking-signup button {
+  background: none;
+  border: none;
+  color: blue;
+  cursor: pointer;
+  width: auto;
+
+}
+
+.checking-signup button:hover {
+  background: none;
+}
+
+.forgotgroup a {
+  text-decoration: none;
+}
+
+/* .maindisplay {
+  position: fixed;
+  right: 300px;
+  z-index: 10;
+  background-color: red;
+} */
+/* body side wrapper */
+.body-wrapper {
+  display: flex;
+  /* grid-template-columns: 2/3fr 1fr; */
+}
+
+.maindisplay {
+  flex-grow: 1;
+  padding-left: 20px;
+}
+
+@media (max-width:800px) {
+
+  .loginform,
+  .signupform {
+    height: 80vh;
+    width: 90vw;
+    overflow: scroll;
+  }
+
+  .checking-signup {
+    width: 50vw;
+  }
+}
