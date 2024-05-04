@@ -51,7 +51,7 @@ function OpenNewBranchSuper({ handleclose, headers }) {
 
       <form onSubmit={searchbranch}>
         <label htmlFor="BranchName">
-          Opening Amount
+          Branch Name
           <input type="text" id="branchname" name="branchname" />
         </label>
         <label htmlFor="OpeningAmount">

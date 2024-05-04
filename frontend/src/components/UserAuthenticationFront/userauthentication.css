@@ -69,7 +69,8 @@
 
 .loginform button,
 .signupform button,
-.forgotgroup button {
+.forgotgroup button,
+.checking-signup>a>button {
   width: 50%;
   padding: 10px;
   margin-top: 10px;
@@ -84,7 +85,8 @@
 }
 
 .loginform button:hover,
-.signupform button:hover {
+.signupform button:hover,
+.checking-signup>a>button:hover {
   background-color: #0056b3;
 }
 
@@ -100,7 +102,7 @@
   text-decoration: none;
 }
 
-.checking-signup>a>button {
+/* .checking-signup>a>button {
   padding: 20px;
   background-color: #007bff;
   color: #fff;
@@ -110,7 +112,7 @@
   background-color: #0056b3;
 
 
-}
+} */
 
 .checking-signup button {
   background: none;

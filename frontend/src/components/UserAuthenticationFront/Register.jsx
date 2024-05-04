@@ -177,6 +177,7 @@ function Signup() {
               value={formik.values.name}
               onChange={formik.handleChange}
             >
+              <option value="">Choose Your Role</option>
               {radioValue.map((value, index) => (
                 <option key={index} value={value}>
                   {value}
@@ -203,6 +204,7 @@ function Signup() {
               value={formik.values.choosebranch}
               onChange={formik.handleChange}
             >
+              <option value="">Choose Your Branch</option>
               {allBranch.map((value) => (
                 <option key={value._id} value={value._id}>
                   {value.branch_name}
@@ -215,6 +217,7 @@ function Signup() {
           ) : null}
         </div>
         {registerError && <div className="errors">{registerError}</div>}
+        <button type="submit">Signup</button>
         <p className="checking-signup">
           {decodedToken.role == "super_user" && (
             <Link to="/homesuper">
@@ -232,7 +235,6 @@ function Signup() {
             </Link>
           )}
         </p>
-        <button type="submit">Signup</button>
       </form>
     </div>
   );

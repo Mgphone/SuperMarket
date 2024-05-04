@@ -1,55 +1,84 @@
 import { useEffect, useState } from "react";
 
 function ViewBranch({ singleBranch, headers, setAllBranches }) {
-  // api/branches/getsinglebranch/66312626a2ffa4ff09d8b2b4
   const url = `/api/branches/getsinglebranch/${singleBranch}`;
   const [fetchSingleBranch, setFetchSingleBranch] = useState("");
+  const [fetchUserData, setFetchUserData] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const fetchBranch = async () => {
+
+  const fetchData = async () => {
     try {
-      const response = await fetch(url, {
-        headers,
-      });
-      if (!response.ok) {
-        setIsLoading(false);
-        const responseJson = await response.json();
-        setIsError(responseJson);
+      const [users, branches] = await Promise.all([
+        fetch("/api/username/findalluser", { headers }),
+        fetch(`${url}`, { headers }),
+      ]);
+      if (!users.ok && !branches.ok) {
+        throw new Error("Failed to fetch data");
       }
-      if (response.ok) {
-        setIsLoading(false);
-        const responseJson = await response.json();
-        // console.log(response);
-        setFetchSingleBranch(responseJson);
-        console.log(JSON.stringify(responseJson));
-        setAllBranches(false);
-      }
+      const usersJson = await users.json();
+      const branchJson = await branches.json();
+      setFetchUserData(usersJson);
+      setFetchSingleBranch(branchJson);
+      setIsLoading(false);
+      setAllBranches(false);
     } catch (error) {
-      console.error;
-      setIsError(error);
-      isLoading(false);
+      setIsError(error.message);
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const handleDelete = async (value) => {
+    const confirmDelete = window.confirm("Are You sure to delete");
+    if (confirmDelete) {
+      console.log("This is handle delete value" + value);
+      try {
+        const url = `api/users/delete/${value}`;
+        const response = await fetch(url, { method: "DELETE", headers });
+        if (!response.ok) {
+          throw new Error("Failed to delete User");
+        }
+        const deleteJson = await response.json();
+        deleteJson;
+        alert(deleteJson.message);
+        fetchData();
+      } catch (error) {
+        console.error;
+        setIsError(error);
+      }
+    } else {
+      alert("Delete Cancel");
     }
   };
 
-  useEffect(() => {
-    fetchBranch();
-  }, []);
-  const handleDelete = (value) => {
-    console.log("This is handle delete value" + value);
-  };
-  const handleView = (value) => {
-    console.log("This is for view" + value);
-  };
   if (isLoading) {
     return <div>Loading....</div>;
   }
   if (isError) {
     return <div>{isError}</div>;
   }
+  const branchDate = (value) => {
+    const date = new Date(value);
+    return date.toLocaleDateString("en-Gb");
+  };
+  const changeUserName = (array, value) => {
+    const findArray = array.find((item) => item._id == value);
+    if (findArray) {
+      return findArray.username;
+    } else {
+      return value;
+    }
+  };
+
   return (
     <div>
       <h1>This is for Single Branch</h1>
-
+      {fetchSingleBranch ? (
+        <h1>Date: {branchDate(fetchSingleBranch.createdAt)}</h1>
+      ) : null}
+      <h3>You have {fetchSingleBranch.transition.length} Sale/s</h3>
       <div className="singlebranchfetch">
         {fetchSingleBranch &&
           Object.entries(fetchSingleBranch)
@@ -58,7 +87,8 @@ function ViewBranch({ singleBranch, headers, setAllBranches }) {
                 key !== "createdAt" &&
                 key !== "updatedAt" &&
                 key !== "_id" &&
-                key !== "__v"
+                key !== "__v" &&
+                key !== "transition"
             )
             .map(([key, value]) => (
               <div key={key} className="singlebranch-entry">
@@ -67,22 +97,28 @@ function ViewBranch({ singleBranch, headers, setAllBranches }) {
                   <ol>
                     {value.map((item, index) => (
                       <li key={index}>
-                        {item}{" "}
+                        {changeUserName(fetchUserData, item)}{" "}
                         {(key === "branch_manager" ||
                           key === "branch_seller") && (
                           <button onClick={() => handleDelete(item)}>
                             Delete
                           </button>
                         )}
-                        {key === "transition" && (
+                        {/* {key === "transition" && (
                           <button onClick={() => handleView(item)}>View</button>
-                        )}
+                        )} */}
                       </li>
                     ))}
                   </ol>
                 ) : (
                   <p>{value}</p>
                 )}
+                {(key === "branch_manager" || key === "branch_seller") &&
+                  !value.length &&
+                  "Please Assign"}
+                {/* {key === "transition" &&
+                  !value.length &&
+                  "You have No sale yet"} */}
               </div>
             ))}
       </div>
