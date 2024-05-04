@@ -17,6 +17,9 @@ function HomeSuperUser() {
           setIsAdminDashboard={setIsAdminDashboard}
           setIsManageBranch={setIsManageBranch}
           setIsManageuser={setIsManageUser}
+          isAdminDashboard={isAdminDashboard}
+          isManageBranch={isManageBranch}
+          isManageUser={isManageUser}
         />
         <div className="maindisplay">
           {!isAdminDashboard && !isManageBranch && !isManageUser && (

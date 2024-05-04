@@ -16,6 +16,8 @@ function HomeNormalUser() {
         <SideNav
           setIsNormalUserDetails={setIsNormalUserDetails}
           setIsNormalUserSellingBoard={setIsNormalUserSellingBoard}
+          isNormalUserDetails={isNormalUserDetails}
+          isNormalUserSellingBoard={isNormalUserSellingBoard}
         />
         <div className="maindisplay">
           {!isNormalUserDetails && !isNormalUserSellingBoard && (

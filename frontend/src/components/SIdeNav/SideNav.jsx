@@ -10,6 +10,14 @@ function SideNav({
   setIsManagerDashboard,
   setIsManageBranchUser,
   setIsSellingBoard,
+  isAdminDashboard,
+  isManageBranch,
+  isManageUser,
+  isNormalUserDetails,
+  isNormalUserSellingBoard,
+  isManagerDashboard,
+  isManageBranchUser,
+  isSellingBoard,
 }) {
   const { decodedToken } = useAuth();
 
@@ -52,26 +60,84 @@ function SideNav({
     setIsNormalUserSellingBoard((prevValue) => !prevValue);
   };
   return (
-    <div className="sidebar">
+    <div className="sidebar ">
       <ul>
         {decodedToken && decodedToken.role == "super_user" && (
           <>
-            <li onClick={handleSuperAdmin}>Admin Dashboard</li>
-            <li onClick={handleSuperBranch}>Manage Branch</li>
-            <li onClick={handleSuperUser}>Manage User</li>
+            <li
+              onClick={handleSuperAdmin}
+              style={{
+                backgroundColor: isAdminDashboard ? "lightgray" : "yellow",
+              }}
+            >
+              Admin Dashboard
+            </li>
+            <li
+              onClick={handleSuperBranch}
+              style={{
+                backgroundColor: isManageBranch ? "lightgray" : "yellow",
+              }}
+            >
+              Manage Branch
+            </li>
+            <li
+              onClick={handleSuperUser}
+              style={{
+                backgroundColor: isManageUser ? "lightgray" : "yellow",
+              }}
+            >
+              Manage User
+            </li>
           </>
         )}
         {decodedToken && decodedToken.role == "branch_manager" && (
           <>
-            <li onClick={handemanagerdash}>Manager Dashboard</li>
-            <li onClick={handlemanageruser}>Manage Branch User</li>
-            <li onClick={handlemanagerselling}>Selling Board</li>
+            <li
+              onClick={handemanagerdash}
+              style={{
+                backgroundColor: isManagerDashboard ? "lightgray" : "yellow",
+              }}
+            >
+              Manager Dashboard
+            </li>
+            <li
+              onClick={handlemanageruser}
+              style={{
+                backgroundColor: isManageBranchUser ? "lightgray" : "yellow",
+              }}
+            >
+              Manage Branch User
+            </li>
+            <li
+              onClick={handlemanagerselling}
+              style={{
+                backgroundColor: isSellingBoard ? "lightgray" : "yellow",
+              }}
+            >
+              Selling Board
+            </li>
           </>
         )}
         {decodedToken && decodedToken.role == "branch_seller" && (
           <>
-            <li onClick={handlenormaldetail}>My details</li>
-            <li onClick={handlenormalselling}>Selling Board</li>
+            <li
+              onClick={handlenormaldetail}
+              style={{
+                backgroundColor: isNormalUserDetails ? "lightgray" : "yellow",
+              }}
+            >
+              My details
+            </li>
+            <li
+              onClick={handlenormalselling}
+              style={{
+                backgroundColor: isNormalUserSellingBoard
+                  ? "lightgray"
+                  : "yellow",
+              }}
+            >
+              Selling Board
+            </li>
           </>
         )}
       </ul>

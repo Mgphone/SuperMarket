@@ -33,7 +33,6 @@ function ViewBranch({ singleBranch, headers, setAllBranches }) {
   const handleDelete = async (value) => {
     const confirmDelete = window.confirm("Are You sure to delete");
     if (confirmDelete) {
-      console.log("This is handle delete value" + value);
       try {
         const url = `api/users/delete/${value}`;
         const response = await fetch(url, { method: "DELETE", headers });

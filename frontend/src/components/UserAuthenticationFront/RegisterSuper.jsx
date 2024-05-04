@@ -146,13 +146,13 @@ function RegisterSuper({ role }) {
           ) : null}
         </div>
         {registerError && <div className="errors">{registerError}</div>}
+        <button type="submit">Signup</button>
         <div className="checking-signup">
           Back Home?
           <Link to="/homesuper">
             <button>Home</button>
           </Link>
         </div>
-        <button type="submit">Signup</button>
       </form>
     </div>
   );

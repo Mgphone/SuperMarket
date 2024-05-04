@@ -18,6 +18,9 @@ function HomeBranchManager() {
           setIsManagerDashboard={setIsManagerDashboard}
           setIsManageBranchUser={setIsManageBranchUser}
           setIsSellingBoard={setIsSellingBoard}
+          isManagerDashboard={isManagerDashboard}
+          isManageBranchUser={isManageBranchUser}
+          isSellingBoard={isSellingBoard}
         />
         <div className="maindisplay">
           {!isManagerDashboard && !isManageBranchUser && !isSellingBoard && (

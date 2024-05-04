@@ -25,8 +25,22 @@ function SuperBranchManage() {
   return (
     <div>
       <div className="superbuttongroup">
-        <button onClick={handleNewBranch}>Create New branch</button>
-        <button onClick={handleAllBranches}>Check All branch</button>
+        <button
+          onClick={handleNewBranch}
+          style={{
+            backgroundColor: openNewBranch ? "lightgray" : "transparent",
+          }}
+        >
+          Create New branch
+        </button>
+        <button
+          onClick={handleAllBranches}
+          style={{
+            backgroundColor: checkAllBranches ? "lightgray" : "transparent",
+          }}
+        >
+          Check All branch
+        </button>
       </div>
       {openNewBranch && (
         <OpenNewBranchSuper handleclose={handleclose} headers={headers} />

@@ -50,7 +50,6 @@ function Signup() {
       role: values.name,
       branch: values.choosebranch,
     };
-    console.log(formData);
     try {
       const response = await fetch(`/api/users/register`, {
         method: "POST",
@@ -226,12 +225,12 @@ function Signup() {
           )}
           {decodedToken.role == "branch_manager" && (
             <Link to="/homebranch">
-              <button>Back Home</button>
+              <button>Back Home!</button>
             </Link>
           )}
           {decodedToken.role == "branch_seller" && (
             <Link to="/homenormal">
-              <button>Back Home</button>
+              <button>Back Home!</button>
             </Link>
           )}
         </p>
