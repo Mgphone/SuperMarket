@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-
 import UserResetPassword from "../UserAuthenticationFront/UserResetPassword";
 import { useNavigate } from "react-router-dom";
 function SuperUserManage() {

@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
 import firstTenDigits from "../../utils/firstTenDigits";
+import { useAuth } from "../../contexts/AuthContext";
+import ChangeRateForm from "./ChangeRateForm";
 function SuperUserRate() {
   const [isLoading, setIsLoading] = useState(true);
   const [isFetchError, setIsFetchError] = useState(false);
   const [fetchRate, setFetchRate] = useState("");
+  const [isDeletError, setIsDeleteError] = useState("");
+  const [isform, setIsForm] = useState(false);
+  const [isupdateForm, setIsUpdateForm] = useState(false);
+  const [iscreateForm, setIsCreateForm] = useState(false);
+
+  const { token } = useAuth();
 
   const fetchGetRate = async () => {
     try {
@@ -32,6 +40,43 @@ function SuperUserRate() {
     return typeof obj === "object" && obj !== null;
   };
 
+  const handleDeleteRate = async () => {
+    const confirmDelete = window.confirm("Are You Sure to Delete");
+
+    if (confirmDelete) {
+      const url = "/api/rate/deleterate";
+      try {
+        const response = await fetch(url, {
+          method: "DELETE",
+          headers: { Authorization: token },
+        });
+        if (!response.ok) {
+          throw new Error("Failed To Delete Rate");
+        }
+        const responseJSON = await response.json();
+        responseJSON;
+        alert(responseJSON.message);
+        fetchGetRate();
+      } catch (error) {
+        console.error(error);
+        setIsDeleteError(error);
+      }
+      // console.log("YOU click delete");
+    } else {
+      alert("Delete Cancel");
+    }
+  };
+  const handleUpdateRate = async () => {
+    setIsForm(true);
+    setIsUpdateForm(true);
+    setIsCreateForm(false);
+    console.log("You click update rate");
+  };
+  const handleCreateRate = async () => {
+    setIsForm(true);
+    setIsCreateForm(true);
+    setIsUpdateForm(false);
+  };
   return (
     <>
       {fetchRate.length > 0 && (
@@ -49,7 +94,7 @@ function SuperUserRate() {
                 key !== "Name"
             )
             .map(([key, value]) => (
-              <p key={key}>
+              <div key={key} className="listrate">
                 <p>
                   {key}:{" "}
                   {isObject(value) ? (
@@ -64,11 +109,40 @@ function SuperUserRate() {
                     <span>{value}</span>
                   )}
                 </p>
-              </p>
+              </div>
             ))}
+          <div className="button-group">
+            <button onClick={handleUpdateRate}>Update Rate</button>
+            <button onClick={handleDeleteRate} className="deleteButton">
+              {isDeletError && <div>{isDeletError}</div>}
+              Delete Rate
+            </button>
+          </div>
         </div>
       )}
-      {fetchRate.length === 0 && <div>You don't have Rate</div>}
+      {fetchRate.length === 0 && (
+        <>
+          <div className="today-rate">
+            <h1>You don't have Rate!!</h1>
+            <div className="button-group">
+              <button onClick={handleCreateRate}>Create Rate?</button>
+            </div>
+          </div>
+        </>
+      )}
+      {isform && (
+        <ChangeRateForm
+          isupdateForm={isupdateForm}
+          iscreateForm={iscreateForm}
+          token={token}
+          fetchGetRate={fetchGetRate}
+          setFetchRate={setFetchRate}
+          isFetchError={isFetchError}
+          setIsFetchError={setIsFetchError}
+          setIsLoading={setIsLoading}
+          setIsForm={setIsForm}
+        />
+      )}
     </>
   );
 }

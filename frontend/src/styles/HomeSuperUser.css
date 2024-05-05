@@ -219,16 +219,16 @@ ol {
 
 /* end for user home super user */
 /* start for rate home super user*/
-.today-rate {
-  width: 20%;
+.today-rate,
+.rateform {
+
+  width: 50%;
   text-align: center;
   border: 10px solid #ccc;
   border-radius: 10%;
+  margin: 20px auto;
 }
 
-.today-rate:hover {
-  transform: scale(1.2);
-}
 
 .today-rate h1 {
   font-size: 24px;
@@ -245,10 +245,16 @@ ol {
 .today-rate p {
   margin: 10px 0;
   font-size: 16px;
-
+  border-bottom: 1px dotted red;
 }
 
-.today-rate ul {
+.today-rate .listrate:hover {
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+
+/* .today-rate ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -259,11 +265,50 @@ ol {
 .today-rate li {
   margin-bottom: 5px;
 
+} */
+
+
+
+.today-rate>.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.today-rate span {
-  color: #444;
+.button-group button {
+  width: 50%;
 
+}
+
+.button-group button:hover {
+  background-color: #007bff;
+}
+
+.button-group .deleteButton:hover {
+  background-color: red;
+}
+
+.rateform form {
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.rateform form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.rateform form input {
+  padding: 5px;
+  width: 50%;
+}
+
+.rateform button {
+  width: 50%;
 }
 
 /* end for rate home super user */

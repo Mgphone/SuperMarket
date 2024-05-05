@@ -14,7 +14,7 @@ app.use("/", require("./src/Routes/rate"));
 app.use("/", require("./src/Routes/transition"));
 app.use((req, res, next) => {
   console.log(`404 not found request:${req.method} respond:${req.originalUrl}`);
-  res.status(404).json({ message: "Not Found" });
+  res.status(404).json({ message: "Your End Point Not Found" });
 });
 app.listen(port, () => {
   console.log("Server is listeing on port" + port);
