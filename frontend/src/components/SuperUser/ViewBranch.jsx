@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import firstTenDigits from "../../utils/firstTenDigits";
 function ViewBranch({ singleBranch, headers, setAllBranches }) {
   const url = `/api/branches/getsinglebranch/${singleBranch}`;
   const [fetchSingleBranch, setFetchSingleBranch] = useState("");
@@ -58,10 +58,7 @@ function ViewBranch({ singleBranch, headers, setAllBranches }) {
   if (isError) {
     return <div>{isError}</div>;
   }
-  const branchDate = (value) => {
-    const date = new Date(value);
-    return date.toLocaleDateString("en-Gb");
-  };
+
   const changeUserName = (array, value) => {
     const findArray = array.find((item) => item._id == value);
     if (findArray) {
@@ -75,7 +72,7 @@ function ViewBranch({ singleBranch, headers, setAllBranches }) {
     <div>
       <h1>This is for Single Branch</h1>
       {fetchSingleBranch ? (
-        <h1>Date: {branchDate(fetchSingleBranch.createdAt)}</h1>
+        <h1>Date: {firstTenDigits(fetchSingleBranch.createdAt)}</h1>
       ) : null}
       <h3>You have {fetchSingleBranch.transition.length} Sale/s</h3>
       <div className="singlebranchfetch">

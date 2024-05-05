@@ -1,0 +1,276 @@
+/* start for branch user super */
+/* check all branch super */
+.checkallbranchsuper table {
+  width: 80%;
+  margin: 0 auto;
+
+}
+
+.checkallbranchsuper table th {
+  /* background-color: red; */
+  text-align: left;
+  padding: 15px 0;
+}
+
+.checkallbranchsuper table tr {
+  text-align: center;
+  margin: 10px;
+}
+
+.checkallbranchsuper table tr:hover {
+  background-color: #ccc;
+  /* cursor: pointer; */
+}
+
+.checkallbranchsuper table thead tr th {
+  background-color: #4CAF50;
+}
+
+.checkallbranchsuper button {
+  cursor: pointer;
+}
+
+.creatnewbranch form fieldset {
+
+  display: grid;
+  grid-template-columns: repeat(4, 50px);
+  gap: 10px;
+}
+
+.singlebranchfetch {
+  width: 80%;
+  border: 10px solid #ccc;
+}
+
+.singlebranch-entry {
+  display: flex;
+  align-items: center;
+
+  /* width: 80%; */
+  gap: 10px;
+  border: 1px dashed #ccc;
+}
+
+.singlebranch-entry p {
+  /* padding-right: 10px; */
+  width: 20vw;
+
+}
+
+.singlebranch-entry p:first-child {
+  font-weight: bold;
+}
+
+.singlebranch-entry>p,
+ul,
+ol {
+  list-style-type: none;
+}
+
+.singlebranch-entry li {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+
+}
+
+.superbuttongroup {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+
+
+
+/* create new branch */
+.creatnewbranch {
+  width: 50%;
+  margin: 0 auto;
+}
+
+
+
+.creatnewbranch {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.creatnewbranch h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.creatnewbranch form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.creatnewbranch form input[type="text"],
+.creatnewbranch form input[type="number"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.creatnewbranch form fieldset {
+  border: none;
+  margin: 20px 0;
+}
+
+.creatnewbranch form legend {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.creatnewbranch form input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.creatnewbranch form button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.creatnewbranch form button:hover {
+  background-color: #0056b3;
+}
+
+/* end for branch user super */
+/* start for user home super user */
+.superusermanage table {
+  width: 90%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.superusermanage th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+
+.superusermanage tr:hover {
+  background-color: #ccc;
+}
+
+.superusermanage table button {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5%;
+  border: 2px solid gold;
+}
+
+.userreset {
+  position: fixed;
+  top: 20%;
+  left: 25%;
+  width: 50%;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.userreset h2 {
+  padding-bottom: 3px;
+}
+
+
+.userreset form {
+  display: flex;
+  flex-direction: column;
+}
+
+.userreset input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.userreset button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.userreset button:hover {
+  background-color: #0056b3;
+}
+
+/* end for user home super user */
+/* start for rate home super user*/
+.today-rate {
+  width: 20%;
+  text-align: center;
+  border: 10px solid #ccc;
+  border-radius: 10%;
+}
+
+.today-rate:hover {
+  transform: scale(1.2);
+}
+
+.today-rate h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.today-rate h3 {
+  font-size: 16px;
+  margin: 5px 0;
+  color: #666;
+}
+
+.today-rate p {
+  margin: 10px 0;
+  font-size: 16px;
+
+}
+
+.today-rate ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+
+}
+
+.today-rate li {
+  margin-bottom: 5px;
+
+}
+
+.today-rate span {
+  color: #444;
+
+}
+
+/* end for rate home super user */
+
+
+@media (max-width:800px) {
+  .creatnewbranch form fieldset {
+    grid-template-columns: repeat(2, 20px)
+  }
+}

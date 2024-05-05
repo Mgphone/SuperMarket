@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./checkallbranchsuper.css";
+
 import ViewBranch from "./ViewBranch";
 function CheckAllBranchSuper({ headers }) {
   const [allbranches, setAllBranches] = useState("");

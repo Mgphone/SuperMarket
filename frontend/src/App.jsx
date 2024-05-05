@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import Register from "./components/UserAuthenticationFront/Register.jsx";
 import HomeSuperUser from "./pages/HomeSuperUser";
 import RegisterSuper from "./components/UserAuthenticationFront/RegisterSuper.jsx";
-import "./App.css";
+import "../src/styles/App.css";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import HomeNormalUser from "./pages/HomeNormalUser";
 import Notfound from "./components/NotFound/Notfound.jsx";

@@ -20,3 +20,8 @@ button:hover {
 
   border-radius: 10px;
 }
+
+.error {
+  color: red;
+  margin-top: 5px;
+}

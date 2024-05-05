@@ -1,5 +1,5 @@
 import { useAuth } from "../../contexts/AuthContext";
-import "./SideNav.css";
+import "../../styles/SideNav.css";
 
 function SideNav({
   setIsAdminDashboard,
@@ -10,6 +10,8 @@ function SideNav({
   setIsManagerDashboard,
   setIsManageBranchUser,
   setIsSellingBoard,
+  setIsManageRate,
+  //this is for responsive css
   isAdminDashboard,
   isManageBranch,
   isManageUser,
@@ -18,6 +20,7 @@ function SideNav({
   isManagerDashboard,
   isManageBranchUser,
   isSellingBoard,
+  isManageRate,
 }) {
   const { decodedToken } = useAuth();
 
@@ -25,16 +28,25 @@ function SideNav({
     setIsAdminDashboard((prevValue) => !prevValue);
     setIsManageBranch(false);
     setIsManageuser(false);
+    setIsManageRate(false);
   };
   const handleSuperBranch = () => {
     setIsAdminDashboard(false);
     setIsManageBranch((prevValue) => !prevValue);
     setIsManageuser(false);
+    setIsManageRate(false);
   };
   const handleSuperUser = () => {
     setIsAdminDashboard(false);
     setIsManageBranch(false);
     setIsManageuser((prevValue) => !prevValue);
+    setIsManageRate(false);
+  };
+  const handleSuperRate = () => {
+    setIsAdminDashboard(false);
+    setIsManageBranch(false);
+    setIsManageuser(false);
+    setIsManageRate((prevValue) => !prevValue);
   };
   const handemanagerdash = () => {
     setIsManagerDashboard((prevValue) => !prevValue);
@@ -87,6 +99,12 @@ function SideNav({
               }}
             >
               Manage User
+            </li>
+            <li
+              onClick={handleSuperRate}
+              style={{ backgroundColor: isManageRate ? "lightgray" : "yellow" }}
+            >
+              Manage Rate
             </li>
           </>
         )}

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import "./Nav.css";
+import "../../styles/Nav.css";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../../contexts/AuthContext";
