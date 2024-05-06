@@ -1,12 +1,14 @@
-import { useState } from "react";
-const initialValues = {
-  USDSMALL: "",
-  USDBIG: "",
-  GBP: "",
-  YEN: "",
-  KYAT: "",
-  SINDOLLAR: "",
-};
+import { useFormik } from "formik";
+// import { useState } from "react";
+import * as Yup from "yup";
+// const initialValues = {
+//   USDSMALL: "",
+//   USDBIG: "",
+//   GBP: "",
+//   YEN: "",
+//   KYAT: "",
+//   SINDOLLAR: "",
+// };
 
 function ChangeRateForm({
   isupdateForm,
@@ -18,14 +20,37 @@ function ChangeRateForm({
   setIsForm,
   setIsLoading,
 }) {
-  const [values, setValues] = useState(initialValues);
+  // const [values, setValues] = useState(initialValues);
+  const validationSchema = Yup.object({
+    USDSMALL: Yup.string()
+      .required("Please fill out this field")
+      .matches(/^[0-9]+$/, "Only digits are allowed"),
+    USDBIG: Yup.string()
+      .required("Please fill out this field")
+      .matches(/^[0-9]+$/, "Only digits are allowed"),
+    GBP: Yup.string()
+      .required("Please fill out this field")
+      .matches(/^[0-9]+$/, "Only digits are allowed"),
+    YEN: Yup.string()
+      .required("Please fill out this field")
+      .matches(/^[0-9]+$/, "Only digits are allowed"),
+    KYAT: Yup.string()
+      .required("Please fill out this field")
+      .matches(/^[0-9]+$/, "Only digits are allowed"),
+    SINDOLLAR: Yup.string()
+      .required("Please fill out this field")
+      .matches(/^[0-9]+$/, "Only digits are allowed"),
+  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (values) => {
+    const formData = {
+      USDSMALL: values.USDSMALL,
+      USDBIG: values.USDBIG,
+      GBP: values.GBP,
+      YEN: values.YEN,
+      KYAT: values.KYAT,
+      SINDOLLAR: values.SINDOLLAR,
+    };
     let url;
     let urlMethod;
     const editFormUrl = "/api/rate/updaterate";
@@ -37,9 +62,7 @@ function ChangeRateForm({
       url = createFormUrl;
       urlMethod = "POST";
     }
-    e.preventDefault();
-    console.log("before fetching " + values);
-    console.log(url);
+
     try {
       setIsLoading(true);
       const response = await fetch(url, {
@@ -48,9 +71,8 @@ function ChangeRateForm({
           Authorization: token,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(formData),
       });
-      console.log("fetching time" + JSON.stringify(response));
 
       if (response.ok) {
         const responseJSON = await response.json();
@@ -68,25 +90,52 @@ function ChangeRateForm({
       setIsLoading(false);
     }
   };
+  const handleRateCloseForm = () => {
+    setIsForm(false);
+  };
+  const formik = useFormik({
+    initialValues: {
+      USDSMALL: "",
+      USDBIG: "",
+      GBP: "",
+      YEN: "",
+      KYAT: "",
+      SINDOLLAR: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      handleSubmit(values);
+    },
+  });
   return (
     <div className="rateform">
-      {isupdateForm && <h1>Edit Rate Form</h1>}
-      {iscreateForm && <h1>Create Rate Form</h1>}
-      <form onSubmit={handleSubmit}>
-        {Object.entries(values).map(([label, value]) => (
-          <div key={label}>
-            <label htmlFor={label}>{label}</label>
-            <input
-              type="number"
-              id={label}
-              name={label}
-              value={value}
-              onChange={handleChange}
-            />
-          </div>
-        ))}
-        <button type="submit">Submit</button>
-      </form>
+      <>
+        <div className="updatformclose">
+          {isupdateForm && <h1>Edit Rate Form</h1>}
+          {iscreateForm && <h1>Create Rate Form</h1>}
+
+          <div onClick={handleRateCloseForm}>X</div>
+        </div>
+        <form onSubmit={formik.handleSubmit}>
+          {Object.entries(formik.values).map(([label, value]) => (
+            <div key={label}>
+              <label htmlFor={label}>{label}</label>
+              <input
+                type="number"
+                placeholder={label}
+                id={label}
+                name={label}
+                value={value}
+                onChange={formik.handleChange}
+              />
+              {formik.touched[label] && formik.errors[label] ? (
+                <div className="error">{formik.errors[label]} </div>
+              ) : null}
+            </div>
+          ))}
+          <button type="submit">Submit</button>
+        </form>
+      </>
     </div>
   );
 }

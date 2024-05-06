@@ -10,7 +10,6 @@ function SuperUserRate() {
   const [isform, setIsForm] = useState(false);
   const [isupdateForm, setIsUpdateForm] = useState(false);
   const [iscreateForm, setIsCreateForm] = useState(false);
-
   const { token } = useAuth();
 
   const fetchGetRate = async () => {
@@ -61,7 +60,6 @@ function SuperUserRate() {
         console.error(error);
         setIsDeleteError(error);
       }
-      // console.log("YOU click delete");
     } else {
       alert("Delete Cancel");
     }
@@ -70,7 +68,6 @@ function SuperUserRate() {
     setIsForm(true);
     setIsUpdateForm(true);
     setIsCreateForm(false);
-    console.log("You click update rate");
   };
   const handleCreateRate = async () => {
     setIsForm(true);

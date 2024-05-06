@@ -18,13 +18,11 @@ function OpenNewBranchSuper({ handleclose, headers }) {
   });
 
   const handleSubmit = async (values) => {
-    console.log(values);
     const formData = {
       branchname: values.branchname,
       openingamount: values.openingamount,
       // currency: [],
     };
-    console.log(formData);
 
     try {
       const url = "/api/branches/createbranch";
@@ -58,7 +56,6 @@ function OpenNewBranchSuper({ handleclose, headers }) {
       handleSubmit(values);
     },
   });
-  // console.log(formik);
   return (
     <div className="creatnewbranch">
       <button onClick={handleclose}>X</button>
