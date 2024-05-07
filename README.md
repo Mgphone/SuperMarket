@@ -1,10 +1,13 @@
-# Money Exchange Backend System
+Got it! Here's how you can update the README to include instructions for both the frontend and backend setup:
 
-This repository contains the backend code for a money exchange system. The system provides endpoints for managing transitions, branches, and currency exchange rates.
+```markdown
+# Money Exchange Backend and Frontend System
+
+This repository contains the backend and frontend code for a money exchange system. The backend provides endpoints for managing transactions, branches, and currency exchange rates, while the frontend serves as the user interface for interacting with the system.
 
 ## Getting Started
 
-To set up and run the backend system locally, follow these instructions:
+To set up and run the backend and frontend system locally, follow these instructions:
 
 ### Prerequisites
 
@@ -22,18 +25,19 @@ To set up and run the backend system locally, follow these instructions:
 2. Navigate to the project directory:
 
    ```bash
-   cd backend
+   cd SuperMarketBE
    ```
 
 3. Create a `.env` file:
 
    Copy the contents of the `env_sample` folder into a new file named `.env` in the project directory. Update the variables in the `.env` file with your specific configurations, such as database connection strings and API keys.
 
-4. Build the Docker image:
+4. Build the Docker images:
 
    ```bash
    docker-compose build
    ```
+
 ### Docker Installation
 
 To run this project, you'll need Docker installed on your system. We recommend using Docker Desktop, which provides an easy-to-use interface for managing Docker containers on both Windows and macOS.
@@ -53,21 +57,14 @@ If you're using Linux, you can install Docker Engine by following the instructio
    docker-compose up -d
    ```
 
-2. Access the backend services:
+2. Access the frontend and backend services:
 
-   Once the containers are up and running, you can access the backend services by navigating to `http://localhost:5000` in your web browser or sending requests using Postman.
+   - Frontend: Navigate to `http://localhost:5173` in your web browser.
+   - Backend: Once the containers are up and running, you can access the backend services by navigating to `http://localhost:5000` in your web browser or sending requests using Postman.
 
 3. Test the endpoints:
 
    Use the provided Postman template (`money-exchange.postman_collection.json`) to test the endpoints of the backend. Import the Postman template into Postman and execute the requests to interact with the money exchange system.
+```
 
-## Contributing
-
-Contributions are welcome! If you'd like to contribute to this project, please fork the repository, make your changes, and submit a pull request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
+This README now includes instructions for setting up both the backend and frontend services, along with usage guidance.
