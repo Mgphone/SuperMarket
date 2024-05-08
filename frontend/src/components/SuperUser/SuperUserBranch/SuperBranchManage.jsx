@@ -1,7 +1,7 @@
 import { useState } from "react";
 import OpenNewBranchSuper from "./OpenNewBranchSuper";
 import CheckAllBranchSuper from "./CheckAllBranchSuper";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../../contexts/AuthContext";
 function SuperBranchManage() {
   //usestate
   const [openNewBranch, setOpenNewBranch] = useState(false);

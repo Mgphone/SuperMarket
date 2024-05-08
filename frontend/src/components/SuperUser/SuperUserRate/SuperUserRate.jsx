@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import firstTenDigits from "../../utils/firstTenDigits";
-import { useAuth } from "../../contexts/AuthContext";
+import firstTenDigits from "../../../utils/firstTenDigits";
+import { useAuth } from "../../../contexts/AuthContext";
 import ChangeRateForm from "./ChangeRateForm";
 function SuperUserRate() {
   const [isLoading, setIsLoading] = useState(true);
@@ -92,7 +92,7 @@ function SuperUserRate() {
             )
             .map(([key, value]) => (
               <div key={key} className="listrate">
-                <p>
+                <div className="list">
                   {key}:{" "}
                   {isObject(value) ? (
                     <ul className="rate-ullist">
@@ -105,7 +105,7 @@ function SuperUserRate() {
                   ) : (
                     <span>{value}</span>
                   )}
-                </p>
+                </div>
               </div>
             ))}
           <div className="button-group">

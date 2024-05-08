@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
-
+import { useAuth } from "../../../contexts/AuthContext";
+import SuperUserAllBranchesTransitions from "./SuperUserAllBranchesTransitions";
+import SuperUserSingleBranchTransitions from "./SuperUserSingleBranchTransitions";
 function SuperAdminDashboard() {
   const { token } = useAuth();
   const [branchName, setBranchName] = useState("");
@@ -10,15 +11,19 @@ function SuperAdminDashboard() {
   const [isError, setIserror] = useState(false);
   const [formData, setFormData] = useState({});
   const [fetchTransitions, setFetchTransitions] = useState("");
+  const [isFetchLoading, setIsFetchLoading] = useState(false);
+  const [isFetchError, setIsFetchError] = useState("");
   const handleAllBranchesButton = () => {
     setIsAllBranchesButton(true);
     setIsSingleBranchButton(false);
     setFormData({});
+    setFetchTransitions("");
   };
   const handleSingleBranchButton = () => {
     setIsAllBranchesButton(false);
     setIsSingleBranchButton(true);
     setFormData({});
+    setFetchTransitions("");
   };
   const fetchBranchName = async () => {
     try {
@@ -44,6 +49,7 @@ function SuperAdminDashboard() {
       ...formData,
       [name]: value,
     });
+    handleSubmit();
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,15 +67,24 @@ function SuperAdminDashboard() {
         headers: { Authorization: token, "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+      setIsFetchLoading(true);
+      setIsFetchError("");
       if (!response.ok) {
         throw new Error("Failed to fetch transition data");
       }
       const responseJSON = await response.json();
       setFetchTransitions(responseJSON);
+      setIsFetchLoading(false);
     } catch (error) {
       console.error(error);
+      setIsFetchError(error);
     }
   };
+  useEffect(() => {
+    console.log(
+      "This is fetching fetchTransitions" + JSON.stringify(fetchTransitions)
+    );
+  }, [fetchTransitions]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -89,63 +104,29 @@ function SuperAdminDashboard() {
         </button>
       </div>
       {isAllBranchesButton && (
-        <div>
-          <h1>For ALl Branches How Many Day of sales you want to see?</h1>
-          <form onSubmit={handleSubmit}>
-            <select
-              name="date"
-              value={formData.date || ""}
-              onChange={handleChange}
-            >
-              <option>How many days</option>
-              <option value="1">Today</option>
-              <option value="2">Yesterday</option>
-              <option value="3">Last Three Days</option>
-              <option value="7">Last Seven Days</option>
-              <option value="14">Last FortNight </option>
-              <option value="30">Last Month</option>
-              <option value="180">Last 6 Months</option>
-              <option value="360">Last Year</option>
-            </select>
-            <button type="submit">Submit</button>
-          </form>
-        </div>
+        <>
+          <SuperUserAllBranchesTransitions
+            handleSubmit={handleSubmit}
+            formData={formData}
+            handleChange={handleChange}
+            isFetchError={isFetchError}
+            isFetchLoading={isFetchLoading}
+            fetchTransitions={fetchTransitions}
+          />
+        </>
       )}
       {isSingleBranchButton && branchName && (
-        <div>
-          <h1>For single Branch How Many Day of sales you want to see?</h1>
-          <form onSubmit={handleSubmit}>
-            <select
-              name="branchId"
-              value={formData.branchId || ""}
-              onChange={handleChange}
-            >
-              <option>Please choose the option</option>
-              {branchName.map((item) => (
-                <option value={item._id} key={item._id}>
-                  {item.branch_name}
-                </option>
-              ))}
-            </select>
-
-            <select
-              name="date"
-              value={formData.date || ""}
-              onChange={handleChange}
-            >
-              <option>How many days</option>
-              <option value="1">Today</option>
-              <option value="2">Yesterday</option>
-              <option value="3">Last Three Days</option>
-              <option value="7">Last Seven Days</option>
-              <option value="14">Last FortNight </option>
-              <option value="30">Last Month</option>
-              <option value="180">Last 6 Months</option>
-              <option value="360">Last Year</option>
-            </select>
-            <button type="submit">Submit</button>
-          </form>
-        </div>
+        <>
+          <SuperUserSingleBranchTransitions
+            handleSubmit={handleSubmit}
+            formData={formData}
+            handleChange={handleChange}
+            branchName={branchName}
+            isFetchError={isFetchError}
+            isFetchLoading={isFetchLoading}
+            fetchTransitions={fetchTransitions}
+          />
+        </>
       )}
     </div>
   );

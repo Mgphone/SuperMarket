@@ -1,11 +1,18 @@
 import { useState } from "react";
+// import Nav from "../components/Nav/Nav";
+// import SuperAdminDashboard from "../components/SuperUser/SuperAdminDashboard";
+// import SuperBranchManage from "../components/SuperUser/SuperBranchManage";
+// import SuperUserManage from "../components/SuperUser/SuperUserManage";
+// import SideNav from "../components/SIdeNav/SideNav";
+// import AreaManagerPortal from "../components/SuperUser/AreaManagerPortal";
+// import SuperUserRate from "../components/SuperUser/SuperUserRate";
 import Nav from "../components/Nav/Nav";
-import SuperAdminDashboard from "../components/SuperUser/SuperAdminDashboard";
-import SuperBranchManage from "../components/SuperUser/SuperBranchManage";
+import SuperAdminDashboard from "../components/SuperUser/SuperUserAdmin/SuperAdminDashboard";
+import SuperBranchManage from "../components/SuperUser/SuperUserBranch/SuperBranchManage";
 import SuperUserManage from "../components/SuperUser/SuperUserManage";
 import SideNav from "../components/SIdeNav/SideNav";
 import AreaManagerPortal from "../components/SuperUser/AreaManagerPortal";
-import SuperUserRate from "../components/SuperUser/SuperUserRate";
+import SuperUserRate from "../components/SuperUser/SuperUserRate/SuperUserRate";
 import "../styles/HomeSuperUser.css";
 function HomeSuperUser() {
   const [isAdminDashboard, setIsAdminDashboard] = useState(false);

@@ -242,10 +242,11 @@ ol {
   color: #666;
 }
 
-.today-rate p {
+.today-rate .list {
   margin: 10px 0;
   font-size: 16px;
   border-bottom: 1px dotted red;
+  cursor: default;
 }
 
 .today-rate .listrate:hover {

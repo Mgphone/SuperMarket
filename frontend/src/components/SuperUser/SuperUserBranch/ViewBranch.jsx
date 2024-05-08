@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import firstTenDigits from "../../utils/firstTenDigits";
+import firstTenDigits from "../../../utils/firstTenDigits";
 function ViewBranch({ singleBranch, headers, setAllBranches }) {
   const url = `/api/branches/getsinglebranch/${singleBranch}`;
   const [fetchSingleBranch, setFetchSingleBranch] = useState("");
