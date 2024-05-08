@@ -168,9 +168,11 @@ const TransitionController = {
               .json({ message: "You don't have super user authority" });
         })
         .catch((error) => {
+          console.error(error);
           return res.status(403).json({ message: error });
         });
     } catch (error) {
+      console.error(error);
       return res.status(403).json({ message: error });
     }
   },
@@ -195,9 +197,11 @@ const TransitionController = {
               .json({ message: "You don't have super user authority" });
         })
         .catch((error) => {
+          console.error(error);
           return res.status(403).json({ message: error });
         });
     } catch (error) {
+      console.error(error);
       return res.status(403).json({ message: error });
     }
   },

@@ -12,12 +12,12 @@ router.get(
   checkingToken,
   TransitionController.getTransitionBranchManager
 );
-router.get(
+router.post(
   "/transition/supertransitionfromallbranches",
   checkingToken,
   TransitionController.getAllTransitionbyDay
 );
-router.get(
+router.post(
   "/transition/supertransitionfromonebranch",
   checkingToken,
   TransitionController.getTransitionByBranch
