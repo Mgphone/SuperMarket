@@ -319,7 +319,31 @@ ol {
 }
 
 /* end for rate home super user */
+/* start for admin dashboard */
+.branchtransition {
+  text-align: center;
+}
 
+.branchtransition form {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.branchtransition form select,
+.branchtransition form button {
+  width: 30%;
+  height: 40px;
+  align-items: center;
+  margin: 10px;
+}
+
+.branchtransition form select:hover,
+.branchtransition form button:hover {
+  background-color: #007bff;
+}
+
+/* end for admin dashboard */
 
 @media (max-width:800px) {
   .creatnewbranch form fieldset {

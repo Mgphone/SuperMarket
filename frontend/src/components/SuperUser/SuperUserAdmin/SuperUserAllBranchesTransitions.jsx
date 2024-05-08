@@ -5,13 +5,13 @@ function SuperUserAllBranchesTransitions({
   isFetchError,
   isFetchLoading,
   fetchTransitions,
+  isFetchSubmit,
 }) {
   const transitionsExist =
     fetchTransitions && Object.keys(fetchTransitions).length > 0;
-
   return (
-    <div>
-      <h1>For ALl Branches How Many Day of sales you want to see?</h1>
+    <div className="branchtransition">
+      <h1>For All Branches How Many Day of sales you want to see?</h1>
       <form onSubmit={handleSubmit}>
         <select name="date" value={formData.date || ""} onChange={handleChange}>
           <option>How many days</option>
@@ -31,10 +31,14 @@ function SuperUserAllBranchesTransitions({
       {/* {fetchTransitions && Object.keys(fetchTransitions).length > 0 && (
         <div>{Object.keys(fetchTransitions).length} this big</div>
       )} */}
-      {transitionsExist ? (
-        <div>{Object.keys(fetchTransitions).length}This big</div>
+      {isFetchSubmit ? (
+        transitionsExist ? (
+          <div>{Object.keys(fetchTransitions).length}This big</div>
+        ) : (
+          <div>You have no Transition yet Please change the date</div>
+        )
       ) : (
-        <div>You have no Transition yet Please change the date</div>
+        ""
       )}
     </div>
   );

@@ -13,17 +13,20 @@ function SuperAdminDashboard() {
   const [fetchTransitions, setFetchTransitions] = useState("");
   const [isFetchLoading, setIsFetchLoading] = useState(false);
   const [isFetchError, setIsFetchError] = useState("");
+  const [isFetchSubmit, setIsfetchSubmit] = useState(false);
   const handleAllBranchesButton = () => {
     setIsAllBranchesButton(true);
     setIsSingleBranchButton(false);
     setFormData({});
     setFetchTransitions("");
+    setIsfetchSubmit(false);
   };
   const handleSingleBranchButton = () => {
     setIsAllBranchesButton(false);
     setIsSingleBranchButton(true);
     setFormData({});
     setFetchTransitions("");
+    setIsfetchSubmit(false);
   };
   const fetchBranchName = async () => {
     try {
@@ -35,6 +38,7 @@ function SuperAdminDashboard() {
       const branchJson = await response.json();
       setBranchName(branchJson);
       setIsLoading(false);
+      setIsfetchSubmit(true);
     } catch (error) {
       console.error(error);
       setIserror(error);
@@ -75,16 +79,17 @@ function SuperAdminDashboard() {
       const responseJSON = await response.json();
       setFetchTransitions(responseJSON);
       setIsFetchLoading(false);
+      setIsfetchSubmit(true);
     } catch (error) {
       console.error(error);
       setIsFetchError(error);
     }
   };
-  useEffect(() => {
-    console.log(
-      "This is fetching fetchTransitions" + JSON.stringify(fetchTransitions)
-    );
-  }, [fetchTransitions]);
+  // useEffect(() => {
+  //   console.log(
+  //     "This is fetching fetchTransitions" + JSON.stringify(fetchTransitions)
+  //   );
+  // }, [fetchTransitions]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -100,7 +105,7 @@ function SuperAdminDashboard() {
           Check Sales for All Branches
         </button>
         <button onClick={handleSingleBranchButton}>
-          Check Sales for Single Branche
+          Check Sales for Individual Branche
         </button>
       </div>
       {isAllBranchesButton && (
@@ -112,6 +117,7 @@ function SuperAdminDashboard() {
             isFetchError={isFetchError}
             isFetchLoading={isFetchLoading}
             fetchTransitions={fetchTransitions}
+            isFetchSubmit={isFetchSubmit}
           />
         </>
       )}
@@ -125,6 +131,7 @@ function SuperAdminDashboard() {
             isFetchError={isFetchError}
             isFetchLoading={isFetchLoading}
             fetchTransitions={fetchTransitions}
+            isFetchSubmit={isFetchSubmit}
           />
         </>
       )}
