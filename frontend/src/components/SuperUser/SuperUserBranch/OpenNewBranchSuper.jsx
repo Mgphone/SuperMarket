@@ -21,7 +21,6 @@ function OpenNewBranchSuper({ handleclose, headers }) {
     const formData = {
       branchname: values.branchname,
       openingamount: values.openingamount,
-      // currency: [],
     };
 
     try {
@@ -68,7 +67,6 @@ function OpenNewBranchSuper({ handleclose, headers }) {
       <form onSubmit={(e) => formik.handleSubmit(e)}>
         <label htmlFor="BranchName">
           Branch Name
-          {/* <input type="text" id="branchname" name="branchname" /> */}
           <input
             type="text"
             name="branchname"
@@ -82,7 +80,6 @@ function OpenNewBranchSuper({ handleclose, headers }) {
         )}
         <label htmlFor="OpeningAmount">
           Opening Amount
-          {/* <input type="number" id="OpeningAmount" name="openingamount" /> */}
           <input
             type="number"
             name="openingamount"

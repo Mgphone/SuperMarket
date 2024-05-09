@@ -4,27 +4,19 @@ import ViewBranch from "./ViewBranch";
 function CheckAllBranchSuper({ headers }) {
   const [allbranches, setAllBranches] = useState("");
   const [singleBranch, setSingleBranch] = useState("");
-  // const [userData, setUserData] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const headersWithContent = {
-  //   ...headers,
-  //   "Content-Type": "application/json",
-  // };
-  // i add extra fetech for users but still not using yet
+
   const fetchData = async () => {
     try {
       const [branches] = await Promise.all([
-        // fetch("/api/username/findalluser", { headers }),
         fetch("/api/branches/getallbranch", { headers }),
       ]);
       if (!branches.ok) {
         throw new Error("Failed to fetch data");
       }
-      // const usersJson = await users.json();
       const branchJson = await branches.json();
       setAllBranches(branchJson);
-      // setUserData(usersJson);
       setIsLoading(false);
     } catch (error) {
       setError(error);
@@ -56,7 +48,6 @@ function CheckAllBranchSuper({ headers }) {
     }
   };
   const handleViewBranch = async (value) => {
-    // setAllBranches(false);
     setSingleBranch(value);
   };
 

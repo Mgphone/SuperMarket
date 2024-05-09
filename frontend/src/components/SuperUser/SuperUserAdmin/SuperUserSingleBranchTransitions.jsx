@@ -1,4 +1,5 @@
 import { useFormik } from "formik";
+import SuperAdminSales from "./SuperAdminSales";
 function SuperUserSingleBranchTransitions({
   handleSubmit,
 
@@ -7,13 +8,19 @@ function SuperUserSingleBranchTransitions({
   isFetchLoading,
   fetchTransitions,
   isFetchSubmit,
+  setIsFetchLoading,
+  setIsfetchSubmit,
 }) {
   const formik = useFormik({
     initialValues: {
       date: "",
       branchId: "",
     },
-    onSubmit: handleSubmit,
+    onSubmit: (values) => {
+      setIsFetchLoading(true);
+      setIsfetchSubmit(false);
+      handleSubmit(values);
+    },
     validate: (values) => {
       const errors = {};
       if (!values.date) {
@@ -66,13 +73,15 @@ function SuperUserSingleBranchTransitions({
         ) : null}
         <button type="submit">Submit</button>
       </form>
-      {isFetchError && <div>{isFetchError}</div>}
-      {isFetchLoading && <div>Loading....</div>}
+      {isFetchError && <div className="superadminsales">{isFetchError}</div>}
+      {isFetchLoading && <div className="superadminsales">Loading....</div>}
       {isFetchSubmit ? (
         transitionsExist ? (
-          <div>{Object.keys(fetchTransitions).length}This big</div>
+          <SuperAdminSales fetchTransitions={fetchTransitions} />
         ) : (
-          <div>You have no Transition yet Please change the date</div>
+          <div className="superadminsales">
+            <h1>You have no Transition yet Please change the date</h1>
+          </div>
         )
       ) : (
         ""

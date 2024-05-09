@@ -31,7 +31,6 @@ function RegisterSuper({ role }) {
       ),
     name: Yup.string()
       .required("Please fill out this field")
-      // .matches(/^[a-zA-Z]+$/, "Name must contain only characters")
       .min(3, "Name must be at lease 3 characters"),
   });
 

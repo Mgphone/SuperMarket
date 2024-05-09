@@ -14,7 +14,6 @@ function SuperUserManage() {
   const navigate = useNavigate();
   const fetchData = async () => {
     try {
-      // const response = await fetch("/api/username/findalluser", { headers });
       const [users, branches] = await Promise.all([
         fetch("/api/username/findalluser", { headers }),
         fetch("/api/branches/getallbranch", { headers }),

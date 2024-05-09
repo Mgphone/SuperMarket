@@ -1,14 +1,5 @@
 import { useFormik } from "formik";
-// import { useState } from "react";
 import * as Yup from "yup";
-// const initialValues = {
-//   USDSMALL: "",
-//   USDBIG: "",
-//   GBP: "",
-//   YEN: "",
-//   KYAT: "",
-//   SINDOLLAR: "",
-// };
 
 function ChangeRateForm({
   isupdateForm,
@@ -20,7 +11,6 @@ function ChangeRateForm({
   setIsForm,
   setIsLoading,
 }) {
-  // const [values, setValues] = useState(initialValues);
   const validationSchema = Yup.object({
     USDSMALL: Yup.string()
       .required("Please fill out this field")

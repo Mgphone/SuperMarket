@@ -345,7 +345,18 @@ ol {
 }
 
 /* end for admin dashboard */
+/* start of superadminsales */
+.superadminsales {
+  /* width: 100%;
+  background-color: red; */
+}
 
+.superadminsales h1 {
+  color: #333;
+  text-align: left;
+}
+
+/* end of superadminsales */
 @media (max-width:800px) {
   .creatnewbranch form fieldset {
     grid-template-columns: repeat(2, 20px)

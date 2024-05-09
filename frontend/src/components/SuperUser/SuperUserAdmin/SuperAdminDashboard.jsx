@@ -76,11 +76,6 @@ function SuperAdminDashboard() {
       setIsFetchError(error);
     }
   };
-  // useEffect(() => {
-  //   console.log(
-  //     "This is fetching fetchTransitions" + JSON.stringify(fetchTransitions)
-  //   );
-  // }, [fetchTransitions]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -92,10 +87,20 @@ function SuperAdminDashboard() {
   return (
     <div>
       <div className="superbuttongroup">
-        <button onClick={handleAllBranchesButton}>
+        <button
+          onClick={handleAllBranchesButton}
+          style={{
+            backgroundColor: isAllBranchesButton ? "#555" : "",
+          }}
+        >
           Check Sales for All Branches
         </button>
-        <button onClick={handleSingleBranchButton}>
+        <button
+          onClick={handleSingleBranchButton}
+          style={{
+            backgroundColor: isSingleBranchButton ? "#555" : "",
+          }}
+        >
           Check Sales for Individual Branche
         </button>
       </div>
@@ -107,6 +112,8 @@ function SuperAdminDashboard() {
             isFetchLoading={isFetchLoading}
             fetchTransitions={fetchTransitions}
             isFetchSubmit={isFetchSubmit}
+            setIsfetchSubmit={setIsfetchSubmit}
+            setIsFetchLoading={setIsFetchLoading}
           />
         </>
       )}
@@ -119,6 +126,8 @@ function SuperAdminDashboard() {
             isFetchLoading={isFetchLoading}
             fetchTransitions={fetchTransitions}
             isFetchSubmit={isFetchSubmit}
+            setIsfetchSubmit={setIsfetchSubmit}
+            setIsFetchLoading={setIsFetchLoading}
           />
         </>
       )}

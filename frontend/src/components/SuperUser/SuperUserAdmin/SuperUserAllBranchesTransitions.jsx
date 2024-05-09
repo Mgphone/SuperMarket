@@ -1,10 +1,13 @@
 import { useFormik } from "formik";
+import SuperAdminSales from "./SuperAdminSales";
 function SuperUserAllBranchesTransitions({
   handleSubmit,
   isFetchError,
   isFetchLoading,
   fetchTransitions,
   isFetchSubmit,
+  setIsFetchLoading,
+  setIsfetchSubmit,
 }) {
   const transitionsExist =
     fetchTransitions && Object.keys(fetchTransitions).length > 0;
@@ -12,7 +15,12 @@ function SuperUserAllBranchesTransitions({
     initialValues: {
       date: "",
     },
-    onSubmit: handleSubmit,
+    // onSubmit: handleSubmit,
+    onSubmit: (values) => {
+      setIsFetchLoading(true);
+      setIsfetchSubmit(false);
+      handleSubmit(values);
+    },
     validate: (values) => {
       const errors = {};
       if (!values.date) {
@@ -46,14 +54,16 @@ function SuperUserAllBranchesTransitions({
         ) : null}
         <button type="submit">Submit</button>
       </form>
-      {isFetchError && <div>{isFetchError}</div>}
-      {isFetchLoading && <div>Loading....</div>}
+      {isFetchError && <div className="superadminsales">{isFetchError}</div>}
+      {isFetchLoading && <div className="superadminsales">Loading....</div>}
 
       {isFetchSubmit ? (
         transitionsExist ? (
-          <div>{Object.keys(fetchTransitions).length}This big</div>
+          <SuperAdminSales fetchTransitions={fetchTransitions} />
         ) : (
-          <div>You have no Transition yet Please change the date</div>
+          <div className="superadminsales">
+            <h1>You have no Transitions yet Please change the date</h1>
+          </div>
         )
       ) : (
         ""
