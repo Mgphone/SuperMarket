@@ -9,7 +9,6 @@ function SuperAdminDashboard() {
   const [isAllBranchesButton, setIsAllBranchesButton] = useState(false);
   const [isSingleBranchButton, setIsSingleBranchButton] = useState(false);
   const [isError, setIserror] = useState(false);
-  const [formData, setFormData] = useState({});
   const [fetchTransitions, setFetchTransitions] = useState("");
   const [isFetchLoading, setIsFetchLoading] = useState(false);
   const [isFetchError, setIsFetchError] = useState("");
@@ -17,14 +16,12 @@ function SuperAdminDashboard() {
   const handleAllBranchesButton = () => {
     setIsAllBranchesButton(true);
     setIsSingleBranchButton(false);
-    setFormData({});
     setFetchTransitions("");
     setIsfetchSubmit(false);
   };
   const handleSingleBranchButton = () => {
     setIsAllBranchesButton(false);
     setIsSingleBranchButton(true);
-    setFormData({});
     setFetchTransitions("");
     setIsfetchSubmit(false);
   };
@@ -47,29 +44,23 @@ function SuperAdminDashboard() {
   useEffect(() => {
     fetchBranchName();
   }, []);
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    handleSubmit();
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+
+  const handleSubmit = async (values) => {
     let url;
-    const checkingUrl = Object.keys(formData).length;
+    const checkingUrl = Object.keys(values).length;
     if (checkingUrl === 1) {
       url = "/api/transition/supertransitionfromallbranches ";
-    }
-    if (checkingUrl === 2) {
+    } else if (checkingUrl === 2) {
       url = "/api/transition/supertransitionfromonebranch";
+    } else {
+      setIserror("Something Wrong ");
     }
+
     try {
       const response = await fetch(url, {
         method: "POST",
         headers: { Authorization: token, "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(values),
       });
       setIsFetchLoading(true);
       setIsFetchError("");
@@ -112,8 +103,6 @@ function SuperAdminDashboard() {
         <>
           <SuperUserAllBranchesTransitions
             handleSubmit={handleSubmit}
-            formData={formData}
-            handleChange={handleChange}
             isFetchError={isFetchError}
             isFetchLoading={isFetchLoading}
             fetchTransitions={fetchTransitions}
@@ -125,8 +114,6 @@ function SuperAdminDashboard() {
         <>
           <SuperUserSingleBranchTransitions
             handleSubmit={handleSubmit}
-            formData={formData}
-            handleChange={handleChange}
             branchName={branchName}
             isFetchError={isFetchError}
             isFetchLoading={isFetchLoading}
