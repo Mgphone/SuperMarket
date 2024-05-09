@@ -80,7 +80,8 @@ function SuperUserSingleBranchTransitions({
           <SuperAdminSales fetchTransitions={fetchTransitions} />
         ) : (
           <div className="superadminsales">
-            <h1>You have no Transition yet Please change the date</h1>
+            You have no Transitions yet for {formik.values.date} day/s Please
+            choose difference Dates
           </div>
         )
       ) : (
