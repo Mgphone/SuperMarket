@@ -15,7 +15,6 @@ function GraphBarChart({ fetchTransitions }) {
 
   return (
     <div className="bar-chart">
-      This will compare who is the highest sale
       <BarChart width={800} height={300} data={sellerData}>
         <XAxis dataKey="seller" tickFormatter={(seller) => seller} />
         <YAxis />

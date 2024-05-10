@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import SuperAdminSales from "./SuperAdminSales";
+import SuperAdminSaleSingleBranch from "./SuperAdminSaleSingleBranch";
 function SuperUserSingleBranchTransitions({
   handleSubmit,
 
@@ -75,13 +75,18 @@ function SuperUserSingleBranchTransitions({
       </form>
       {isFetchError && <div className="superadminsales">{isFetchError}</div>}
       {isFetchLoading && <div className="superadminsales">Loading....</div>}
+
       {isFetchSubmit ? (
         transitionsExist ? (
-          <SuperAdminSales fetchTransitions={fetchTransitions} />
+          <SuperAdminSaleSingleBranch
+            fetchTransitions={fetchTransitions}
+            value={formik.values}
+          />
         ) : (
           <div className="superadminsales">
-            You have no Transitions yet for {formik.values.date} day/s Please
-            choose difference Dates
+            You have no Transitions yet for{" "}
+            {formik.values.date == 1 ? <> Today</> : formik.values.date} days
+            Please choose difference Dates
           </div>
         )
       ) : (

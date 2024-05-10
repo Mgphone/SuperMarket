@@ -13,7 +13,6 @@ function GraphPieChart({ fetchTransitions }) {
   }));
   return (
     <div className="pie-chart">
-      This will show pie chart compare currency
       <PieChart width={600} height={300}>
         <Pie
           data={pieData}

@@ -7,7 +7,34 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import { useAuth } from "../../../../contexts/AuthContext";
+import { useEffect, useState } from "react";
 function GraphLineChart({ fetchTransitions }) {
+  const [fetchData, setFetchData] = useState([]);
+  const { token } = useAuth();
+  const apiCall = async () => {
+    try {
+      const url = "/api/branches/getallbranch";
+      const response = await fetch(url, { headers: { Authorization: token } });
+      if (!response.ok) {
+        throw new Error();
+      }
+      const responseJson = await response.json();
+      setFetchData(responseJson);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    apiCall();
+  }, []);
+  const getBranchName = (value) => {
+    if (fetchData.length > 0) {
+      const foundBranch = fetchData.find((branch) => branch._id == value);
+      return foundBranch.branch_name;
+    } else return value;
+  };
+
   const chartData = fetchTransitions.map((item) => ({
     date: new Date(item.updatedAt).toLocaleString("en-gb", { timeZone: "GB" }),
     branch: item.branch,
@@ -18,7 +45,6 @@ function GraphLineChart({ fetchTransitions }) {
   }));
   chartData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  // console.log("This is branch1Data" + JSON.stringify(branch1Data));
   //to fix code
   const sortedArray = chartData.reduce((grouped, singleObject) => {
     const findBranch = singleObject.branch;
@@ -28,7 +54,6 @@ function GraphLineChart({ fetchTransitions }) {
     grouped[findBranch].push(singleObject);
     return grouped;
   }, {});
-  // console.log(sortedArray);
   const fillMissingData = (data, maxLength) => {
     const filledData = [...data];
     while (filledData.length < maxLength) {
@@ -46,7 +71,6 @@ function GraphLineChart({ fetchTransitions }) {
 
   return (
     <div className="line-chart">
-      This will show live saes comparision or one{" "}
       <LineChart width={600} height={600}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" />
@@ -55,6 +79,7 @@ function GraphLineChart({ fetchTransitions }) {
         <Legend />
         {Object.entries(sortedArray).map(([branchId, branchArray], index) => {
           const filledBranchArray = fillMissingData(branchArray, maxLength);
+
           return (
             <Line
               key={branchId}
@@ -63,7 +88,7 @@ function GraphLineChart({ fetchTransitions }) {
               stroke={colors[index % colors.length]}
               strokeWidth={5}
               data={filledBranchArray}
-              name={branchId}
+              name={getBranchName(branchId)}
               activeDot={{ r: 8 }}
             ></Line>
           );
