@@ -16,27 +16,28 @@ function SuperAdminSales({ fetchTransitions }) {
   console.log(fetchTransitions);
   const colors = ["#8884d8", "#3cde", "#adcc", "#145"]; // Add more colors as needed
 
-  const chartData = fetchTransitions.map((item) => ({
-    date: new Date(item.createdAt).toLocaleString("en-gb", { timeZone: "GB" }),
-    amount: item.total_amount_in_bhat,
-    currency: item.currency,
-    exchangeRate: item.exchange_rate,
-    sellername: item.seller_name,
-    branch: item.branch,
-  }));
-  // const sellerSalesData = fetchTransitions.reduce((acc, transaction) => {
-  //   const sellerName = transaction.seller_name;
-  //   acc[sellerName] = acc[sellerName] || { sellerName, totalSales: 0 };
-  //   acc[sellerName].totalSales += transaction.total_amount_in_bhat;
-  //   return acc;
-  // }, {});
-
-  // const chartData = Object.values(sellerSalesData).map((sellerData) => ({
-  //   seller: sellerData.sellerName,
-  //   totalSales: sellerData.totalSales,
-  //   // Include additional data if needed (e.g., average exchange rate)
+  // const chartData = fetchTransitions.map((item) => ({
+  //   date: new Date(item.createdAt).toLocaleString("en-gb", { timeZone: "GB" }),
+  //   amount: item.total_amount_in_bhat,
+  //   currency: item.currency,
+  //   exchangeRate: item.exchange_rate,
+  //   sellername: item.seller_name,
+  //   branch: item.branch,
   // }));
+  const sellerSalesData = fetchTransitions.reduce((acc, transaction) => {
+    const sellerName = transaction.seller_name;
+    acc[sellerName] = acc[sellerName] || { sellerName, totalSales: 0 };
+    acc[sellerName].totalSales += transaction.total_amount_in_bhat;
+    return acc;
+  }, {});
+  console.log(sellerSalesData);
 
+  const chartData = Object.values(sellerSalesData).map((sellerData) => ({
+    seller: sellerData.sellerName,
+    totalSales: sellerData.totalSales,
+    // Include additional data if needed (e.g., average exchange rate)
+  }));
+  // console.log(chartData);
   return (
     <div className="superadminsales">
       <div>{Object.keys(fetchTransitions).length}This big</div>
@@ -75,7 +76,7 @@ function SuperAdminSales({ fetchTransitions }) {
         <Tooltip />
         <Legend />
       </PieChart>
-      <BarChart width={600} height={600} data={chartData}>
+      {/* <BarChart width={600} height={600} data={chartData}>
         {" "}
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" />
@@ -90,13 +91,13 @@ function SuperAdminSales({ fetchTransitions }) {
             // fill="red"
           />
         ))}
-      </BarChart>
-      {/* <BarChart width={800} height={300} data={chartData}>
+      </BarChart> */}
+      <BarChart width={800} height={300} data={chartData}>
         <XAxis dataKey="seller" tickFormatter={(seller) => seller} />
         <YAxis />
         <Tooltip />
         <Bar dataKey="totalSales" fill="#ffd700" />
-      </BarChart> */}
+      </BarChart>
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import { useFormik } from "formik";
 import SuperAdminSales from "./SuperAdminSales";
+import SuperAdminSaleAllBranches from "./SuperAdminSaleAllBranches";
+
 function SuperUserAllBranchesTransitions({
   handleSubmit,
   isFetchError,
@@ -58,7 +60,7 @@ function SuperUserAllBranchesTransitions({
 
       {isFetchSubmit ? (
         transitionsExist ? (
-          <SuperAdminSales fetchTransitions={fetchTransitions} />
+          <SuperAdminSaleAllBranches fetchTransitions={fetchTransitions} />
         ) : (
           <div className="superadminsales">
             <h1>
