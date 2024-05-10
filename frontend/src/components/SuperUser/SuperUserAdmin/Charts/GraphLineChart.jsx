@@ -13,17 +13,22 @@ function GraphLineChart({ fetchTransitions }) {
     branch: item.branch,
     totalAmount: item.total_amount_in_bhat,
     id: item._id,
-    seller_name: item.seller_name,
-    currency: item.currency,
+    // seller_name: item.seller_name,
+    // currency: item.currency,
   }));
   chartData.sort((a, b) => new Date(a.date) - new Date(b.date));
-  const branch1Data = chartData.filter(
-    (item) => item.branch === "66312626a2ffa4ff09d8b2b4"
-  );
-  const branch2Data = chartData.filter(
-    (item) => item.branch === "66323860a2ffa4ff09d8b3eb"
-  );
 
+  // console.log("This is branch1Data" + JSON.stringify(branch1Data));
+  //to fix code
+  const sortedArray = chartData.reduce((grouped, singleObject) => {
+    const findBranch = singleObject.branch;
+    if (grouped[findBranch] == null) {
+      grouped[findBranch] = [];
+    }
+    grouped[findBranch].push(singleObject);
+    return grouped;
+  }, {});
+  // console.log(sortedArray);
   const fillMissingData = (data, maxLength) => {
     const filledData = [...data];
     while (filledData.length < maxLength) {
@@ -31,9 +36,14 @@ function GraphLineChart({ fetchTransitions }) {
     }
     return filledData;
   };
-  const maxLength = Math.max(branch1Data.length, branch2Data.length);
-  const filledBranch1Data = fillMissingData(branch1Data, maxLength);
-  const filledBranch2Data = fillMissingData(branch2Data, maxLength);
+  //find max length
+
+  const maxLength = Object.values(sortedArray).reduce((max, brancyArray) => {
+    return Math.max(max, brancyArray.length);
+  }, 0);
+
+  const colors = ["red", "blue", "orange"];
+
   return (
     <div className="line-chart">
       This will show live saes comparision or one{" "}
@@ -43,23 +53,21 @@ function GraphLineChart({ fetchTransitions }) {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line
-          type="monotone"
-          dataKey="totalAmount"
-          stroke="#8884d8"
-          strokeWidth={5}
-          data={filledBranch1Data}
-          name="branch1"
-          activeDot={{ r: 8 }}
-        />
-        <Line
-          type="monotone"
-          dataKey="totalAmount"
-          stroke="red"
-          strokeWidth={5}
-          data={filledBranch2Data}
-          name="branch2"
-        />
+        {Object.entries(sortedArray).map(([branchId, branchArray], index) => {
+          const filledBranchArray = fillMissingData(branchArray, maxLength);
+          return (
+            <Line
+              key={branchId}
+              type="monotone"
+              dataKey="totalAmount"
+              stroke={colors[index % colors.length]}
+              strokeWidth={5}
+              data={filledBranchArray}
+              name={branchId}
+              activeDot={{ r: 8 }}
+            ></Line>
+          );
+        })}
       </LineChart>
     </div>
   );
