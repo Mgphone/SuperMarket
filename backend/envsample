@@ -1,2 +1,3 @@
 mongourlMONGO_URL=mongodb://localhost:27017/supermarket
 JWT_SECRET=
+SUPER_SECRET=

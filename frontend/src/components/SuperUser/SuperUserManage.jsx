@@ -31,6 +31,7 @@ function SuperUserManage() {
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);

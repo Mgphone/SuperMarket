@@ -212,9 +212,16 @@ const userController = {
         return res.status(404).json({ message: "User not found" });
       }
       checkSuperUser(token)
-        .then((result) => {
+        .then(async (result) => {
+          console.log(JSON.stringify(result));
           if (result.role == "super_user") {
             res.status(200).json(user);
+          } else if (result.role == "branch_manager") {
+            const userDoc = await User.find({
+              branch: result.branch,
+              role: "branch_seller",
+            }).select({ password: false });
+            res.status(200).json(userDoc);
           } else {
             res.status(401).json({ message: "You are no authorized" });
           }
