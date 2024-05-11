@@ -6,6 +6,7 @@ import {
   YAxis,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 import { useAuth } from "../../../../contexts/AuthContext";
 import { useEffect, useState } from "react";
@@ -67,33 +68,35 @@ function GraphLineChart({ fetchTransitions }) {
     return Math.max(max, brancyArray.length);
   }, 0);
 
-  const colors = ["red", "blue", "orange"];
+  const colors = ["red", "blue", "orange", "pink", "yellow"];
 
   return (
     <div className="line-chart">
-      <LineChart width={600} height={600}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        {Object.entries(sortedArray).map(([branchId, branchArray], index) => {
-          const filledBranchArray = fillMissingData(branchArray, maxLength);
+      <ResponsiveContainer width={"100%"} height={"100%"}>
+        <LineChart>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          {Object.entries(sortedArray).map(([branchId, branchArray], index) => {
+            const filledBranchArray = fillMissingData(branchArray, maxLength);
 
-          return (
-            <Line
-              key={branchId}
-              type="monotone"
-              dataKey="totalAmount"
-              stroke={colors[index % colors.length]}
-              strokeWidth={5}
-              data={filledBranchArray}
-              name={getBranchName(branchId)}
-              activeDot={{ r: 8 }}
-            ></Line>
-          );
-        })}
-      </LineChart>
+            return (
+              <Line
+                key={branchId}
+                type="monotone"
+                dataKey="totalAmount"
+                stroke={colors[index % colors.length]}
+                strokeWidth={5}
+                data={filledBranchArray}
+                name={getBranchName(branchId)}
+                activeDot={{ r: 8 }}
+              ></Line>
+            );
+          })}
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 }

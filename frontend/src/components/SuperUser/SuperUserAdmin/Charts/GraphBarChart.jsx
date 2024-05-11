@@ -1,4 +1,11 @@
-import { Bar, BarChart, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 function GraphBarChart({ fetchTransitions }) {
   const sellerSellData = fetchTransitions.reduce((acc, obj) => {
@@ -15,12 +22,14 @@ function GraphBarChart({ fetchTransitions }) {
 
   return (
     <div className="bar-chart">
-      <BarChart width={800} height={300} data={sellerData}>
-        <XAxis dataKey="seller" tickFormatter={(seller) => seller} />
-        <YAxis />
-        <Tooltip />
-        <Bar dataKey="totalSales" fill="#ffd700" />
-      </BarChart>
+      <ResponsiveContainer width={"100%"} height={"100%"}>
+        <BarChart data={sellerData}>
+          <XAxis dataKey="seller" tickFormatter={(seller) => seller} />
+          <YAxis />
+          <Tooltip />
+          <Bar dataKey="totalSales" fill="#ffd700" />
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   );
 }

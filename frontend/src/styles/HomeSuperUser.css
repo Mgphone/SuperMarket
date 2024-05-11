@@ -345,20 +345,97 @@ ol {
 }
 
 /* end for admin dashboard */
-/* start of superadminsales */
-.superadminsales {
-  /* width: 100%;
-  background-color: red; */
+.supersales-header {
+  background-color: #f2f2f2;
+  /* min-width: 100vw; */
 }
 
-.superadminsales h1 {
+.supersales-header h1 {
   color: #333;
-  text-align: left;
+  font-size: 24px;
 }
+
+.supersales-header p {
+  color: #666;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.supersales-header p span {
+  color: #222;
+  font-weight: bold;
+}
+
+.supersalescharts {
+  margin: 0 auto;
+}
+
+
+.line-chart,
+.pie-chart,
+.bar-chart {
+  width: 500px;
+  height: 500px;
+  margin: 0 auto;
+}
+
+/* start of superadminsales */
+
 
 /* end of superadminsales */
 @media (max-width:800px) {
   .creatnewbranch form fieldset {
     grid-template-columns: repeat(2, 20px)
   }
+
+  .supersales-header {
+    min-width: 100vw;
+  }
+
+  .line-chart,
+  .pie-chart,
+  .bar-chart {
+    width: 500px;
+    height: 500px;
+    /* padding: 50px */
+  }
+}
+
+@media (max-width:500px) {
+
+
+  .line-chart,
+  .pie-chart,
+  .bar-chart {
+
+    width: 400px;
+    height: 400px;
+  }
+
+}
+
+@media (max-width:400px) {
+
+  .line-chart,
+  .pie-chart,
+  .bar-chart {
+
+    width: 300px;
+    height: 300px;
+  }
+
+}
+
+@media (max-width:300px) {
+
+  .line-chart,
+  .pie-chart,
+  .bar-chart {
+
+    width: 200px;
+    height: 200px;
+
+
+  }
+
 }

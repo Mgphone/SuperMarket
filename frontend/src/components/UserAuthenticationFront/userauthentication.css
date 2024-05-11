@@ -104,17 +104,7 @@
   text-decoration: none;
 }
 
-/* .checking-signup>a>button {
-  padding: 20px;
-  background-color: #007bff;
-  color: #fff;
-}
 
-.checking-signup>a>button:hover {
-  background-color: #0056b3;
-
-
-} */
 
 .checking-signup button {
   background: none;
@@ -133,16 +123,9 @@
   text-decoration: none;
 }
 
-/* .maindisplay {
-  position: fixed;
-  right: 300px;
-  z-index: 10;
-  background-color: red;
-} */
-/* body side wrapper */
+
 .body-wrapper {
   display: flex;
-  /* grid-template-columns: 2/3fr 1fr; */
 }
 
 .maindisplay {

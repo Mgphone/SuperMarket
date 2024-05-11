@@ -25,3 +25,67 @@ button:hover {
   color: red;
   margin-top: 5px;
 }
+
+@media (max-width:800px) {
+
+
+  .maindisplay {
+    max-width: 90%;
+  }
+
+  .body-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+  }
+
+  .superusermanage .table-container {
+    overflow-x: auto;
+  }
+
+}
+
+@media (max-width:600px) {
+  header {
+    display: flex;
+    flex-direction: row;
+    max-width: 100vw;
+  }
+
+  nav ul {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+}
+
+@media (max-width:400px) {
+  header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  header .logo h1 {
+    font-size: 2em;
+    text-align: center;
+  }
+
+  .superusermanage .table-container {
+    overflow-x: auto;
+  }
+
+  .superusermanage .table-container table {
+    width: 100%;
+  }
+
+
+
+}
