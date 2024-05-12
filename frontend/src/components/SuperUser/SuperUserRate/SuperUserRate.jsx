@@ -32,7 +32,7 @@ function SuperUserRate() {
     fetchGetRate();
   }, []);
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="loader"></div>;
   }
   if (isFetchError) return <div>{isFetchError}</div>;
   const isObject = (obj) => {

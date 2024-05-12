@@ -106,7 +106,7 @@ function Signup() {
     fetchBranch();
   }, []);
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="loader"></div>;
   }
   if (iserror) {
     return <div>{iserror}</div>;

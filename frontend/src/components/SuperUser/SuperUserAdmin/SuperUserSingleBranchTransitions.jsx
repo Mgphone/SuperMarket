@@ -74,8 +74,11 @@ function SuperUserSingleBranchTransitions({
         <button type="submit">Submit</button>
       </form>
       {isFetchError && <div className="superadminsales">{isFetchError}</div>}
-      {isFetchLoading && <div className="superadminsales">Loading....</div>}
-
+      {isFetchLoading && (
+        <div className="superadminsales">
+          <div className="loader"></div>;
+        </div>
+      )}
       {isFetchSubmit ? (
         transitionsExist ? (
           <SuperAdminSaleSingleBranch

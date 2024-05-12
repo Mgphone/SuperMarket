@@ -78,7 +78,7 @@ function SuperAdminDashboard() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="loader"></div>;
   }
   if (isError) {
     return <div>{isError}</div>;

@@ -71,7 +71,7 @@ function SuperUserManage() {
     }
   };
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="loader"></div>;
   }
   if (error) {
     return <div>Error:{error}</div>;

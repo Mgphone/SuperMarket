@@ -52,7 +52,7 @@ function CheckAllBranchSuper({ headers }) {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="loader"></div>;
   }
   if (error) {
     return <div>Error:{error}</div>;
