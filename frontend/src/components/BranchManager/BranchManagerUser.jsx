@@ -35,12 +35,7 @@ function BranchManagerUser() {
   useEffect(() => {
     fetchData();
   }, []);
-  if (isLoading) {
-    <div>Loading..</div>;
-  }
-  if (isError) {
-    <div>{isError}</div>;
-  }
+
   const handleCreateNewUser = () => {
     navigate("/register");
   };
@@ -49,7 +44,6 @@ function BranchManagerUser() {
     return foundBranch ? foundBranch.branch_name : branchId;
   };
   const handleEdit = (value) => {
-    // console.log("This is your edit value" + value);
     setIsResetPassword(true);
     setResetValue(value);
   };
@@ -77,6 +71,12 @@ function BranchManagerUser() {
       alert("Delete Cancel");
     }
   };
+  if (isLoading) {
+    return <div className="loader"></div>;
+  }
+  if (isError) {
+    return <div>{isError}</div>;
+  }
   return (
     <>
       {branchData && userData && (

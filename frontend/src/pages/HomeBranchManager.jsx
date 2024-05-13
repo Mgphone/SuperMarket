@@ -5,7 +5,7 @@ import BranchManagerDashboard from "../components/BranchManager/BranchManagerDas
 import BranchManagerUser from "../components/BranchManager/BranchManagerUser";
 import SellingBoard from "../components/SellingBoard";
 import BranchManagerPortal from "../components/BranchManager/BranchManagerPortal";
-
+import "../styles/HomeManager.css";
 function HomeBranchManager() {
   const [isManagerDashboard, setIsManagerDashboard] = useState(false);
   const [isManageBranchUser, setIsManageBranchUser] = useState(false);

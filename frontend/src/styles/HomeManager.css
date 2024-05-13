@@ -1,0 +1,38 @@
+.managersalescharts {
+  margin: 0 auto;
+
+}
+
+.managersales-header {
+  background-color: #cdcd;
+  /* min-width: 100vw; */
+}
+
+.managersales-header h1 {
+  color: #333;
+  font-size: 24px;
+}
+
+.managersales-header p {
+  color: #666;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.managersales-header p span {
+  color: #222;
+  font-weight: bold;
+}
+
+.managersales-header {
+  margin: 0 auto;
+}
+
+
+.line-chart,
+.pie-chart,
+.bar-chart {
+  width: 500px;
+  height: 500px;
+  margin: 0 auto;
+}
