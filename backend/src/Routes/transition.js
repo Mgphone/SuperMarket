@@ -7,7 +7,7 @@ router.post(
   checkingToken,
   TransitionController.createTransition
 );
-router.get(
+router.post(
   "/transition/branchmanagergettransition",
   checkingToken,
   TransitionController.getTransitionBranchManager

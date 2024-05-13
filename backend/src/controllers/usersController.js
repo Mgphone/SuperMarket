@@ -213,7 +213,6 @@ const userController = {
       }
       checkSuperUser(token)
         .then(async (result) => {
-          console.log(JSON.stringify(result));
           if (result.role == "super_user") {
             res.status(200).json(user);
           } else if (result.role == "branch_manager") {
