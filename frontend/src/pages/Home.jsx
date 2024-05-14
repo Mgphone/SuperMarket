@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import Notfound from "../components/NotFound/Notfound.jsx";
-
+import "../styles/Chart.css";
 function Home() {
   const [loginError, setLoginError] = useState(false);
   const { logIn } = useAuth();

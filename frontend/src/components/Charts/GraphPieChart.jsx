@@ -8,7 +8,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 function GraphPieChart({ fetchTransitions }) {
-  // console.log(fetchTransitions);
   const totalSale = fetchTransitions.reduce((acc, curr) => {
     return (acc += curr.total_amount_in_bhat);
   }, 0);
