@@ -31,7 +31,7 @@ function GraphHoriziontalBarChart({ fetchTransitions }) {
       <ResponsiveContainer width={"100%"} height={"100%"}>
         <BarChart data={dataWithPercentage} layout="vertical">
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="number" domain={[0, "dataMax"]} />
+          <XAxis type="number" domain={[0, 100]} />
           <YAxis dataKey="currency" type="category" tick={{ fontSize: 10 }} />
           <Tooltip />
           <Bar dataKey="total" fill="#ffd700" />

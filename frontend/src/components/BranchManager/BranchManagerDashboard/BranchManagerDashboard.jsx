@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../../contexts/AuthContext";
 import BranchGraphDisplay from "./BranchGraphDisplay";
 
 function BranchManagerDashboard() {

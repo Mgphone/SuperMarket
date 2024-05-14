@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Nav from "../components/Nav/Nav";
 import SideNav from "../components/SIdeNav/SideNav";
-import SellingBoard from "../components/SellingBoard";
+import SellingBoard from "../components/SellingBoard/SellingBoard";
 import NormalUserDetail from "../components/BranchSeller/NormalUserDetail";
 import NormalUserPortal from "../components/BranchSeller/NormalUserPortal";
 

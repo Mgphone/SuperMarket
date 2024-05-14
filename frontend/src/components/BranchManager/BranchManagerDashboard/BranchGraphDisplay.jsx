@@ -1,7 +1,7 @@
-import GraphLineChart from "../Charts/GraphLineChart";
-import GraphPieChart from "../Charts/GraphPieChart";
-import GraphBarChart from "../Charts/GraphBarChart";
-import GraphHoriziontalBarChart from "../Charts/GraphHoriziontalBarChart";
+import GraphLineChart from "../../Charts/GraphLineChart";
+import GraphPieChart from "../../Charts/GraphPieChart";
+import GraphBarChart from "../../Charts/GraphBarChart";
+import GraphHoriziontalBarChart from "../../Charts/GraphHoriziontalBarChart";
 function BranchGraphDisplay({ fetchTransitions, datevalues }) {
   const totalValue =
     fetchTransitions &&

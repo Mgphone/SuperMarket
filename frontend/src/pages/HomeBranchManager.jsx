@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Nav from "../components/Nav/Nav";
 import SideNav from "../components/SIdeNav/SideNav";
-import BranchManagerDashboard from "../components/BranchManager/BranchManagerDashboard";
+import BranchManagerDashboard from "../components/BranchManager/BranchManagerDashboard/BranchManagerDashboard";
 import BranchManagerUser from "../components/BranchManager/BranchManagerUser";
-import SellingBoard from "../components/SellingBoard";
+import SellingBoard from "../components/SellingBoard/SellingBoard";
 import BranchManagerPortal from "../components/BranchManager/BranchManagerPortal";
 import "../styles/HomeManager.css";
 function HomeBranchManager() {
