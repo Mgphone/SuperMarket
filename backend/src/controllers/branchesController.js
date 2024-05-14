@@ -11,12 +11,14 @@ const BranchesController = {
         if (result.role === "super_user") {
           const monitorId = result.userId;
           const { branchname, openingamount, currency } = req.body;
+          const date = new Date();
           // const [USD, GBP, YEN, KYAT, SINGDOLLAR] = currency;
           const myBranches = {
             branch_name: branchname,
             opening_amount_bhat: openingamount,
             available_currencies: currency,
             monitorBy: monitorId,
+            dateOfSale: date.toISOString,
           };
           const duplicateBranch = await Branches.find({
             branch_name: branchname,
@@ -70,24 +72,27 @@ const BranchesController = {
   },
   getSingleBranch: async (req, res) => {
     const token = req.headers.authorization;
-    const id = req.params.id;
+    // const id = req.params.id;
 
     checkSuperUser(token)
       .then(async (result) => {
         // if sueper user or branch manager of this branch
-        const branchDoc = await Branches.findById(id).select({
-          monitorBy: false,
-        });
+        // const branchDoc = await Branches.findById(id).select({
+        //   monitorBy: false,
+        // });
 
-        if (result.role == "super_user") {
-          res.status(200).json(branchDoc);
-        } else if (result.role == "branch_manager") {
+        // if (result.role == "super_user") {
+        //   res.status(200).json(branchDoc);
+        // } else
+        if (result.role == "branch_manager") {
           const managerBranch = await Branches.findById(result.branch).select({
             monitorBy: false,
           });
           res.status(200).json(managerBranch);
         } else {
-          res.status(400).json({ message: "You have no authority" });
+          res.status(400).json({
+            message: "You have no authority and You have to be Branch Manager",
+          });
         }
       })
       .catch((error) => {
@@ -146,7 +151,7 @@ const BranchesController = {
 
   editBranch: async (req, res) => {
     const token = req.headers.authorization;
-
+    const date = new Date();
     checkSuperUser(token)
       .then(async (result) => {
         if (result.role == "branch_manager") {
@@ -157,6 +162,7 @@ const BranchesController = {
             selling_amout_bhat: 0,
             transition: [],
             branch_balance: openingamount,
+            dateOfSale: date.toISOString(),
           };
 
           await Branches.findByIdAndUpdate(

@@ -13,7 +13,7 @@ router.get(
   BranchesController.getAllBranches
 );
 router.get(
-  "/branches/getsinglebranch/:id",
+  "/branches/getsinglebranch",
   checkingToken,
   BranchesController.getSingleBranch
 );

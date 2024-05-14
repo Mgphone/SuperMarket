@@ -7,6 +7,7 @@ const BranchesSchema = new Schema(
     opening_amount_bhat: { type: Number, required: true },
     selling_amout_bhat: { type: Number, default: 0 },
     available_currencies: { type: [String], required: true },
+    dateOfSale: { type: String },
     branch_balance: {
       type: Number,
       default: function () {
