@@ -8,7 +8,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useAuth } from "../../../../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useEffect, useState } from "react";
 function GraphLineChart({ fetchTransitions }) {
   const [fetchData, setFetchData] = useState([]);
@@ -72,6 +72,7 @@ function GraphLineChart({ fetchTransitions }) {
 
   return (
     <div className="line-chart">
+      <h2>Sales In Line Chart</h2>
       <ResponsiveContainer width={"100%"} height={"100%"}>
         <LineChart>
           <CartesianGrid strokeDasharray="3 3" />

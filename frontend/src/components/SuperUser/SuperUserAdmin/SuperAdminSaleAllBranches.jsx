@@ -1,6 +1,7 @@
-import GraphLineChart from "./Charts/GraphLineChart";
-import GraphPieChart from "./Charts/GraphPieChart";
-import GraphBarChart from "./Charts/GraphBarChart";
+import GraphLineChart from "../../Charts/GraphLineChart";
+import GraphPieChart from "../../Charts/GraphPieChart";
+import GraphBarChart from "../../Charts/GraphBarChart";
+
 function SuperAdminSaleAllBranches({ fetchTransitions, value }) {
   const totalValue = fetchTransitions.reduce(
     (acc, cur) => acc + cur.total_amount_in_bhat,

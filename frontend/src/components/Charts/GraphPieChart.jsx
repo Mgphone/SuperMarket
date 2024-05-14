@@ -8,6 +8,10 @@ import {
   ResponsiveContainer,
 } from "recharts";
 function GraphPieChart({ fetchTransitions }) {
+  // console.log(fetchTransitions);
+  const totalSale = fetchTransitions.reduce((acc, curr) => {
+    return (acc += curr.total_amount_in_bhat);
+  }, 0);
   const colors = ["#8884d8", "#3cde", "#adcc", "#145", "#cdef"];
   const checkCurrecyData = fetchTransitions.reduce((acc, obj) => {
     const pieCurrency = obj.currency;
@@ -22,6 +26,7 @@ function GraphPieChart({ fetchTransitions }) {
 
   return (
     <div className="pie-chart">
+      <h2>Sales In PieChart</h2>
       <ResponsiveContainer width={"100%"} height={"100%"}>
         <PieChart>
           <Pie
@@ -31,9 +36,34 @@ function GraphPieChart({ fetchTransitions }) {
             cx="50%"
             cy="50%"
             outerRadius={100}
-            // fill="#8884d8"
+            label={({
+              cx,
+              cy,
+              midAngle,
+              innerRadius,
+              outerRadius,
+              value,
+              index,
+            }) => {
+              const RADIAN = Math.PI / 180;
+              const radius = 25 + innerRadius + (outerRadius - innerRadius);
+              const x = cx + radius * Math.cos(-midAngle * RADIAN);
+              const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+              return (
+                <text
+                  x={x}
+                  y={y}
+                  // fill="#8884d8"
+                  textAnchor={x > cx ? "start" : "end"}
+                  dominantBaseline="central"
+                >
+                  {pieData[index].currency} ({value})
+                </text>
+              );
+            }}
           >
-            {pieData.map((entry, index) => (
+            {pieData.map((_, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={colors[index % colors.length]}
@@ -45,6 +75,11 @@ function GraphPieChart({ fetchTransitions }) {
           <Legend />
         </PieChart>
       </ResponsiveContainer>
+
+      <h5>
+        Total Sale:<span style={{ backgroundColor: "red" }}> Bhat </span>
+        {totalSale}
+      </h5>
     </div>
   );
 }

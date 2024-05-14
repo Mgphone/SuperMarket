@@ -1,6 +1,6 @@
-import GraphLineChart from "../SuperUser/SuperUserAdmin/Charts/GraphLineChart";
-import GraphPieChart from "../SuperUser/SuperUserAdmin/Charts/GraphPieChart";
-import GraphBarChart from "../SuperUser/SuperUserAdmin/Charts/GraphBarChart";
+import GraphLineChart from "../Charts/GraphLineChart";
+import GraphPieChart from "../Charts/GraphPieChart";
+import GraphBarChart from "../Charts/GraphBarChart";
 function BranchGraphDisplay({ fetchTransitions, datevalues }) {
   const totalValue =
     fetchTransitions &&

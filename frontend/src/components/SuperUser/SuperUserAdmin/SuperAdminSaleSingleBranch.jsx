@@ -1,6 +1,6 @@
-import GraphBarChart from "./Charts/GraphBarChart";
-import GraphLineChart from "./Charts/GraphLineChart";
-import GraphPieChart from "./Charts/GraphPieChart";
+import GraphBarChart from "../../Charts/GraphBarChart";
+import GraphLineChart from "../../Charts/GraphLineChart";
+import GraphPieChart from "../../Charts/GraphPieChart";
 
 function SuperAdminSaleSingleBranch({ fetchTransitions, value }) {
   const totalValue = fetchTransitions.reduce(

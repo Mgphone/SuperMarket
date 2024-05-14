@@ -22,6 +22,7 @@ function GraphBarChart({ fetchTransitions }) {
 
   return (
     <div className="bar-chart">
+      <h2>Sales In Bar Chart</h2>
       <ResponsiveContainer width={"100%"} height={"100%"}>
         <BarChart data={sellerData}>
           <XAxis dataKey="seller" tickFormatter={(seller) => seller} />
