@@ -10,6 +10,7 @@ function HomeBranchManager() {
   const [isManagerDashboard, setIsManagerDashboard] = useState(false);
   const [isManageBranchUser, setIsManageBranchUser] = useState(false);
   const [isSellingBoard, setIsSellingBoard] = useState(false);
+  const [dailyUpdateBranch, setDailyUpdateBranch] = useState(false);
   return (
     <div>
       <Nav />

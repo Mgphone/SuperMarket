@@ -70,6 +70,38 @@ const BranchesController = {
           .json({ message: "An error happen when geting all branches" });
       });
   },
+  getSingleBranchSuper: async (req, res) => {
+    const token = req.headers.authorization;
+    const id = req.params.id;
+
+    checkSuperUser(token)
+      .then(async (result) => {
+        // if sueper user or branch manager of this branch
+        const branchDoc = await Branches.findById(id).select({
+          monitorBy: false,
+        });
+
+        if (result.role == "super_user") {
+          res.status(200).json(branchDoc);
+        } else if (result.role == "branch_manager") {
+          const managerBranch = await Branches.findById(result.branch).select({
+            monitorBy: false,
+          });
+          res.status(200).json(managerBranch);
+        } else {
+          res.status(400).json({
+            message: "You have no authority and You have to be Branch Manager",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        return;
+        res
+          .status(500)
+          .json({ message: "Error happen when getting single branch" });
+      });
+  },
   getSingleBranch: async (req, res) => {
     const token = req.headers.authorization;
     // const id = req.params.id;

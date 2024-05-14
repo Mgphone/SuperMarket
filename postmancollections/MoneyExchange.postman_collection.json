@@ -255,7 +255,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": ""
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjNkNGIyMzc1MzcxNGYzNjEwYjc1YzMiLCJ1c2VybmFtZSI6ImJyYW5jaGNtYW5hZ2VyQG1vbmV5LmNvbSIsInJvbGUiOiJicmFuY2hfbWFuYWdlciIsImJyYW5jaCI6IjY2MzIzODYwYTJmZmE0ZmYwOWQ4YjNlYiIsImlhdCI6MTcxNTY2NTQ1MywiZXhwIjoxNzE1NjcyNjUzfQ.-a8Qwioeagw5jjj_0HK5sElL7dPpNhSfBFzfTWwD6e0"
 							}
 						},
 						"method": "PATCH",
@@ -270,6 +270,32 @@
 							}
 						},
 						"url": "localhost:5000/branches/updatebranch"
+					},
+					"response": []
+				},
+				{
+					"name": "allbranch(super)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/branches/getsinglebranch/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"branches",
+								"getsinglebranch",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
 					},
 					"response": []
 				}
@@ -361,7 +387,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjNkNGIyMzc1MzcxNGYzNjEwYjc1YzMiLCJ1c2VybmFtZSI6ImJyYW5jaGNtYW5hZ2VyQG1vbmV5LmNvbSIsInJvbGUiOiJicmFuY2hfbWFuYWdlciIsImJyYW5jaCI6IjY2MzIzODYwYTJmZmE0ZmYwOWQ4YjNlYiIsImlhdCI6MTcxNTM3NTM1MiwiZXhwIjoxNzE1MzgyNTUyfQ.OLdvnsHY_h0pzzxeTKfn03gC1HWdVGcWcR--mBZ7xdQ"
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMxMjY3OGEyZmZhNGZmMDlkOGIyYmUiLCJ1c2VybmFtZSI6ImJyYW5jaGFtYW5hZ2VyQG1vbmV5LmNvbSIsInJvbGUiOiJicmFuY2hfbWFuYWdlciIsImJyYW5jaCI6IjY2MzEyNjI2YTJmZmE0ZmYwOWQ4YjJiNCIsImlhdCI6MTcxNTY2MjA1MiwiZXhwIjoxNzE1NjY5MjUyfQ.ABi2ffcfmieN-TDxr31emoCpd1mHg6tyqC9StXI5pSc"
 							}
 						},
 						"method": "POST",
@@ -381,17 +407,14 @@
 				},
 				{
 					"name": "BranchManagerTransition(branch-manager)",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjNkNGIyMzc1MzcxNGYzNjEwYjc1YzMiLCJ1c2VybmFtZSI6ImJyYW5jaGNtYW5hZ2VyQG1vbmV5LmNvbSIsInJvbGUiOiJicmFuY2hfbWFuYWdlciIsImJyYW5jaCI6IjY2MzIzODYwYTJmZmE0ZmYwOWQ4YjNlYiIsImlhdCI6MTcxNTM3NTM1MiwiZXhwIjoxNzE1MzgyNTUyfQ.OLdvnsHY_h0pzzxeTKfn03gC1HWdVGcWcR--mBZ7xdQ"
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMxMjY3OGEyZmZhNGZmMDlkOGIyYmUiLCJ1c2VybmFtZSI6ImJyYW5jaGFtYW5hZ2VyQG1vbmV5LmNvbSIsInJvbGUiOiJicmFuY2hfbWFuYWdlciIsImJyYW5jaCI6IjY2MzEyNjI2YTJmZmE0ZmYwOWQ4YjJiNCIsImlhdCI6MTcxNTYyMDkwMiwiZXhwIjoxNzE1NjI4MTAyfQ.YvhNpQL5oQn4tsBGxVAQHGnIEtELjqMToanNH1an8rU"
 							}
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",

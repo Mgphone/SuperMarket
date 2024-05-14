@@ -17,6 +17,11 @@ router.get(
   checkingToken,
   BranchesController.getSingleBranch
 );
+router.get(
+  "/branches/getsinglebranch/:id",
+  checkingToken,
+  BranchesController.getSingleBranchSuper
+);
 router.delete(
   "/branches/deletebranch/:id",
   checkingToken,
