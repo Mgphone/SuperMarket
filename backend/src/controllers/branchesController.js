@@ -2,6 +2,7 @@ const checkSuperUser = require("../utils/checkjwtsuperuser");
 const Branches = require("../models/Branches");
 const Users = require("../models/User");
 const mongoose = require("mongoose");
+const date = new Date();
 const BranchesController = {
   createBranches: async (req, res) => {
     const token = req.headers.authorization;
@@ -11,14 +12,14 @@ const BranchesController = {
         if (result.role === "super_user") {
           const monitorId = result.userId;
           const { branchname, openingamount, currency } = req.body;
-          const date = new Date();
+
           // const [USD, GBP, YEN, KYAT, SINGDOLLAR] = currency;
           const myBranches = {
             branch_name: branchname,
             opening_amount_bhat: openingamount,
             available_currencies: currency,
             monitorBy: monitorId,
-            dateOfSale: date.toISOString,
+            dateOfSale: date.toISOString(),
           };
           const duplicateBranch = await Branches.find({
             branch_name: branchname,
@@ -183,7 +184,7 @@ const BranchesController = {
 
   editBranch: async (req, res) => {
     const token = req.headers.authorization;
-    const date = new Date();
+    // const date = new Date();
     checkSuperUser(token)
       .then(async (result) => {
         if (result.role == "branch_manager") {
