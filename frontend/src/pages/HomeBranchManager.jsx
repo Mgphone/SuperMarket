@@ -5,12 +5,13 @@ import BranchManagerDashboard from "../components/BranchManager/BranchManagerDas
 import BranchManagerUser from "../components/BranchManager/BranchManagerUser";
 import SellingBoard from "../components/SellingBoard/SellingBoard";
 import BranchManagerPortal from "../components/BranchManager/BranchManagerPortal";
+import DailyUpdateBranch from "../components/BranchManager/DailyUpdateBranch";
 import "../styles/HomeManager.css";
 function HomeBranchManager() {
   const [isManagerDashboard, setIsManagerDashboard] = useState(false);
   const [isManageBranchUser, setIsManageBranchUser] = useState(false);
   const [isSellingBoard, setIsSellingBoard] = useState(false);
-  const [dailyUpdateBranch, setDailyUpdateBranch] = useState(false);
+  const [isDailyUpdateBranch, setIsDailyUpdateBranch] = useState(false);
   return (
     <div>
       <Nav />
@@ -22,14 +23,23 @@ function HomeBranchManager() {
           isManagerDashboard={isManagerDashboard}
           isManageBranchUser={isManageBranchUser}
           isSellingBoard={isSellingBoard}
+          isDailyUpdateBranch={isDailyUpdateBranch}
+          setIsDailyUpdateBranch={setIsDailyUpdateBranch}
         />
         <div className="maindisplay">
-          {!isManagerDashboard && !isManageBranchUser && !isSellingBoard && (
-            <BranchManagerPortal />
-          )}
+          {!isManagerDashboard &&
+            !isManageBranchUser &&
+            !isSellingBoard &&
+            !isDailyUpdateBranch && <BranchManagerPortal />}
           {isManagerDashboard && <BranchManagerDashboard />}
           {isManageBranchUser && <BranchManagerUser />}
           {isSellingBoard && <SellingBoard />}
+          {isDailyUpdateBranch && (
+            <DailyUpdateBranch
+              setIsManagerDashboard={setIsManagerDashboard}
+              setIsDailyUpdateBranch={setIsDailyUpdateBranch}
+            />
+          )}
         </div>
       </div>
     </div>

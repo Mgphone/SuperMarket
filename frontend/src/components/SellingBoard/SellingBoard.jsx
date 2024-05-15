@@ -38,18 +38,15 @@ function SellingBoard() {
       setIsError(error);
     }
   };
-  console.log(JSON.stringify(fetchTime));
   // checking to get new Date or not
   const askBranchManager = () => {
     //later i need to delete this line for saleDate
 
     const serverDay = new Date(fetchTime).getDate();
     const presentDay = new Date().getDate();
-    console.log("serverDay" + serverDay);
-    console.log("presentDay" + presentDay);
+
     return presentDay >= serverDay;
   };
-  console.log(askBranchManager());
   useEffect(() => {
     getRate();
   }, []);

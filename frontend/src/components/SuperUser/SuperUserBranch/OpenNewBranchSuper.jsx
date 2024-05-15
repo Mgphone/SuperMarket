@@ -21,6 +21,7 @@ function OpenNewBranchSuper({ handleclose, headers }) {
     const formData = {
       branchname: values.branchname,
       openingamount: values.openingamount,
+      currency: values.currency,
     };
 
     try {

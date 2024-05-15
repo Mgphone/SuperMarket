@@ -11,6 +11,7 @@ function SideNav({
   setIsManageBranchUser,
   setIsSellingBoard,
   setIsManageRate,
+  setIsDailyUpdateBranch,
   //this is for responsive css
   isAdminDashboard,
   isManageBranch,
@@ -21,6 +22,7 @@ function SideNav({
   isManageBranchUser,
   isSellingBoard,
   isManageRate,
+  isDailyUpdateBranch,
 }) {
   const { decodedToken } = useAuth();
 
@@ -51,26 +53,37 @@ function SideNav({
   const handemanagerdash = () => {
     setIsManagerDashboard((prevValue) => !prevValue);
     setIsManageBranchUser(false);
+    setIsDailyUpdateBranch(false);
     setIsSellingBoard(false);
   };
   const handlemanageruser = () => {
     setIsManagerDashboard(false);
     setIsManageBranchUser((prevValue) => !prevValue);
+    setIsDailyUpdateBranch(false);
+    setIsSellingBoard(false);
+  };
+  const handlemanagerdailybranch = () => {
+    setIsManagerDashboard(false);
+    setIsManageBranchUser(false);
+    setIsDailyUpdateBranch((prev) => !prev);
     setIsSellingBoard(false);
   };
   const handlemanagerselling = () => {
     setIsManagerDashboard(false);
     setIsManageBranchUser(false);
+    setIsDailyUpdateBranch(false);
     setIsSellingBoard((prevValue) => !prevValue);
   };
   const handlenormaldetail = () => {
     setIsNormalUserDetails((prevValue) => !prevValue);
     setIsNormalUserSellingBoard(false);
+    setIsDailyUpdateBranch(false);
   };
   const handlenormalselling = () => {
     setIsNormalUserDetails(false);
     setIsNormalUserSellingBoard((prevValue) => !prevValue);
   };
+
   return (
     <div className="sidebar ">
       <ul>
@@ -125,6 +138,14 @@ function SideNav({
               }}
             >
               Manage Branch User
+            </li>
+            <li
+              onClick={handlemanagerdailybranch}
+              style={{
+                backgroundColor: isDailyUpdateBranch ? "lightgray" : "yellow",
+              }}
+            >
+              Daily Update branch
             </li>
             <li
               onClick={handlemanagerselling}
