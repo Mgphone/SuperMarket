@@ -40,7 +40,6 @@ function DailyUpdateBranch({ setIsManagerDashboard, setIsDailyUpdateBranch }) {
     branchName.length > 0 &&
     branchName.map((item) => item.branch_name);
 
-  // console.log(fetBranchName[0]);
   //end to get branchName
 
   const validationSchema = Yup.object({

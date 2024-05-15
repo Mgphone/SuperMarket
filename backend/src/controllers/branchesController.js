@@ -71,7 +71,7 @@ const BranchesController = {
           .json({ message: "An error happen when geting all branches" });
       });
   },
-  getSingleBranchSuper: async (req, res) => {
+  getSingleBranchAll: async (req, res) => {
     const token = req.headers.authorization;
     const id = req.params.id;
 
@@ -97,7 +97,6 @@ const BranchesController = {
       })
       .catch((error) => {
         console.error(error);
-        return;
         res
           .status(500)
           .json({ message: "Error happen when getting single branch" });
@@ -122,6 +121,13 @@ const BranchesController = {
             monitorBy: false,
           });
           res.status(200).json(managerBranch);
+        } else if (result.role == "branch_seller") {
+          const selecAll = await Branches.findById(result.branch, {
+            _id: 1,
+            branch_name: 1,
+            dateOfSale: 1,
+          });
+          res.status(200).json(selecAll);
         } else {
           res.status(400).json({
             message: "You have no authority and You have to be Branch Manager",
@@ -130,7 +136,6 @@ const BranchesController = {
       })
       .catch((error) => {
         console.error(error);
-        return;
         res
           .status(500)
           .json({ message: "Error happen when getting single branch" });
