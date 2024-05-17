@@ -91,6 +91,7 @@ function Home() {
             value={formik.values.password}
             onChange={formik.handleChange}
             placeholder="password *"
+            autoComplete="off"
           />
           {loginError && (
             <div className="errors">Please Check your username password</div>

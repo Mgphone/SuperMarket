@@ -29,12 +29,18 @@ function DailyUpdateBranch({ setIsManagerDashboard, setIsDailyUpdateBranch }) {
       setIsError(isError);
     }
     const responsesJson = await response.json();
+    // console.log(JSON.stringify(responsesJson));
     setBranchName(responsesJson);
   };
   useEffect(() => {
     fetchToGetBranchName();
     setIsLoading(false);
   }, []);
+
+  // useEffect(() => {
+  //   console.log(JSON.stringify(branchName));
+  // }, []);
+
   const fetBranchName =
     branchName &&
     branchName.length > 0 &&

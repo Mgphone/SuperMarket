@@ -44,8 +44,9 @@ function SellingBoard() {
 
     const serverDay = new Date(fetchTime).getDate();
     const presentDay = new Date().getDate();
-
-    return presentDay >= serverDay;
+    // console.log("serverDay" + serverDay);
+    // console.log("presentDay" + presentDay);
+    return serverDay >= presentDay;
   };
   useEffect(() => {
     getRate();
