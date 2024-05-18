@@ -203,24 +203,21 @@ function DailyUpdateBranch({ setIsManagerDashboard, setIsDailyUpdateBranch }) {
 
           <input
             type="checkbox"
-            id="SINGDOLLAR"
+            id="SINDOLLAR"
             name="currency"
-            value="SINGDOLLAR"
-            checked={formik.values.currency.includes("SINGDOLLAR")}
+            value="SINDOLLAR"
+            checked={formik.values.currency.includes("SINDOLLAR")}
             onChange={(e) => {
               const updatedCurrency = [...formik.values.currency];
               if (e.target.checked) {
-                updatedCurrency.push("SINGDOLLAR");
+                updatedCurrency.push("SINDOLLAR");
               } else {
-                updatedCurrency.splice(
-                  updatedCurrency.indexOf("SINGDOLLAR"),
-                  1
-                );
+                updatedCurrency.splice(updatedCurrency.indexOf("SINDOLLAR"), 1);
               }
               formik.setFieldValue("currency", updatedCurrency);
             }}
           />
-          <label htmlFor="SINGDOLLAR">SINGDOLLAR</label>
+          <label htmlFor="SINDOLLAR">SINDOLLAR</label>
         </fieldset>
         {formik.touched.currency && formik.errors.currency && (
           <div className="errors">{formik.errors.currency}</div>

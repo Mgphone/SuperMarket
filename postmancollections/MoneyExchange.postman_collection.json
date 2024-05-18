@@ -193,7 +193,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"branchname\":\"BranchY\", \"openingamount\":1000000, \"currency\":[\"USD\", \"GBP\", \"YEN\", \"KYAT\", \"SINGDOLLAR\"]}",
+							"raw": "{\"branchname\":\"BranchY\", \"openingamount\":1000000, \"currency\":[\"USD\", \"GBP\", \"YEN\", \"KYAT\", \"SINDOLLAR\"]}",
 							"options": {
 								"raw": {
 									"language": "json"

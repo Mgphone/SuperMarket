@@ -13,7 +13,6 @@ const BranchesController = {
           const monitorId = result.userId;
           const { branchname, openingamount, currency } = req.body;
 
-          // const [USD, GBP, YEN, KYAT, SINGDOLLAR] = currency;
           const myBranches = {
             branch_name: branchname,
             opening_amount_bhat: openingamount,

@@ -1,5 +1,4 @@
 const SellingRate = ({ rates }) => {
-  // console.log(rates);
   return (
     <div>
       {rates.map((rate) => (

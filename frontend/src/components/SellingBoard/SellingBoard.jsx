@@ -81,7 +81,7 @@ function SellingBoard() {
       </button>
       {checkExchangeRate && <SellingRate rates={fetchRate} />}
 
-      <FormSellingBoard rate={fetchRate} branch={fetchBranch} />
+      <FormSellingBoard rates={fetchRate} branch={fetchBranch} />
     </div>
   );
 }
