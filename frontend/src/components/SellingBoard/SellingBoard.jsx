@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import "../../styles/SellingBoard.css";
 import { useAuth } from "../../contexts/AuthContext";
+import firstTenDigits from "../../utils/firstTenDigits";
+import FormSellingBoard from "./FormSellingBoard";
+import SellingRate from "./SellingRate";
 function SellingBoard() {
-  // {"buyer_name":"hellobuyer","buyer_identity":"link for cloudinary",
-  // "currency":"GBP","Note":"","amount":"10"}
-  // /rate/getrate
-  // branches/getsinglebranch
   const [fetchRate, setFetchRate] = useState("");
-  const [fetchTime, setFetchTime] = useState("");
+  const [fetchBranch, setFetchBranch] = useState("");
   const [isError, setIsError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [checkExchangeRate, setcheckExchangeRate] = useState(false);
   const { token } = useAuth();
   const getRate = async () => {
     try {
@@ -17,21 +17,17 @@ function SellingBoard() {
       const [rate, branch] = await Promise.all([
         fetch("/api/rate/getrate"),
         fetch("/api/branches/getsinglebranch", {
-          // headers: { Authroization: token },
           headers: { Authorization: token, "Content-Type": "application/json" },
         }),
       ]);
       if (!rate.ok && branch.ok) {
         throw new Error("Failed to fetch rate and Branch");
       }
-      // const response = await fetch("/api/rate/getrate");
-      // if (!response.ok) {
-      //   throw new Error("Can not get the rate");
-      // }
+
       const rateJson = await rate.json();
       const branchJson = await branch.json();
       setFetchRate(rateJson);
-      setFetchTime(branchJson.dateOfSale);
+      setFetchBranch(branchJson);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -39,13 +35,12 @@ function SellingBoard() {
     }
   };
   // checking to get new Date or not
+
   const askBranchManager = () => {
     //later i need to delete this line for saleDate
-
-    const serverDay = new Date(fetchTime).getDate();
+    const serverDay = new Date(fetchBranch.dateOfSale).getDate();
     const presentDay = new Date().getDate();
-    // console.log("serverDay" + serverDay);
-    // console.log("presentDay" + presentDay);
+
     return serverDay >= presentDay;
   };
   useEffect(() => {
@@ -72,11 +67,21 @@ function SellingBoard() {
       </div>
     );
   }
-
+  const handleExchange = () => {
+    setcheckExchangeRate((prev) => !prev);
+  };
   return (
-    <div>
-      SellingBoard
-      <p>This is for selling Branch both Manager and Sales </p>
+    <div className="sellingboard-container">
+      <h1>SellingBoard for {firstTenDigits(fetchBranch.dateOfSale)}</h1>
+      <button
+        onClick={handleExchange}
+        className={checkExchangeRate ? "on" : "off"}
+      >
+        Check Exchange Rate {checkExchangeRate ? "ON" : "OFF"}
+      </button>
+      {checkExchangeRate && <SellingRate rates={fetchRate} />}
+
+      <FormSellingBoard rate={fetchRate} branch={fetchBranch} />
     </div>
   );
 }

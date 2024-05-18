@@ -1,3 +1,73 @@
+.sellingboard-container {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.sellingboard-container h1 {
+  font-size: 24px;
+  margin-top: 0;
+}
+
+.sellingboard-container button.on {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.sellingboard-container button.off {
+  background-color: #f44336;
+  color: #ccc;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.sellingboard-container button:hover {
+  background-color: #0056b3;
+}
+
+.sellingboard-container .sellingboard {
+  margin-top: 20px;
+}
+
+.sellingboard-container .sellingboard h3 {
+  font-size: 20px;
+}
+
+.sellingboard-container .sellingboard button.available-currency {
+  margin-right: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sellingboard-container .sellingboard button.available-currency:last-child {
+  margin-right: 0;
+}
+
+.sellingboard-container .sellingboard button.available-currency:hover {
+  background-color: #218838;
+}
+
+
 .selling-no-found {
   height: 80%;
   width: 80%;
