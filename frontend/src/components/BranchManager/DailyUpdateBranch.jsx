@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import firstTenDigits from "../../utils/firstTenDigits";
 function DailyUpdateBranch({ setIsManagerDashboard, setIsDailyUpdateBranch }) {
   /*
   url api/branches/updatebranch method patch
@@ -46,6 +47,10 @@ function DailyUpdateBranch({ setIsManagerDashboard, setIsDailyUpdateBranch }) {
     branchName.length > 0 &&
     branchName.map((item) => item.branch_name);
 
+  const fetchBrnachSaleTime =
+    branchName &&
+    branchName.length > 0 &&
+    branchName.map((item) => item.dateOfSale);
   //end to get branchName
 
   const validationSchema = Yup.object({
@@ -102,7 +107,11 @@ function DailyUpdateBranch({ setIsManagerDashboard, setIsDailyUpdateBranch }) {
     // <div className="updateDailyBranch">DailyUpdateBranch {fetBranchName}</div>
     <div className="creatnewbranch">
       <h1>Update Branch {fetBranchName}</h1>
-
+      {fetchBrnachSaleTime && (
+        <h5>
+          Current Server Sales date: {firstTenDigits(fetchBrnachSaleTime)}
+        </h5>
+      )}
       <form onSubmit={(e) => formik.handleSubmit(e)}>
         <label htmlFor="OpeningAmount">
           Opening Amount
