@@ -192,7 +192,7 @@ const BranchesController = {
 
   editBranch: async (req, res) => {
     const token = req.headers.authorization;
-    // const date = new Date();
+    const date = new Date();
     checkSuperUser(token)
       .then(async (result) => {
         if (result.role == "branch_manager") {

@@ -1,8 +1,8 @@
 import { useState } from "react";
+import UsdCurrencyForm from "./UsdCurrencyForm";
+import OtherCurrencyForm from "./OtherCurrencyForm";
 
 function FormSellingBoard({ rates, branch }) {
-  // console.log(JSON.stringify(rate));
-  // const [formForBuying, setFormForBuying] = useState(false);
   const [buyingCurrency, setBuyingCurrency] = useState("");
   const availableCurrencies =
     branch.available_currencies && branch.available_currencies;
@@ -11,7 +11,6 @@ function FormSellingBoard({ rates, branch }) {
     // setFormForBuying(true);
   };
 
-  const { USD, GBP, YEN, KYAT, SINDOLLAR } = rates[0];
   return (
     <div className="sellingboard">
       <h3> Please Choose Currency To Buy</h3>
@@ -26,12 +25,9 @@ function FormSellingBoard({ rates, branch }) {
         </button>
       ))}
       {buyingCurrency === "USD" ? (
-        <div>
-          <p>Only USD smallNotes: {rates[0][buyingCurrency].smallNote}</p>
-          <p>bigNotes: {rates[0][buyingCurrency].bigNote}</p>
-        </div>
+        <UsdCurrencyForm buyingCurrency={buyingCurrency} rates={rates} />
       ) : (
-        <div> {rates[0][buyingCurrency]}</div>
+        <OtherCurrencyForm buyingCurrency={buyingCurrency} rates={rates} />
       )}
     </div>
   );
