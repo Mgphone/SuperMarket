@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import fetchsellingform from "../../utils/fetchingsellingform";
+import { useAuth } from "../../contexts/AuthContext";
 
 function OtherCurrencyForm({ buyingCurrency, rates }) {
   const [amount, setAmount] = useState(0);
   const { GBP, YEN, KYAT, SINDOLLAR } = rates[0];
+  const { token } = useAuth();
   // const handleAmountChange = (e) => {
   //   setAmount(e.target.value);
   // };
@@ -14,7 +17,9 @@ function OtherCurrencyForm({ buyingCurrency, rates }) {
   const validationSchema = Yup.object({
     buyer_name: Yup.string().required("Please fill the customer name"),
     buyer_identity: Yup.string().required("Please enter customer identity"),
-    amount: Yup.number().required("Please enter the amount"),
+    amount: Yup.number()
+      .required("Please enter the amount")
+      .positive("Must be more than 0"),
   });
   const formik = useFormik({
     initialValues: {
@@ -37,7 +42,18 @@ function OtherCurrencyForm({ buyingCurrency, rates }) {
       Note: "",
       amount: values.amount,
     };
-    // console.log(JSON.stringify(formData));
+    try {
+      const response = await fetchsellingform(formData, token);
+      if (response.success) {
+        alert("Successful ");
+      } else {
+        alert(response.message.message);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+
+    formik.resetForm();
   };
   return (
     <div className="sellingform">

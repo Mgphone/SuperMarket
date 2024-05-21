@@ -9,8 +9,6 @@ function FormSellingBoard({ rates, branch }) {
     branch.available_currencies && branch.available_currencies;
   const handleClick = (item) => {
     setBuyingCurrency(item);
-    // setFormForBuying(true);
-    // setOpenForm((prev) => !prev);
     setOpenForm(true);
   };
   return (
@@ -19,8 +17,6 @@ function FormSellingBoard({ rates, branch }) {
 
       {availableCurrencies.map((item, index) => (
         <button
-          // className="available-currency"
-          // className={`buyingCurrency ? ${buyingCurrency}:""`}
           className={`available-currency ${
             buyingCurrency === item ? "active-currency" : ""
           }`}
@@ -30,7 +26,6 @@ function FormSellingBoard({ rates, branch }) {
           {item}
         </button>
       ))}
-      {/* {openform?({buyingCurrency==="USD"}?(<UsdCurrencyForm buyingCurrency={buyingCurrency} rates={rates} />):( <OtherCurrencyForm buyingCurrency={buyingCurrency} rates={rates} />)):null} */}
       {openform ? (
         buyingCurrency === "USD" ? (
           <UsdCurrencyForm buyingCurrency={buyingCurrency} rates={rates} />
@@ -43,9 +38,3 @@ function FormSellingBoard({ rates, branch }) {
 }
 
 export default FormSellingBoard;
-
-// {buyingCurrency === "USD" ? (
-//   <UsdCurrencyForm buyingCurrency={buyingCurrency} rates={rates} />
-// ) : (
-//   <OtherCurrencyForm buyingCurrency={buyingCurrency} rates={rates} />
-// )}

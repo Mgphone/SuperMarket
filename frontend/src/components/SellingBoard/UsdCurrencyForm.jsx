@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useAuth } from "../../contexts/AuthContext";
+import fetchsellingform from "../../utils/fetchingsellingform";
 function UsdCurrencyForm({ buyingCurrency, rates }) {
   // const [amount, setAmount] = useState(0);
-  const [currencyNote, setCurrentNote] = useState("Big Notes");
+  const [currencyNote, setCurrentNote] = useState("bigNote");
   const { USD } = rates[0];
+  const { token } = useAuth();
   // const handleAmountChange = (event) => {
   //   setAmount(event.target.value);
   // };
@@ -14,7 +17,7 @@ function UsdCurrencyForm({ buyingCurrency, rates }) {
   const calculateTotal = (rates, buyingCurrency) => {
     const bigNotesValue = rates[0][buyingCurrency].bigNote;
     const smallNoteValue = rates[0][buyingCurrency].smallNote;
-    return currencyNote === "Big Notes"
+    return currencyNote === "bigNote"
       ? formik.values.amount * bigNotesValue
       : formik.values.amount * smallNoteValue;
   };
@@ -23,7 +26,9 @@ function UsdCurrencyForm({ buyingCurrency, rates }) {
   const validationSchema = Yup.object({
     buyer_name: Yup.string().required("Please fill customer name"),
     buyer_identity: Yup.string().required("Please enter customer identity"),
-    amount: Yup.number().required("Please enter amount"),
+    amount: Yup.number()
+      .required("Please enter amount")
+      .positive("Must be more than 0"),
     // currency: Yup.string().required("Need currency"),
   });
   const formik = useFormik({
@@ -46,8 +51,21 @@ function UsdCurrencyForm({ buyingCurrency, rates }) {
       currency: buyingCurrency,
       Note: currencyNote,
       amount: values.amount,
+      // total: calculateTotal(rates, buyingCurrency),
     };
-    // console.log(JSON.stringify(formData));
+
+    try {
+      const response = await fetchsellingform(formData, token);
+      if (response.success) {
+        alert("Successful ");
+      } else {
+        alert(response.message.message);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+
+    formik.resetForm();
   };
   return (
     <div className="sellingform">
@@ -91,10 +109,10 @@ function UsdCurrencyForm({ buyingCurrency, rates }) {
         ) : null}
         <label htmlFor="currencyNote">Please Choose Big or Small Note</label>
         <select value={currencyNote} onChange={handleCurrencyNoteChange}>
-          <option name="currencyNote" value="Big Notes">
+          <option name="currencyNote" value="bigNote">
             Big Notes
           </option>
-          <option name="currencyNote" value="Small Notes">
+          <option name="currencyNote" value="smallNote">
             Small Notes
           </option>
         </select>

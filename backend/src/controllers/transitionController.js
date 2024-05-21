@@ -95,8 +95,8 @@ const TransitionController = {
                 .json({ message: "Can not process the transations" });
             }
 
-            const showBranch = await Branches.findById(transitionBranch);
-            res.status(200).json({ showBranch });
+            // const showBranch = await Branches.findById(transitionBranch);
+            res.status(200).json({ message: "You have create new Transition" });
           } catch (error) {
             await session.abortTransaction();
             session.endSession();

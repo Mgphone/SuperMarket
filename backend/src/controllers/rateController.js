@@ -20,7 +20,9 @@ const RateController = {
             };
             const new_CurrentRate = new Rate(currentRate);
             await new_CurrentRate.save();
-            return res.status(200).json({ new_CurrentRate });
+            return res
+              .status(200)
+              .json({ message: "You have created new rate" });
           } else {
             return res
               .status(403)
