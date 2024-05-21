@@ -1,6 +1,6 @@
-Got it! Here's how you can update the README to include instructions for both the frontend and backend setup:
+Certainly! Here is the updated README with instructions for setting up both the backend and frontend services, along with usage guidance:
 
-markdown
+```markdown
 # Money Exchange Backend and Frontend System
 
 This repository contains the backend and frontend code for a money exchange system. The backend provides endpoints for managing transactions, branches, and currency exchange rates, while the frontend serves as the user interface for interacting with the system.
@@ -13,6 +13,7 @@ To set up and run the backend and frontend system locally, follow these instruct
 
 - Docker
 - Docker Compose
+- Node.js and npm (for frontend development)
 
 ### Installation
 
@@ -57,14 +58,24 @@ If you're using Linux, you can install Docker Engine by following the instructio
    docker-compose up -d
    ```
 
-2. Access the frontend and backend services:
+2. Set up the frontend:
+
+   Navigate to the frontend directory, install the dependencies, and start the development server:
+
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+3. Access the frontend and backend services:
 
    - Frontend: Navigate to `http://localhost:5173` in your web browser.
    - Backend: Once the containers are up and running, you can access the backend services by navigating to `http://localhost:5000` in your web browser or sending requests using Postman.
 
-3. Test the endpoints:
+4. Test the endpoints:
 
    Use the provided Postman template (`money-exchange.postman_collection.json`) to test the endpoints of the backend. Import the Postman template into Postman and execute the requests to interact with the money exchange system.
 ```
 
-This README now includes instructions for setting up both the backend and frontend services, along with usage guidance.
+This README now includes comprehensive instructions for setting up both the backend and frontend services, along with usage guidance.
