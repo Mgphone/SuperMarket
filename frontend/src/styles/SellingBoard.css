@@ -67,6 +67,12 @@
   background-color: #218838;
 }
 
+.sellingboard-container .sellingboard button.available-currency.active-currency {
+  background-color: #007bff;
+  color: #fff;
+
+}
+
 
 .selling-no-found {
   height: 80%;
@@ -115,7 +121,7 @@
   color: #555;
 }
 
-.sellingform input[type="number"] {
+.sellingform input {
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
@@ -134,8 +140,7 @@
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.sellingform label[for="EnterAmount"],
-.sellingform label[for="currencyNote"] {
+.sellingform label {
   margin-bottom: 5px;
 }
 
@@ -146,6 +151,7 @@
   color: #333;
   text-align: center;
 }
+
 
 @media (max-width:800px) {
   .selling-no-found {
