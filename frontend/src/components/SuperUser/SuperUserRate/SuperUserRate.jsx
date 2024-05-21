@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import firstTenDigits from "../../../utils/firstTenDigits";
 import { useAuth } from "../../../contexts/AuthContext";
 import ChangeRateForm from "./ChangeRateForm";
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 function SuperUserRate() {
   const [isLoading, setIsLoading] = useState(true);
   const [isFetchError, setIsFetchError] = useState(false);
@@ -54,14 +57,14 @@ function SuperUserRate() {
         }
         const responseJSON = await response.json();
         responseJSON;
-        alert(responseJSON.message);
+        toast(responseJSON.message);
         fetchGetRate();
       } catch (error) {
         console.error(error);
         setIsDeleteError(error);
       }
     } else {
-      alert("Delete Cancel");
+      toast("Delete Cancel");
     }
   };
   const handleUpdateRate = async () => {
@@ -78,6 +81,11 @@ function SuperUserRate() {
     <>
       {fetchRate.length > 0 && (
         <div className="today-rate">
+          <ToastContainer
+            hideProgressBar={false}
+            autoClose={5000}
+            closeOnClick={true}
+          />
           <h1>Bhat Rate</h1>
           <h3>Date:{firstTenDigits(fetchRate[0].updatedAt)}</h3>
           {Object.entries(fetchRate[0])

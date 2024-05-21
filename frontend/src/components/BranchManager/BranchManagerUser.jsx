@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import UserResetPassword from "../UserAuthenticationFront/UserResetPassword";
 
 function BranchManagerUser() {
@@ -60,7 +62,7 @@ function BranchManagerUser() {
         }
         const deleteJson = await response.json();
         deleteJson;
-        alert(deleteJson.message);
+        toast(deleteJson.message);
       } catch (error) {
         setIsError(error.message);
         setIsLoading(false);
@@ -68,7 +70,7 @@ function BranchManagerUser() {
       setIsLoading(true);
       fetchData();
     } else {
-      alert("Delete Cancel");
+      toast("Delete Cancel");
     }
   };
   if (isLoading) {
@@ -81,6 +83,12 @@ function BranchManagerUser() {
     <>
       {branchData && userData && (
         <div className="superusermanage">
+          <ToastContainer
+            autoClose={5000}
+            hideProgressBar={false}
+            closeOnClick={true}
+          />
+
           <div className="superbuttongroup">
             <button onClick={handleCreateNewUser}>Create New User</button>
           </div>

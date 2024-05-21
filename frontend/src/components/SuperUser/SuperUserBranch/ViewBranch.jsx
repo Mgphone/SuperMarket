@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import firstTenDigits from "../../../utils/firstTenDigits";
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 function ViewBranch({ singleBranch, headers, setAllBranches }) {
   const url = `/api/branches/getsinglebranch/${singleBranch}`;
   const [fetchSingleBranch, setFetchSingleBranch] = useState("");
@@ -41,14 +44,14 @@ function ViewBranch({ singleBranch, headers, setAllBranches }) {
         }
         const deleteJson = await response.json();
         deleteJson;
-        alert(deleteJson.message);
+        toast(deleteJson.message);
         fetchData();
       } catch (error) {
         console.error;
         setIsError(error);
       }
     } else {
-      alert("Delete Cancel");
+      toast("Delete Cancel");
     }
   };
 
@@ -70,6 +73,11 @@ function ViewBranch({ singleBranch, headers, setAllBranches }) {
 
   return (
     <div>
+      <ToastContainer
+        autoClose={5000}
+        closeOnClick={true}
+        hideProgressBar={false}
+      />
       <h1>This is for Single Branch</h1>
       {fetchSingleBranch ? (
         <h1>Date: {firstTenDigits(fetchSingleBranch.createdAt)}</h1>

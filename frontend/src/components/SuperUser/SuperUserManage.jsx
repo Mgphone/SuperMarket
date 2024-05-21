@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import UserResetPassword from "../UserAuthenticationFront/UserResetPassword";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 function SuperUserManage() {
   const { token, decodedToken } = useAuth();
   const [dataUser, setUserData] = useState();
@@ -59,7 +62,7 @@ function SuperUserManage() {
         }
         const deleteJson = await response.json();
         deleteJson;
-        alert(deleteJson.message);
+        toast(deleteJson.message);
       } catch (error) {
         setError(error.message);
         setIsLoading(false);
@@ -67,7 +70,7 @@ function SuperUserManage() {
       setIsLoading(true);
       fetchData();
     } else {
-      alert("Delete Cancel");
+      toast("Delete Cancel");
     }
   };
   if (isLoading) {
@@ -86,6 +89,11 @@ function SuperUserManage() {
     <>
       {branchData && dataUser && (
         <div className="superusermanage">
+          <ToastContainer
+            autoClose={5000}
+            closeOnClick={true}
+            hideProgressBar={false}
+          />
           <div className="superbuttongroup">
             <button onClick={handleCreateNewUser}>Create New User</button>
             <button onClick={handleCreateNewAreaManager}>

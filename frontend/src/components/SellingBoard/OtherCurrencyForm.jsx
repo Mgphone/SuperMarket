@@ -3,7 +3,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import fetchsellingform from "../../utils/fetchingsellingform";
 import { useAuth } from "../../contexts/AuthContext";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function OtherCurrencyForm({ buyingCurrency, rates }) {
   const [amount, setAmount] = useState(0);
   const { GBP, YEN, KYAT, SINDOLLAR } = rates[0];
@@ -45,18 +46,24 @@ function OtherCurrencyForm({ buyingCurrency, rates }) {
     try {
       const response = await fetchsellingform(formData, token);
       if (response.success) {
-        alert("Successful ");
+        toast("Successful");
       } else {
-        alert(response.message.message);
+        toast(response.message.message);
       }
     } catch (error) {
-      alert(error.message);
+      toast(error.message);
     }
 
     formik.resetForm();
   };
   return (
     <div className="sellingform">
+      <ToastContainer
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick={true}
+      />
+
       <h3>{buyingCurrency} BUY</h3>
       {/* {rates[0][buyingCurrency]} */}
       <form onSubmit={formik.handleSubmit}>
