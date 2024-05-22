@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import "../../styles/UserDetails.css";
+import UpdatePassword from "./UpdatePassword";
 function NormalUserDetail() {
   const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
@@ -32,7 +33,6 @@ function NormalUserDetail() {
   useEffect(() => {
     fetchUserDetails();
   }, []);
-  // console.log(fetchUserData.userdoc);
   if (isLoading) {
     return <div className="loader"></div>;
   }
@@ -56,11 +56,8 @@ function NormalUserDetail() {
   }
   const userDetails =
     IsUserDetails && extractUserDataArray(fetchUserData.userdoc);
-  // console.log(userDetails);
   const changePassword = () => {
-    // console.log(item);
     setIsReset(true);
-    console.log("you click reset button");
   };
   return (
     <>
@@ -88,6 +85,9 @@ function NormalUserDetail() {
             </div>
           )}
         </>
+      )}
+      {isReset && (
+        <UpdatePassword userDetails={userDetails} setIsReset={setIsReset} />
       )}
     </>
   );

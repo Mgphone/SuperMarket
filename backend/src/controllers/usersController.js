@@ -236,16 +236,18 @@ const userController = {
   updatePassword: async (req, res) => {
     try {
       const { newpassword, oldpassword, username } = req.body;
-
+      console.log("This is username" + username);
       const userDoc = await User.findOne({ username });
-      const passOk = bcrypt.compareSync(oldpassword, userDoc.password);
+      console.log("This is userDoc" + JSON.stringify(userDoc));
+
       if (userDoc === null) {
-        res.status(400).json({ message: "Wrong Credential" });
-        return;
+        return res.status(400).json({ message: "Username not found" });
       }
+      const passOk = bcrypt.compareSync(oldpassword, userDoc.password);
       if (!passOk) {
         return res.status(400).json({ message: "Old Password is Not correct" });
       }
+
       const hashpassword = bcrypt.hashSync(newpassword, salt);
       await User.findOneAndUpdate({ username }, { password: hashpassword });
       return res.status(200).json({
