@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import UserResetPassword from "../UserAuthenticationFront/UserResetPassword";
 
 function BranchManagerUser() {
@@ -83,12 +82,6 @@ function BranchManagerUser() {
     <>
       {branchData && userData && (
         <div className="superusermanage">
-          <ToastContainer
-            autoClose={5000}
-            hideProgressBar={false}
-            closeOnClick={true}
-          />
-
           <div className="superbuttongroup">
             <button onClick={handleCreateNewUser}>Create New User</button>
           </div>

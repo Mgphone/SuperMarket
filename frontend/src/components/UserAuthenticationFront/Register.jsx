@@ -4,9 +4,8 @@ import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import "./userauthentication.css";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
-import "react-toastify/dist/ReactToastify.css";
 function Signup() {
   const [registerError, setRegisterError] = useState("");
   const [iserror, setIserror] = useState("");
@@ -116,11 +115,6 @@ function Signup() {
   }
   return (
     <div>
-      <ToastContainer
-        hideProgressBar={false}
-        autoClose={5000}
-        closeOnClick={true}
-      />
       <form className="signupform" onSubmit={formik.handleSubmit}>
         <h1>Signup</h1>
         <div

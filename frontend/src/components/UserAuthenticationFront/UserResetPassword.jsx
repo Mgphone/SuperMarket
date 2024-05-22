@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 function UserResetPassword({
   setIsResetPassword,
   resetValue,
@@ -40,6 +39,7 @@ function UserResetPassword({
       const editJson = await response.json();
       editJson;
       toast(editJson.message);
+
       setIsResetPassword(false);
     } catch (error) {
       console.error(error);
@@ -48,21 +48,16 @@ function UserResetPassword({
   };
   return (
     <>
-      <ToastContainer
-        autoClose={5000}
-        hideProgressBar={false}
-        closeOnClick={false}
-      />
-
       <div className="userreset">
         <h2>UserResetPassword</h2>
         <form onSubmit={formik.handleSubmit}>
           <input
             type="password"
             name="password"
-            placeholder="newpassword"
+            placeholder="Password"
             value={formik.values.password}
             onChange={formik.handleChange}
+            autoComplete="off"
           />
           {formik.touched.password && formik.errors.password ? (
             <div className="error">enter password</div>

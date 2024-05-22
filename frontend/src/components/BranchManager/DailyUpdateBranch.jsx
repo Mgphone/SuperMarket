@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import firstTenDigits from "../../utils/firstTenDigits";
 function DailyUpdateBranch({ setIsManagerDashboard, setIsDailyUpdateBranch }) {
@@ -108,12 +108,6 @@ function DailyUpdateBranch({ setIsManagerDashboard, setIsDailyUpdateBranch }) {
   return (
     // <div className="updateDailyBranch">DailyUpdateBranch {fetBranchName}</div>
     <div className="creatnewbranch">
-      <ToastContainer
-        autoClose={5000}
-        hideProgressBar={false}
-        closeOnClick={true}
-      />
-
       <h1>Update Branch {fetBranchName}</h1>
       {fetchBrnachSaleTime && (
         <h5>

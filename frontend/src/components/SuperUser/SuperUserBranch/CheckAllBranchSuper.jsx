@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 import ViewBranch from "./ViewBranch";
@@ -61,11 +61,6 @@ function CheckAllBranchSuper({ headers }) {
   }
   return (
     <div className="checkallbranchsuper">
-      <ToastContainer
-        autoClose={5000}
-        closeOnClick={true}
-        hideProgressBar={false}
-      />
       {allbranches && !singleBranch && (
         <>
           <table>

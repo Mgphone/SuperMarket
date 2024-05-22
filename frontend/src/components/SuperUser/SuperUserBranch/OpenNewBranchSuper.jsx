@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
-import "react-toastify/dist/ReactToastify.css";
 function OpenNewBranchSuper({ handleclose, headers }) {
   const [openBranchError, setOpenBranchErrror] = useState(false);
   const headersWithContent = {
@@ -60,11 +59,6 @@ function OpenNewBranchSuper({ handleclose, headers }) {
   });
   return (
     <div className="creatnewbranch">
-      <ToastContainer
-        autoClose={5000}
-        closeOnClick={true}
-        hideProgressBar={true}
-      />
       <button onClick={handleclose}>X</button>
       <h1>Create New Branch</h1>
       {openBranchError && (

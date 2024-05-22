@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import firstTenDigits from "../../../utils/firstTenDigits";
-import { ToastContainer, toast } from "react-toastify";
-
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 function ViewBranch({ singleBranch, headers, setAllBranches }) {
   const url = `/api/branches/getsinglebranch/${singleBranch}`;
   const [fetchSingleBranch, setFetchSingleBranch] = useState("");
@@ -73,11 +71,6 @@ function ViewBranch({ singleBranch, headers, setAllBranches }) {
 
   return (
     <div>
-      <ToastContainer
-        autoClose={5000}
-        closeOnClick={true}
-        hideProgressBar={false}
-      />
       <h1>This is for Single Branch</h1>
       {fetchSingleBranch ? (
         <h1>Date: {firstTenDigits(fetchSingleBranch.createdAt)}</h1>
@@ -108,9 +101,6 @@ function ViewBranch({ singleBranch, headers, setAllBranches }) {
                             Delete
                           </button>
                         )}
-                        {/* {key === "transition" && (
-                          <button onClick={() => handleView(item)}>View</button>
-                        )} */}
                       </li>
                     ))}
                   </ol>

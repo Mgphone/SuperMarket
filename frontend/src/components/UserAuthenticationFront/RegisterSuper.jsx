@@ -2,9 +2,8 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
-import "react-toastify/dist/ReactToastify.css";
 function RegisterSuper({ role }) {
   const navigate = useNavigate();
   const [registerError, setRegisterError] = useState("");
@@ -80,11 +79,6 @@ function RegisterSuper({ role }) {
   });
   return (
     <div>
-      <ToastContainer
-        autoClose={5000}
-        hideProgressBar={false}
-        closeOnClick={false}
-      />
       <form className="signupform" onSubmit={formik.handleSubmit}>
         <h1>Signup {role}</h1>
         <div
