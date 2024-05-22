@@ -1,0 +1,26 @@
+.userdetails {
+  width: 50%;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  padding-top: 40px;
+}
+
+.userdetails .closebutton {
+  width: 30px;
+  display: block;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 10px;
+
+
+
+}

@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
-
 import "react-toastify/dist/ReactToastify.css";
 function UserResetPassword({
   setIsResetPassword,
@@ -48,30 +47,33 @@ function UserResetPassword({
     }
   };
   return (
-    <div className="userreset">
+    <>
       <ToastContainer
         autoClose={5000}
         hideProgressBar={false}
         closeOnClick={false}
       />
-      <h2>UserResetPassword</h2>
-      <form onSubmit={formik.handleSubmit}>
-        <input
-          type="password"
-          name="password"
-          placeholder="newpassword"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-        />
-        {formik.touched.password && formik.errors.password ? (
-          <div className="error">enter password</div>
-        ) : (
-          ""
-        )}
-        <button onClick={handleReset}>Close</button>
-        <button type="submit">Change Password</button>
-      </form>
-    </div>
+
+      <div className="userreset">
+        <h2>UserResetPassword</h2>
+        <form onSubmit={formik.handleSubmit}>
+          <input
+            type="password"
+            name="password"
+            placeholder="newpassword"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+          />
+          {formik.touched.password && formik.errors.password ? (
+            <div className="error">enter password</div>
+          ) : (
+            ""
+          )}
+          <button onClick={handleReset}>Close</button>
+          <button type="submit">Change Password</button>
+        </form>
+      </div>
+    </>
   );
 }
 

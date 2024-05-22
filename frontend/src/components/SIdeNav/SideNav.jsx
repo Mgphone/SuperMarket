@@ -77,7 +77,7 @@ function SideNav({
   const handlenormaldetail = () => {
     setIsNormalUserDetails((prevValue) => !prevValue);
     setIsNormalUserSellingBoard(false);
-    setIsDailyUpdateBranch(false);
+    // setIsDailyUpdateBranch(false);
   };
   const handlenormalselling = () => {
     setIsNormalUserDetails(false);
