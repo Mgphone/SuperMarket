@@ -12,6 +12,8 @@ function SideNav({
   setIsSellingBoard,
   setIsManageRate,
   setIsDailyUpdateBranch,
+  setIsBranchManagerDetails,
+  setIsSuperDetails,
   //this is for responsive css
   isAdminDashboard,
   isManageBranch,
@@ -23,6 +25,8 @@ function SideNav({
   isSellingBoard,
   isManageRate,
   isDailyUpdateBranch,
+  isBranchManagerDetails,
+  isSuperDetails,
 }) {
   const { decodedToken } = useAuth();
 
@@ -31,48 +35,70 @@ function SideNav({
     setIsManageBranch(false);
     setIsManageuser(false);
     setIsManageRate(false);
+    setIsSuperDetails(false);
   };
   const handleSuperBranch = () => {
     setIsAdminDashboard(false);
     setIsManageBranch((prevValue) => !prevValue);
     setIsManageuser(false);
     setIsManageRate(false);
+    setIsSuperDetails(false);
   };
   const handleSuperUser = () => {
     setIsAdminDashboard(false);
     setIsManageBranch(false);
     setIsManageuser((prevValue) => !prevValue);
     setIsManageRate(false);
+    setIsSuperDetails(false);
   };
   const handleSuperRate = () => {
     setIsAdminDashboard(false);
     setIsManageBranch(false);
     setIsManageuser(false);
     setIsManageRate((prevValue) => !prevValue);
+    setIsSuperDetails(false);
+  };
+  const handleSuperDetails = () => {
+    setIsAdminDashboard(false);
+    setIsManageBranch(false);
+    setIsManageuser(false);
+    setIsManageRate(false);
+    setIsSuperDetails((prevValue) => !prevValue);
   };
   const handemanagerdash = () => {
     setIsManagerDashboard((prevValue) => !prevValue);
     setIsManageBranchUser(false);
     setIsDailyUpdateBranch(false);
     setIsSellingBoard(false);
+    setIsBranchManagerDetails(false);
   };
   const handlemanageruser = () => {
     setIsManagerDashboard(false);
     setIsManageBranchUser((prevValue) => !prevValue);
     setIsDailyUpdateBranch(false);
     setIsSellingBoard(false);
+    setIsBranchManagerDetails(false);
   };
   const handlemanagerdailybranch = () => {
     setIsManagerDashboard(false);
     setIsManageBranchUser(false);
     setIsDailyUpdateBranch((prev) => !prev);
     setIsSellingBoard(false);
+    setIsBranchManagerDetails(false);
   };
   const handlemanagerselling = () => {
     setIsManagerDashboard(false);
     setIsManageBranchUser(false);
     setIsDailyUpdateBranch(false);
     setIsSellingBoard((prevValue) => !prevValue);
+    setIsBranchManagerDetails(false);
+  };
+  const handleManagerDetails = () => {
+    setIsManagerDashboard(false);
+    setIsManageBranchUser(false);
+    setIsDailyUpdateBranch(false);
+    setIsSellingBoard(false);
+    setIsBranchManagerDetails((prevValue) => !prevValue);
   };
   const handlenormaldetail = () => {
     setIsNormalUserDetails((prevValue) => !prevValue);
@@ -89,6 +115,14 @@ function SideNav({
       <ul>
         {decodedToken && decodedToken.role == "super_user" && (
           <>
+            <li
+              onClick={handleSuperDetails}
+              style={{
+                backgroundColor: isSuperDetails ? "lightgray" : "yellow",
+              }}
+            >
+              My Details
+            </li>
             <li
               onClick={handleSuperAdmin}
               style={{
@@ -123,6 +157,16 @@ function SideNav({
         )}
         {decodedToken && decodedToken.role == "branch_manager" && (
           <>
+            <li
+              onClick={handleManagerDetails}
+              style={{
+                backgroundColor: isBranchManagerDetails
+                  ? "lightgray"
+                  : "yellow",
+              }}
+            >
+              Manager Details
+            </li>
             <li
               onClick={handemanagerdash}
               style={{

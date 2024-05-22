@@ -236,9 +236,7 @@ const userController = {
   updatePassword: async (req, res) => {
     try {
       const { newpassword, oldpassword, username } = req.body;
-      console.log("This is username" + username);
       const userDoc = await User.findOne({ username });
-      console.log("This is userDoc" + JSON.stringify(userDoc));
 
       if (userDoc === null) {
         return res.status(400).json({ message: "Username not found" });

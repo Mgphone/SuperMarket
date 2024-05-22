@@ -2,7 +2,8 @@ import { useState } from "react";
 import Nav from "../components/Nav/Nav";
 import SideNav from "../components/SIdeNav/SideNav";
 import SellingBoard from "../components/SellingBoard/SellingBoard";
-import NormalUserDetail from "../components/BranchSeller/NormalUserDetail";
+// import NormalUserDetail from "../components/BranchSeller/NormalUserDetail";
+import UserDetail from "../components/UserMyDetails/UserDetail";
 import NormalUserPortal from "../components/BranchSeller/NormalUserPortal";
 
 function HomeNormalUser() {
@@ -23,7 +24,7 @@ function HomeNormalUser() {
           {!isNormalUserDetails && !isNormalUserSellingBoard && (
             <NormalUserPortal />
           )}
-          {isNormalUserDetails && <NormalUserDetail />}
+          {isNormalUserDetails && <UserDetail />}
           {isNormalUserSellingBoard && <SellingBoard />}
         </div>
       </div>

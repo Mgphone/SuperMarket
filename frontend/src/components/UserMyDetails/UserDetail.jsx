@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import "../../styles/UserDetails.css";
 import UpdatePassword from "./UpdatePassword";
-function NormalUserDetail() {
+function UserDetail() {
   const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [fetchUserData, setFetchUserData] = useState("");
-  const [IsUserDetails, setIsUserDetails] = useState(false);
+  // const [IsUserDetails, setIsUserDetails] = useState(false);
   const [isReset, setIsReset] = useState(false);
 
   const fetchUserDetails = async () => {
@@ -15,7 +15,6 @@ function NormalUserDetail() {
       const response = await fetch("/api/username/getsingleuser/", {
         headers: { Authorization: token },
       });
-      // isLoading(true);
       if (!response.ok) {
         const errorMessage = "fetch is not okay need to find o ut";
         setIsError({ message: errorMessage });
@@ -39,23 +38,20 @@ function NormalUserDetail() {
   if (isError) {
     return <div className="error">{isError.message}</div>;
   }
-  const handleUserDetails = () => {
-    setIsUserDetails(true);
-  };
-  const handleCloseUserDetails = () => {
-    setIsUserDetails(false);
-  };
 
   function extractUserDataArray(user) {
     return {
       id: user._id,
       username: user.username,
       role: user.role,
-      branchname: user.branch.branch_name,
+      // branchname: user.branch.branch_name,
+      branchname:
+        user.role === "super_user"
+          ? "Aera Manager"
+          : user.branch?.branch_name || "Default Branch",
     };
   }
-  const userDetails =
-    IsUserDetails && extractUserDataArray(fetchUserData.userdoc);
+  const userDetails = extractUserDataArray(fetchUserData.userdoc);
   const changePassword = () => {
     setIsReset(true);
   };
@@ -63,15 +59,8 @@ function NormalUserDetail() {
     <>
       {fetchUserData && (
         <>
-          <div className="superbuttongroup">
-            <button onClick={handleUserDetails}> User Details</button>
-            <button>Check My Sales</button>
-          </div>
-          {IsUserDetails && userDetails && (
+          {userDetails && (
             <div className="userdetails">
-              <button onClick={handleCloseUserDetails} className="closebutton">
-                X
-              </button>
               {Object.entries(userDetails)
                 .filter(([key]) => key !== "id")
                 .map(([key, value]) => (
@@ -82,6 +71,7 @@ function NormalUserDetail() {
                   </div>
                 ))}
               <button onClick={changePassword}>Change Password</button>
+              {userDetails.role !== "super_user" && <button>Check Sale</button>}
             </div>
           )}
         </>
@@ -93,4 +83,4 @@ function NormalUserDetail() {
   );
 }
 
-export default NormalUserDetail;
+export default UserDetail;
