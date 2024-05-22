@@ -193,7 +193,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"branchname\":\"BranchY\", \"openingamount\":1000000, \"currency\":[\"USD\", \"GBP\", \"YEN\", \"KYAT\", \"SINDOLLAR\"]}",
+							"raw": "{\"branchname\":\"BranchY\", \"openingamount\":1000000, \"currency\":[\"USD\", \"GBP\", \"YEN\", \"KYAT\", \"SINGDOLLAR\"]}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -274,7 +274,7 @@
 					"response": []
 				},
 				{
-					"name": "allbranch(super)",
+					"name": "allbranch(branchManager,BranchSeller)",
 					"request": {
 						"method": "GET",
 						"header": [],
