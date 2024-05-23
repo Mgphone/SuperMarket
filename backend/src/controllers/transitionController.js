@@ -148,6 +148,45 @@ const TransitionController = {
       return res.status(500).json({ message: errorMessage });
     }
   },
+  getTransitionByUser: async (req, res) => {
+    try {
+      const token = req.headers.authorization;
+      checkSuperUser(token)
+        .then(async (result) => {
+          console.log(JSON.stringify(result.userId));
+          // const sellerObjectId = new ObjectId(result.userId);
+          const sellerObjectId = new mongoose.Types.ObjectId(result.userId); // Use Mongoose's ObjectId type
+          const findTransition = await Transition.find({
+            seller: sellerObjectId,
+          });
+          return res.status(200).json(findTransition);
+        })
+        .catch((error) => {
+          return res.status(403).json({ message: error });
+        });
+    } catch (error) {
+      console.error(error);
+      return res.status(403).json({ message: error });
+    }
+  },
+  getIndividualTransition: async (req, res) => {
+    const id = req.params.id;
+
+    try {
+      const findDoc = await Transition.findById(id);
+      if (findDoc) {
+        return res.status(200).json(findDoc);
+      } else {
+        return res
+          .status(404)
+          .json({ message: "Can not find your transitions" });
+      }
+      // return res.status(200).json(findDoc);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: error });
+    }
+  },
   getAllTransitionbyDay: async (req, res) => {
     try {
       const token = req.headers.authorization;

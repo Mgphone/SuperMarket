@@ -382,6 +382,30 @@
 			"name": "Transition",
 			"item": [
 				{
+					"name": "individultransition(all but with individual token)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMzYjkyZGM4YmZmOTc1NTk0YmY3ZDkiLCJ1c2VybmFtZSI6ImJyYW5jaGFzZWxsZXJAbW9uZXkuY29tIiwicm9sZSI6ImJyYW5jaF9zZWxsZXIiLCJicmFuY2giOiI2NjMxMjYyNmEyZmZhNGZmMDlkOGIyYjQiLCJpYXQiOjE3MTY0NjE3NTMsImV4cCI6MTcxNjQ2ODk1M30.sIhq7CBrCU6hgyeIvVa9WIRClA6jE7-GrIkzGUarSGo"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:5000/transition/getindividual"
+					},
+					"response": []
+				},
+				{
+					"name": "Get with Id(all)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:5000/transition/getindividual/664d0af380caf145de353d15"
+					},
+					"response": []
+				},
+				{
 					"name": "Create Transition(branchmanager,branchseller)",
 					"request": {
 						"auth": {

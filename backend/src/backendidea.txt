@@ -42,3 +42,9 @@ firstly using session with
             session.endSession;
             res.status(403).json({ message: "Error Happen in the transition" });
           }
+for mongodb.. coneection for types
+I can say when i want to get query for ObjectId("hexcodeof mongo") 
+i have to use "new mongoose.Types.ObjectId(my mongo id)"
+ because that is for type save and important for collection connections
+ if i use mongodb driver can make {ObjectId} from mongodb
+ then easiy use new ObjectId(my id)

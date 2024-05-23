@@ -22,6 +22,16 @@ router.post(
   checkingToken,
   TransitionController.getTransitionByBranch
 );
+router.get(
+  "/transition/getindividual",
+  checkingToken,
+  TransitionController.getTransitionByUser
+);
+router.get(
+  "/transition/getindividual/:id",
+
+  TransitionController.getIndividualTransition
+);
 router.patch(
   "/transition/edittransition",
   checkingToken,
