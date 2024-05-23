@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import "../../styles/CheckSaleIndividual.css";
 import changeTimeToLocalTime from "../../utils/changeTimeToLocalTime";
+import TransitionViewDetails from "./TransitionViewDetails";
 function CheckSaleIndividual() {
   const [fetchTransitions, setFetchTransitions] = useState([]);
   const [fetchTransionCount, setFetchTransitionCount] = useState();
@@ -9,6 +10,8 @@ function CheckSaleIndividual() {
   const [isFetchingError, setIsFetchingError] = useState(false);
   const [queryLimit, setQueryLimit] = useState(5);
   const { token } = useAuth();
+  const [isViewDetails, setIsViewDetails] = useState(false);
+  const [viewDetailId, setViewDetailId] = useState("");
   const fetchBack = async () => {
     try {
       setIsLoading(true);
@@ -35,7 +38,9 @@ function CheckSaleIndividual() {
     fetchBack();
   }, [queryLimit]);
   const handleviewDetails = (id) => {
-    console.log(id);
+    setIsViewDetails(true);
+    setViewDetailId(id);
+    // console.log(id);
   };
   const handleloadmore = () => {
     setQueryLimit(queryLimit + 5);
@@ -89,6 +94,12 @@ function CheckSaleIndividual() {
       ))}
       {queryLimit && fetchTransionCount && queryLimit < fetchTransionCount && (
         <button onClick={handleloadmore}>Load More..</button>
+      )}
+      {isViewDetails && (
+        <TransitionViewDetails
+          viewDetailId={viewDetailId}
+          setIsViewDetails={setIsViewDetails}
+        />
       )}
     </div>
   );

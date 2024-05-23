@@ -122,7 +122,7 @@ function SuperUserRate() {
       {fetchRate.length === 0 && (
         <>
           <div className="today-rate">
-            <h1>You don't have Rate!!</h1>
+            <h1>You do not have Rate!!</h1>
             <div className="button-group">
               <button onClick={handleCreateRate}>Create Rate?</button>
             </div>
