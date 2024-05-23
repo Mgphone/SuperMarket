@@ -1,0 +1,41 @@
+.checksaleindividual {
+  margin: 20px;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.checksaleindividual h1 {
+  /* font-size: 24px; */
+  margin-bottom: 10px;
+
+
+}
+
+.individual {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.individual p {
+  margin: 5px 0;
+}
+
+.individual_key {
+  font-weight: bold;
+}
+
+.individual button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.individual button:hover {
+  background-color: #0056b3;
+}

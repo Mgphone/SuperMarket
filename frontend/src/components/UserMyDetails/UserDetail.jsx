@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import "../../styles/UserDetails.css";
 import UpdatePassword from "./UpdatePassword";
+import CheckSaleIndividual from "./CheckSaleIndividual";
 function UserDetail() {
   const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [fetchUserData, setFetchUserData] = useState("");
-  // const [IsUserDetails, setIsUserDetails] = useState(false);
   const [isReset, setIsReset] = useState(false);
+  const [isCheckSale, setIsCheckSale] = useState(false);
 
   const fetchUserDetails = async () => {
     try {
@@ -16,7 +17,7 @@ function UserDetail() {
         headers: { Authorization: token },
       });
       if (!response.ok) {
-        const errorMessage = "fetch is not okay need to find o ut";
+        const errorMessage = "fetch is not okay need to find out";
         setIsError({ message: errorMessage });
       }
       const responseJson = await response.json();
@@ -55,6 +56,9 @@ function UserDetail() {
   const changePassword = () => {
     setIsReset(true);
   };
+  const handlechecksale = () => {
+    setIsCheckSale(true);
+  };
   return (
     <>
       {fetchUserData && (
@@ -71,7 +75,9 @@ function UserDetail() {
                   </div>
                 ))}
               <button onClick={changePassword}>Change Password</button>
-              {userDetails.role !== "super_user" && <button>Check Sale</button>}
+              {userDetails.role !== "super_user" && (
+                <button onClick={handlechecksale}>Check Sale</button>
+              )}
             </div>
           )}
         </>
@@ -79,6 +85,7 @@ function UserDetail() {
       {isReset && (
         <UpdatePassword userDetails={userDetails} setIsReset={setIsReset} />
       )}
+      {isCheckSale && <CheckSaleIndividual />}
     </>
   );
 }

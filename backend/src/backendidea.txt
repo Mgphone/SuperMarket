@@ -48,3 +48,15 @@ i have to use "new mongoose.Types.ObjectId(my mongo id)"
  because that is for type save and important for collection connections
  if i use mongodb driver can make {ObjectId} from mongodb
  then easiy use new ObjectId(my id)
+
+ pagination:
+ backend...
+ mongodb 
+ i add pagination with sort -1 that mean big to small
+ i add pagelimit with params and get the number
+ make two value one for pagination and another for full to send to front
+ front end..
+ for the api call i add ?pagelimit ...
+ for extra i add usestate and extra 5 every time
+ 
+

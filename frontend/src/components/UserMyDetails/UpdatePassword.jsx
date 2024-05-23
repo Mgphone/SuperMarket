@@ -67,6 +67,7 @@ function UpdatePassword({ userDetails, setIsReset }) {
           placeholder="Enter Old Password"
           value={formik.values.oldpassword}
           onChange={formik.handleChange}
+          autoComplete="off"
         />
         {formik.touched.oldpassword && formik.errors.oldpassword ? (
           <div className="error">{formik.errors.oldpassword}</div>
@@ -79,6 +80,7 @@ function UpdatePassword({ userDetails, setIsReset }) {
           placeholder="Enter New Password"
           value={formik.values.newpassword1}
           onChange={formik.handleChange}
+          autoComplete="off"
         />
         {formik.touched.newpassword1 && formik.errors.newpassword1 ? (
           <div className="error">{formik.errors.newpassword1}</div>
@@ -88,9 +90,10 @@ function UpdatePassword({ userDetails, setIsReset }) {
         <input
           type="password"
           name="newpassword2"
-          placeholder="Reenter New Password"
+          placeholder="Re-Enter New Password"
           value={formik.values.newpassword2}
           onChange={formik.handleChange}
+          autoComplete="off"
         />
         {formik.touched.newpassword2 && formik.errors.newpassword2 ? (
           <div className="error">{formik.errors.newpassword2}</div>

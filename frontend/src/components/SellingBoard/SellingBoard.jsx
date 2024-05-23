@@ -40,8 +40,6 @@ function SellingBoard() {
     //later i need to delete this line for saleDate
     const serverDay = new Date(fetchBranch.dateOfSale).getDate();
     const presentDay = new Date().getDate();
-    // console.log("This is serverday" + serverDay);
-    // console.log("this is presenetDay" + presentDay);
 
     return serverDay >= presentDay;
   };

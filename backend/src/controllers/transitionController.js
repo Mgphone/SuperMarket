@@ -151,15 +151,21 @@ const TransitionController = {
   getTransitionByUser: async (req, res) => {
     try {
       const token = req.headers.authorization;
+      // const querylimit = 3;
+      const queryLimit = parseInt(req.query.queryLimit);
       checkSuperUser(token)
         .then(async (result) => {
-          console.log(JSON.stringify(result.userId));
-          // const sellerObjectId = new ObjectId(result.userId);
           const sellerObjectId = new mongoose.Types.ObjectId(result.userId); // Use Mongoose's ObjectId type
           const findTransition = await Transition.find({
             seller: sellerObjectId,
+          })
+            .sort({ createdAt: -1 })
+            .limit(queryLimit);
+          const transionCount = await Transition.find({
+            seller: sellerObjectId,
           });
-          return res.status(200).json(findTransition);
+          const transitionLength = transionCount.length;
+          return res.status(200).json({ findTransition, transitionLength });
         })
         .catch((error) => {
           return res.status(403).json({ message: error });
