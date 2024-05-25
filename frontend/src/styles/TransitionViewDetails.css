@@ -32,6 +32,13 @@
 
 .full_view_Details .detail_key {
   font-weight: bold;
+  background-color: aliceblue;
+  color: #111;
+}
+
+.full_view_Details .detail_value {
+  background-color: #111;
+  color: #fff;
 }
 
 .full_view_Details p {

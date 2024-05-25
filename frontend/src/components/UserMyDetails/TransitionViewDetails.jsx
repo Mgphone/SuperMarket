@@ -29,7 +29,6 @@ function TransitionViewDetails({ viewDetailId, setIsViewDetails }) {
   useEffect(() => {
     fetchingBack();
   }, []);
-  console.log(JSON.stringify(fetchDetail));
   if (isLoading) {
     return <div className="loader"></div>;
   }
@@ -54,11 +53,11 @@ function TransitionViewDetails({ viewDetailId, setIsViewDetails }) {
               <span className="detail_key">{key}</span>
               {"  "}
               {key === "createdAt" || key === "updatedAt" ? (
-                <span className="detail_key">
+                <span className="detail_value">
                   {changeTimeToLocalTime(value)}
                 </span>
               ) : (
-                <span className="detail_key">{value}</span>
+                <span className="detail_value">{value}</span>
               )}
             </p>
           </div>

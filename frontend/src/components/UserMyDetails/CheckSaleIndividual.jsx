@@ -40,7 +40,6 @@ function CheckSaleIndividual() {
   const handleviewDetails = (id) => {
     setIsViewDetails(true);
     setViewDetailId(id);
-    // console.log(id);
   };
   const handleloadmore = () => {
     setQueryLimit(queryLimit + 5);
