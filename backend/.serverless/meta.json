@@ -1,0 +1,363 @@
+{
+  "C:\\Users\\kokophone\\Documents\\MEGAsync\\Mystudy\\Web\\PersonalProject\\superMarket\\backend": {
+    "versionSfCore": null,
+    "versionFramework": "4.0.30",
+    "isWithinCompose": false,
+    "composeOrgName": null,
+    "servicePath": "C:\\Users\\kokophone\\Documents\\MEGAsync\\Mystudy\\Web\\PersonalProject\\superMarket\\backend",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "org": "mgphone",
+      "service": "moneyExchange",
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs20.x",
+        "profile": "testing",
+        "region": "eu-west-2",
+        "memorySize": 128,
+        "stage": "dev",
+        "versionFunctions": true,
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "ServerlessDeploymentBucket": {
+              "Type": "AWS::S3::Bucket",
+              "Properties": {
+                "BucketEncryption": {
+                  "ServerSideEncryptionConfiguration": [
+                    {
+                      "ServerSideEncryptionByDefault": {
+                        "SSEAlgorithm": "AES256"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "ServerlessDeploymentBucketPolicy": {
+              "Type": "AWS::S3::BucketPolicy",
+              "Properties": {
+                "Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "PolicyDocument": {
+                  "Statement": [
+                    {
+                      "Action": "s3:*",
+                      "Effect": "Deny",
+                      "Principal": "*",
+                      "Resource": [
+                        {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":s3:::",
+                              {
+                                "Ref": "ServerlessDeploymentBucket"
+                              },
+                              "/*"
+                            ]
+                          ]
+                        },
+                        {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":s3:::",
+                              {
+                                "Ref": "ServerlessDeploymentBucket"
+                              }
+                            ]
+                          ]
+                        }
+                      ],
+                      "Condition": {
+                        "Bool": {
+                          "aws:SecureTransport": false
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "AppLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/moneyExchange-dev-app"
+              }
+            },
+            "IamRoleLambdaExecution": {
+              "Type": "AWS::IAM::Role",
+              "Properties": {
+                "AssumeRolePolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Service": [
+                          "lambda.amazonaws.com"
+                        ]
+                      },
+                      "Action": [
+                        "sts:AssumeRole"
+                      ]
+                    }
+                  ]
+                },
+                "Policies": [
+                  {
+                    "PolicyName": {
+                      "Fn::Join": [
+                        "-",
+                        [
+                          "moneyExchange",
+                          "dev",
+                          "lambda"
+                        ]
+                      ]
+                    },
+                    "PolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:CreateLogStream",
+                            "logs:CreateLogGroup",
+                            "logs:TagResource"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/moneyExchange-dev*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:PutLogEvents"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/moneyExchange-dev*:*:*"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "Path": "/",
+                "RoleName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "moneyExchange",
+                      "dev",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "lambdaRole"
+                    ]
+                  ]
+                }
+              }
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": {
+                "Ref": "ServerlessDeploymentBucket"
+              }
+            }
+          }
+        },
+        "coreCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "ServerlessDeploymentBucket": {
+              "Type": "AWS::S3::Bucket",
+              "Properties": {
+                "BucketEncryption": {
+                  "ServerSideEncryptionConfiguration": [
+                    {
+                      "ServerSideEncryptionByDefault": {
+                        "SSEAlgorithm": "AES256"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "ServerlessDeploymentBucketPolicy": {
+              "Type": "AWS::S3::BucketPolicy",
+              "Properties": {
+                "Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "PolicyDocument": {
+                  "Statement": [
+                    {
+                      "Action": "s3:*",
+                      "Effect": "Deny",
+                      "Principal": "*",
+                      "Resource": [
+                        {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":s3:::",
+                              {
+                                "Ref": "ServerlessDeploymentBucket"
+                              },
+                              "/*"
+                            ]
+                          ]
+                        },
+                        {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":s3:::",
+                              {
+                                "Ref": "ServerlessDeploymentBucket"
+                              }
+                            ]
+                          ]
+                        }
+                      ],
+                      "Condition": {
+                        "Bool": {
+                          "aws:SecureTransport": false
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": {
+                "Ref": "ServerlessDeploymentBucket"
+              }
+            }
+          }
+        }
+      },
+      "package": {
+        "exclude": [
+          ".gitignore",
+          ".git/**",
+          "Dockerfile"
+        ],
+        "include": null,
+        "artifactsS3KeyDirname": "serverless/moneyExchange/dev/code-artifacts"
+      },
+      "functions": {
+        "app": {
+          "handler": "server.handler",
+          "events": [
+            {
+              "httpApi": {
+                "path": "/rate/getrate",
+                "method": "GET"
+              }
+            }
+          ],
+          "environment": {
+            "MONGO_URL": "mongodb+srv://pmnblazer:pmnblazer@cluster0.ecvwc3b.mongodb.net/moneyexchange?retryWrites=true&w=majority&appName=Cluster0",
+            "JWT_SECRET": "<REDACTED>",
+            "SUPER_SECRET": "<REDACTED>"
+          },
+          "name": "moneyExchange-dev-app",
+          "package": {}
+        }
+      },
+      "plugins": [
+        "serverless-offline"
+      ]
+    },
+    "serviceRawFile": "# \"org\" ensures this Service is used with the correct Serverless Framework Access Key.\r\norg: mgphone\r\nservice: moneyExchange\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: nodejs20.x\r\n  profile: testing\r\n  region: eu-west-2\r\n  memorySize: 128\r\n  stage: ${opt:stage,\"dev\"}\r\npackage:\r\n  exclude:\r\n    # - node_modules/**\r\n    - .gitignore\r\n    - .git/**\r\n    - Dockerfile\r\n  include:\r\n    # - node_modules/express\r\nfunctions:\r\n  app:\r\n    handler: server.handler\r\n    # timeout: 30\r\n    events:\r\n      # - httpApi:\r\n      #     path: /\r\n      #     method: get\r\n      - httpApi:\r\n          path: /rate/getrate\r\n          method: GET\r\n    environment:\r\n      MONGO_URL: mongodb+srv://pmnblazer:pmnblazer@cluster0.ecvwc3b.mongodb.net/moneyexchange?retryWrites=true&w=majority&appName=Cluster0\r\n      JWT_SECRET: mgphonekochitlar?\r\n      SUPER_SECRET: mgphone\r\n\r\nplugins:\r\n  - serverless-offline\r\n",
+    "command": [
+      "deploy"
+    ],
+    "options": {},
+    "error": {
+      "message": "Cannot read file node_modules\\es-abstract\\2021\\GetPrototypeFromConstructor.js due to: EMFILE: too many open files, open 'C:\\Users\\kokophone\\Documents\\MEGAsync\\Mystudy\\Web\\PersonalProject\\superMarket\\backend\\node_modules\\es-abstract\\2021\\GetPrototypeFromConstructor.js'",
+      "stack": "ServerlessError3: Cannot read file node_modules\\es-abstract\\2021\\GetPrototypeFromConstructor.js due to: EMFILE: too many open files, open 'C:\\Users\\kokophone\\Documents\\MEGAsync\\Mystudy\\Web\\PersonalProject\\superMarket\\backend\\node_modules\\es-abstract\\2021\\GetPrototypeFromConstructor.js'\n    at file:///C:/Users/kokophone/.serverless/releases/4.0.30/package/dist/sf-core.js:812:26575\n    at tryCatcher (file:///C:/Users/kokophone/.serverless/releases/4.0.30/package/dist/sf-core.js:438:81839)\n    at Promise2._settlePromiseFromHandler (file:///C:/Users/kokophone/.serverless/releases/4.0.30/package/dist/sf-core.js:616:10135)\n    at Promise2._settlePromise (file:///C:/Users/kokophone/.serverless/releases/4.0.30/package/dist/sf-core.js:616:11454)\n    at Promise2._settlePromise0 (file:///C:/Users/kokophone/.serverless/releases/4.0.30/package/dist/sf-core.js:616:12511)\n    at Promise2._settlePromises (file:///C:/Users/kokophone/.serverless/releases/4.0.30/package/dist/sf-core.js:616:14107)\n    at _drainQueueStep (file:///C:/Users/kokophone/.serverless/releases/4.0.30/package/dist/sf-core.js:445:583)\n    at _drainQueue (file:///C:/Users/kokophone/.serverless/releases/4.0.30/package/dist/sf-core.js:445:479)\n    at Async._drainQueues (file:///C:/Users/kokophone/.serverless/releases/4.0.30/package/dist/sf-core.js:445:716)\n    at Async.drainQueues [as _onImmediate] (file:///C:/Users/kokophone/.serverless/releases/4.0.30/package/dist/sf-core.js:441:3278)\n    at process.processImmediate (node:internal/timers:476:21)",
+      "code": "CANNOT_READ_FILE"
+    },
+    "accessKeyV2": "<REDACTED>",
+    "accessKeyV1": "<REDACTED>",
+    "orgId": "83b0cb24-389d-4da2-b16f-8a90c0c24990",
+    "orgName": "mgphone",
+    "userId": "n7PYmkWDk66m0YCBwZ",
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "userName": "mgphone",
+    "subscription": null,
+    "userEmail": "pmn.blazer@gmail.com",
+    "serviceProviderAwsCredentials": "<REDACTED>",
+    "serviceProviderAwsAccountId": "339713183505",
+    "versionSf": "4.0.30",
+    "serviceProviderAwsCfStackName": "moneyExchange-dev",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:eu-west-2:339713183505:stack/moneyExchange-dev/26431e30-1c7c-11ef-851f-06e3a14b666d",
+    "serviceProviderAwsCfStackCreated": "2024-05-27T22:55:01.585Z",
+    "serviceProviderAwsCfStackUpdated": "2024-05-28T16:30:54.288Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "AppLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:eu-west-2:339713183505:function:moneyExchange-dev-app:13",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-moneyExchange-dev-AppLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "HttpApiId",
+        "OutputValue": "qxa84rbsje",
+        "Description": "Id of the HTTP API",
+        "ExportName": "sls-moneyExchange-dev-HttpApiId"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "moneyexchange-dev-serverlessdeploymentbucket-ywj9nl4qzmgd",
+        "ExportName": "sls-moneyExchange-dev-ServerlessDeploymentBucketName"
+      },
+      {
+        "OutputKey": "HttpApiUrl",
+        "OutputValue": "https://qxa84rbsje.execute-api.eu-west-2.amazonaws.com",
+        "Description": "URL of the HTTP API",
+        "ExportName": "sls-moneyExchange-dev-HttpApiUrl"
+      }
+    ]
+  }
+}
