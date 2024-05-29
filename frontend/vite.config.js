@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
-
 export default defineConfig({
   plugins: [react()],
 
@@ -8,7 +7,7 @@ export default defineConfig({
     host: true,
     proxy: {
       "/api": {
-        target: "http://localhost:5000",
+        target: "https://super-market-be.vercel.app",
         changeOrigin: true,
         // rewrite: (path) => path.replace("/api", ""),
         rewrite: (path) => path.replace(/^\/api/, ""),

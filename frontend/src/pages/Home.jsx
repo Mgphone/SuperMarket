@@ -10,7 +10,7 @@ function Home() {
   const [loginError, setLoginError] = useState(false);
   const { logIn } = useAuth();
   const navigate = useNavigate();
-
+  // const url = import.meta.env.VITE_BACK_URL;
   const validationSchema = Yup.object({
     username: Yup.string()
       .email("Invalid Email address")
@@ -29,6 +29,7 @@ function Home() {
   });
   const handleSubmit = async (values) => {
     try {
+      // console.log("This is my URL" + url);
       const response = await fetch("/api/users/login", {
         method: "POST",
         headers: {
@@ -36,11 +37,13 @@ function Home() {
         },
         body: JSON.stringify(values),
       });
+      console.log("this is responise" + JSON.stringify(response));
       if (response.ok) {
         const token = response.headers.get("Authorization");
         if (token) {
           logIn(token);
           const decode = jwtDecode(token);
+          console.log(JSON.stringify(decode));
           if (decode.role == "super_user") {
             navigate("/homesuper");
           } else if (decode.role == "branch_seller") {
@@ -60,6 +63,8 @@ function Home() {
       console.error("Error during login", error);
     }
   };
+
+  // console.log("This is my main testing url" + url);
   return (
     <div>
       <form className="loginform" onSubmit={formik.handleSubmit}>
