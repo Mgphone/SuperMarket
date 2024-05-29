@@ -37,13 +37,13 @@ function Home() {
         },
         body: JSON.stringify(values),
       });
-      console.log("this is responise" + JSON.stringify(response));
+      // console.log("this is responise" + JSON.stringify(response));
       if (response.ok) {
         const token = response.headers.get("Authorization");
         if (token) {
           logIn(token);
           const decode = jwtDecode(token);
-          console.log(JSON.stringify(decode));
+          // console.log(JSON.stringify(decode));
           if (decode.role == "super_user") {
             navigate("/homesuper");
           } else if (decode.role == "branch_seller") {
@@ -64,7 +64,6 @@ function Home() {
     }
   };
 
-  // console.log("This is my main testing url" + url);
   return (
     <div>
       <form className="loginform" onSubmit={formik.handleSubmit}>
