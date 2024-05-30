@@ -5,6 +5,7 @@ const app = express();
 //cors usage
 const corsOptions = require("./src/config/corOptions");
 const corsWhiteList = cors(corsOptions);
+// const corsWildCard = require("./src/config/corsWildCard");
 //ports
 const port = 5000;
 //database connection

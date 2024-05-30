@@ -10,7 +10,7 @@ function Home() {
   const [loginError, setLoginError] = useState(false);
   const { logIn } = useAuth();
   const navigate = useNavigate();
-  // const url = import.meta.env.VITE_BACK_URL;
+  const url = import.meta.env.VITE_BACK_URL;
   const validationSchema = Yup.object({
     username: Yup.string()
       .email("Invalid Email address")
@@ -29,15 +29,21 @@ function Home() {
   });
   const handleSubmit = async (values) => {
     try {
-      // console.log("This is my URL" + url);
-      const response = await fetch("/api/users/login", {
+      console.log("This is my URL" + url);
+      // const response = await fetch(
+      // `${url}/users/login`,
+      const response = await fetch(`/api/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(values),
       });
-      // console.log("this is responise" + JSON.stringify(response));
+      const responseData = await response.json(); // <-- This line retrieves the response data
+
+      console.log("this is response" + JSON.stringify(responseData));
+      const tokenchecker = response.headers.get("Authorization");
+      console.log("this is token" + tokenchecker);
       if (response.ok) {
         const token = response.headers.get("Authorization");
         if (token) {
