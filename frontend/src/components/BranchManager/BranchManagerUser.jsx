@@ -3,7 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import UserResetPassword from "../UserAuthenticationFront/UserResetPassword";
-
+import axiosWithHeader from "../../utils/axiosWithHeader";
 function BranchManagerUser() {
   const [userData, setUserData] = useState();
   const [branchData, setBranchData] = useState();
@@ -13,18 +13,22 @@ function BranchManagerUser() {
   const [resetValue, setResetValue] = useState("");
   const { token, decodedToken } = useAuth();
   const headers = { Authorization: token };
+  const axiosInstance = axiosWithHeader(token);
   const navigate = useNavigate();
   const fetchData = async () => {
     try {
       const [users, branches] = await Promise.all([
-        fetch("/api/username/findalluser", { headers }),
-        fetch("/api/branches/getallbranch", { headers }),
+        // fetch("/api/username/findalluser", { headers }),
+        // fetch("/api/branches/getallbranch", { headers }),
+        axiosInstance("/username/findalluser"),
+        axiosInstance("/branches/getallbranch"),
       ]);
-      if (!users.ok && !branches.ok) {
+      if (!users.data && !branches.data) {
         throw new Error("Failed to fetch data");
       }
-      const usersJson = await users.json();
-      const branchJson = await branches.json();
+
+      const usersJson = await users.data;
+      const branchJson = await branches.data;
       setUserData(usersJson);
       setBranchData(branchJson);
       setIsLoading(false);
