@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../styles/TransitionViewDetails.css";
 import changeTimeToLocalTime from "../../utils/changeTimeToLocalTime";
+import axiosWithoutToken from "../../utils/axiosWithoutToken";
 function TransitionViewDetails({ viewDetailId, setIsViewDetails }) {
   const [fetchDetail, setFetchDetail] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -11,13 +12,15 @@ function TransitionViewDetails({ viewDetailId, setIsViewDetails }) {
 
   const fetchingBack = async () => {
     try {
-      const url = `/api/transition/getindividual/${viewDetailId}`;
-      const response = await fetch(url);
-      if (!response.ok) {
+      const url = `/transition/getindividual/${viewDetailId}`;
+
+      // const response = await fetch(url);
+      const response = await axiosWithoutToken(url);
+      if (response.status < 200 || response.status >= 300) {
         setIsError({ message: "API error" });
         // throw new Error();
       }
-      const responseJson = await response.json();
+      const responseJson = await response.data;
       setFetchDetail(responseJson);
       setIsLoading(false);
     } catch (error) {

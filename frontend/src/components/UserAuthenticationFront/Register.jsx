@@ -89,7 +89,6 @@ function Signup() {
   const radioValue = ["branch_manager", "branch_seller"];
   const fetchBranch = async () => {
     try {
-      // const response = await fetch("api/branches/getallbranch", { headers });
       const response = await axiosInstance("/branches/getallbranch");
       if (response.status !== 200) {
         throw new Error("Failed to fetch branch");

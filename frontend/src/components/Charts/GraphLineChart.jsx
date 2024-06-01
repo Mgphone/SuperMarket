@@ -17,8 +17,6 @@ function GraphLineChart({ fetchTransitions }) {
   const axiosInstance = axiosWithHeader(token);
   const apiCall = async () => {
     try {
-      // const url = "/api/branches/getallbranch";
-      // const response = await fetch(url, { headers: { Authorization: token } });
       const response = await axiosInstance("/branches/getallbranch");
       if (response.status !== 200) {
         throw new Error();

@@ -29,8 +29,6 @@ function SuperAdminDashboard() {
   const axiosInstance = axiosWithHeader(token);
   const fetchBranchName = async () => {
     try {
-      // const url = "/api/branches/getallbranch";
-      // const response = await fetch(url, { headers: { Authorization: token } });
       const response = await axiosInstance("/branches/getallbranch");
       if (response.statusText !== "OK") {
         throw new Error("Failed to fetch Username");

@@ -17,7 +17,6 @@ function SuperUserRate() {
   const axiosInstance = axiosWithHeader(token);
   const fetchGetRate = async () => {
     try {
-      // const response = await fetch("/api/rate/getrate");
       const response = await axiosCustom("/rate/getrate");
       if (response.status >= 200 && response.status < 300) {
         const responseJson = await response.data;
