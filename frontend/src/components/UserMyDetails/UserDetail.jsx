@@ -12,25 +12,6 @@ function UserDetail() {
   const [isReset, setIsReset] = useState(false);
   const [isCheckSale, setIsCheckSale] = useState(false);
 
-  // const fetchUserDetails = async () => {
-  //   try {
-  //     const response = await fetch("/api/username/getsingleuser/", {
-  //       headers: { Authorization: token },
-  //     });
-  //     if (!response.ok) {
-  //       const errorMessage = "fetch is not okay need to find out";
-  //       setIsError({ message: errorMessage });
-  //     }
-  //     const responseJson = await response.json();
-  //     responseJson;
-  //     setFetchUserData(responseJson);
-  //     setIsLoading(false);
-  //   } catch (error) {
-  //     console.error(error);
-  //     setIsLoading(false);
-  //     setIsError({ message: error });
-  //   }
-  // };
   const axiosInstance = axiosWithHeader(token);
   const fetchUserDetails = async () => {
     try {

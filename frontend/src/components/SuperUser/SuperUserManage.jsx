@@ -19,8 +19,6 @@ function SuperUserManage() {
   const fetchData = async () => {
     try {
       const [users, branches] = await Promise.all([
-        // fetch("/api/username/findalluser", { headers }),
-        // fetch("/api/branches/getallbranch", { headers }),
         axiosInstance("/username/findalluser"),
         axiosInstance("/branches/getallbranch"),
       ]);
