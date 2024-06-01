@@ -1,23 +1,22 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
 import "react-toastify/dist/ReactToastify.css";
 import ViewBranch from "./ViewBranch";
-function CheckAllBranchSuper({ headers }) {
+import axiosWithHeader from "../../../utils/axiosWithHeader";
+function CheckAllBranchSuper({ token }) {
   const [allbranches, setAllBranches] = useState("");
   const [singleBranch, setSingleBranch] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const axiosInstance = axiosWithHeader(token);
   const fetchData = async () => {
     try {
-      const [branches] = await Promise.all([
-        fetch("/api/branches/getallbranch", { headers }),
-      ]);
-      if (!branches.ok) {
-        throw new Error("Failed to fetch data");
+      setIsLoading(true);
+      const response = await axiosInstance("/branches/getallbranch");
+      if (response.status !== 200) {
+        throw new Error("Failed to fetch branch");
       }
-      const branchJson = await branches.json();
+      const branchJson = await response.data;
       setAllBranches(branchJson);
       setIsLoading(false);
     } catch (error) {
@@ -32,13 +31,13 @@ function CheckAllBranchSuper({ headers }) {
     const confirmDelete = window.confirm("Are you sure to Delete?");
     if (confirmDelete) {
       try {
-        const url = `/api/branches/deletebranch/${value}`;
-        const response = await fetch(url, { method: "DELETE", headers });
-        if (!response.ok) {
+        const response = await axiosInstance.delete(
+          `/branches/deletebranch/${value}`
+        );
+        if (response.status !== 200) {
           throw new Error("Failed to delete the branch");
         }
-        const deleteJson = await response.json();
-        deleteJson;
+        const deleteJson = await response.data;
         toast(deleteJson.message);
         fetchData();
       } catch (error) {
@@ -96,7 +95,7 @@ function CheckAllBranchSuper({ headers }) {
       {singleBranch && (
         <ViewBranch
           singleBranch={singleBranch}
-          headers={headers}
+          token={token}
           setAllBranches={setAllBranches}
         />
       )}
