@@ -54,18 +54,16 @@ function Signup() {
     };
     try {
       const response = await axiosInstance.post("/users/register", formData);
-
-      if (response.statusText !== "Created") {
-        const responseData = await response.data;
-        setRegisterError(responseData.message);
-      } else if (response.statusText === "Created") {
-        const responseData = await response.data;
-        toast(`${responseData.message}`);
-        if (decodedToken.role === "super_user") {
-          navigate("/homesuper");
-        } else {
-          navigate("/homebranch");
-        }
+      if (response.status < 200 || response.status >= 300) {
+        setRegisterError("There is an error when creating your user");
+      }
+      const responseData = await response.data;
+      // toast(`${responseData.message}`);
+      toast(responseData.message);
+      if (decodedToken.role === "super_user") {
+        navigate("/homesuper");
+      } else {
+        navigate("/homebranch");
       }
     } catch (error) {
       console.error(error);
@@ -94,7 +92,6 @@ function Signup() {
         throw new Error("Failed to fetch branch");
       }
       const branches = await response.data;
-      branches;
       setAllBranch(branches);
       setIsLoading(false);
     } catch (error) {

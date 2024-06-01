@@ -12,7 +12,7 @@ function BranchManagerUser() {
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [resetValue, setResetValue] = useState("");
   const { token, decodedToken } = useAuth();
-  const headers = { Authorization: token };
+  // const headers = { Authorization: token };
   const axiosInstance = axiosWithHeader(token);
   const navigate = useNavigate();
   const fetchData = async () => {
@@ -54,14 +54,15 @@ function BranchManagerUser() {
     const confirmDelete = window.confirm("Are you ready to delete?");
     if (confirmDelete) {
       try {
-        const response = await fetch(`/api/users/delete/${value}`, {
-          method: "DELETE",
-          headers,
-        });
-        if (!response.ok) {
+        // const response = await fetch(`/api/users/delete/${value}`, {
+        //   method: "DELETE",
+        //   headers,
+        // });
+        const response = await axiosInstance.delete(`/users/delete/${value}`);
+        if (response.status < 200 || response.status >= 300) {
           throw new Error("Failed to delete user");
         }
-        const deleteJson = await response.json();
+        const deleteJson = await response.data;
         deleteJson;
         toast(deleteJson.message);
       } catch (error) {
