@@ -54,14 +54,15 @@ function SuperUserManage() {
     const confirmDelete = window.confirm("Are you ready to delete?");
     if (confirmDelete) {
       try {
-        const response = await fetch(`/api/users/delete/${value}`, {
-          method: "DELETE",
-          headers,
-        });
-        if (!response.ok) {
+        // const response = await fetch(`/api/users/delete/${value}`, {
+        //   method: "DELETE",
+        //   headers,
+        // });
+        const response = await axiosInstance.delete(`/users/delete/${value}`);
+        if (response.status !== 200) {
           throw new Error("Failed to delete user");
         }
-        const deleteJson = await response.json();
+        const deleteJson = await response.data;
         deleteJson;
         toast(deleteJson.message);
       } catch (error) {
@@ -143,8 +144,7 @@ function SuperUserManage() {
             <UserResetPassword
               setIsResetPassword={setIsResetPassword}
               resetValue={resetValue}
-              headers={headers}
-              setError={setError}
+              token={token}
             />
           )}
         </div>

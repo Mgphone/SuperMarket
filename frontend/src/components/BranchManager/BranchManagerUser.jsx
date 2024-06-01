@@ -136,8 +136,7 @@ function BranchManagerUser() {
             <UserResetPassword
               setIsResetPassword={setIsResetPassword}
               resetValue={resetValue}
-              headers={headers}
-              setError={setIsError}
+              token={token}
             />
           )}
         </div>
