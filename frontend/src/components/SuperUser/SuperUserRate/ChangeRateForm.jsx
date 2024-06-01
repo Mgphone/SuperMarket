@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
+import axiosWithHeader from "../../../utils/axiosWithHeader";
+import { toast } from "react-toastify";
 function ChangeRateForm({
   isupdateForm,
   iscreateForm,
@@ -33,6 +34,7 @@ function ChangeRateForm({
   });
 
   const handleSubmit = async (values) => {
+    const axiosInstance = axiosWithHeader(token);
     const formData = {
       USDSMALL: values.USDSMALL,
       USDBIG: values.USDBIG,
@@ -41,36 +43,25 @@ function ChangeRateForm({
       KYAT: values.KYAT,
       SINDOLLAR: values.SINDOLLAR,
     };
-    let url;
-    let urlMethod;
-    const editFormUrl = "/api/rate/updaterate";
-    const createFormUrl = "/api/rate/createrate";
-    if (isupdateForm === true) {
-      url = editFormUrl;
-      urlMethod = "PATCH";
-    } else if (iscreateForm === true) {
-      url = createFormUrl;
-      urlMethod = "POST";
-    }
 
     try {
       setIsLoading(true);
-      const response = await fetch(url, {
-        method: `${urlMethod}`,
-        headers: {
-          Authorization: token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const editFormUrl = "/rate/updaterate";
+      const createFormUrl = "/rate/createrate";
+      let response;
+      if (isupdateForm === true) {
+        response = await axiosInstance.patch(`${editFormUrl}`, formData);
+      } else if (iscreateForm === true) {
+        response = await axiosInstance.post(`${createFormUrl}`, formData);
+      }
 
-      if (response.ok) {
-        const responseJSON = await response.json();
-        responseJSON;
+      if (response.status >= 200 && response.status < 300) {
+        const responseJSON = await response.data;
         setFetchRate(responseJSON);
         fetchGetRate();
         setIsForm(false);
         setIsLoading(false);
+        toast(responseJSON.message);
       } else {
         throw new Error("Failed to create/update rate");
       }

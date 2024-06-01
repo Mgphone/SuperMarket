@@ -80,7 +80,7 @@ const RateController = {
                 .status(404)
                 .json({ message: "Message directory not found" });
             }
-            res.status(200).json(updatedRate);
+            res.status(200).json({ message: "You update the Rate" });
           })
           .catch((error) => {
             return res.status(401).json({ message: error });
