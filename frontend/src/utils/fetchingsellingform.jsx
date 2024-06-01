@@ -1,17 +1,15 @@
+import axiosWithHeader from "./axiosWithHeader";
 const fetchsellingform = async (FormData, token) => {
-  const url = "api/transition/createtransition";
+  const axiosInstance = axiosWithHeader(token);
+  const url = "/transition/createtransition";
   try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { Authorization: token, "Content-Type": "application/json" },
-      body: JSON.stringify(FormData),
-    });
-    if (!response.ok) {
-      const errorMessage = await response.json();
+    const response = await axiosInstance.post(url, FormData);
+    if (response.status < 200 || response.status >= 300) {
+      const errorMessage = await response.data;
       console.error(errorMessage);
       return { success: false, message: errorMessage };
     }
-    const responsejson = await response.json();
+    const responsejson = await response.data;
     return { success: true, responsejson };
   } catch (error) {
     console.error(error);

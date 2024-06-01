@@ -14,11 +14,9 @@ function TransitionViewDetails({ viewDetailId, setIsViewDetails }) {
     try {
       const url = `/transition/getindividual/${viewDetailId}`;
 
-      // const response = await fetch(url);
       const response = await axiosWithoutToken(url);
       if (response.status < 200 || response.status >= 300) {
         setIsError({ message: "API error" });
-        // throw new Error();
       }
       const responseJson = await response.data;
       setFetchDetail(responseJson);

@@ -4,6 +4,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import firstTenDigits from "../../utils/firstTenDigits";
 import FormSellingBoard from "./FormSellingBoard";
 import SellingRate from "./SellingRate";
+import axiosWithHeader from "../../utils/axiosWithHeader";
+import axiosCustom from "../../utils/axiosWithoutToken";
 function SellingBoard() {
   const [fetchRate, setFetchRate] = useState("");
   const [fetchBranch, setFetchBranch] = useState("");
@@ -11,21 +13,29 @@ function SellingBoard() {
   const [isLoading, setIsLoading] = useState(false);
   const [checkExchangeRate, setcheckExchangeRate] = useState(false);
   const { token } = useAuth();
+  const axionsInstance = axiosWithHeader(token);
   const getRate = async () => {
     try {
       setIsLoading(true);
       const [rate, branch] = await Promise.all([
-        fetch("/api/rate/getrate"),
-        fetch("/api/branches/getsinglebranch", {
-          headers: { Authorization: token, "Content-Type": "application/json" },
-        }),
+        // fetch("/api/rate/getrate"),
+        // fetch("/api/branches/getsinglebranch", {
+        //   headers: { Authorization: token, "Content-Type": "application/json" },
+        // }),
+        axiosCustom("/rate/getrate"),
+        axionsInstance("/branches/getsinglebranch"),
       ]);
-      if (!rate.ok && branch.ok) {
+      if (
+        rate.status < 200 ||
+        rate.status >= 300 ||
+        branch.status < 200 ||
+        branch.status >= 300
+      ) {
         throw new Error("Failed to fetch rate and Branch");
       }
 
-      const rateJson = await rate.json();
-      const branchJson = await branch.json();
+      const rateJson = await rate.data;
+      const branchJson = await branch.data;
       setFetchRate(rateJson);
       setFetchBranch(branchJson);
       setIsLoading(false);

@@ -17,12 +17,7 @@ function CheckSaleIndividual() {
   const fetchBack = async () => {
     try {
       setIsLoading(true);
-      // const response = await fetch(
-      //   `/api/transition/getindividual?queryLimit=${queryLimit}`,
-      //   {
-      //     headers: { Authorization: token },
-      //   }
-      // );
+
       const response = await axionsInstance(
         `/transition/getindividual?queryLimit=${queryLimit}`
       );

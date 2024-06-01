@@ -52,13 +52,12 @@ function UsdCurrencyForm({ buyingCurrency, rates }) {
       currency: buyingCurrency,
       Note: currencyNote,
       amount: values.amount,
-      // total: calculateTotal(rates, buyingCurrency),
     };
 
     try {
       const response = await fetchsellingform(formData, token);
       if (response.success) {
-        toast("Successful");
+        toast(`Successful Create The ${buyingCurrency} Transition`);
       } else {
         toast(response.message.message);
       }
@@ -71,9 +70,7 @@ function UsdCurrencyForm({ buyingCurrency, rates }) {
   return (
     <div className="sellingform">
       <h3>{buyingCurrency}BUY</h3>
-      {/* {formik.touched.currency && formik.errors.currency ? (
-        <div className="errors">{formik.errors.currency}</div>
-      ) : null} */}
+
       <form onSubmit={formik.handleSubmit}>
         <label htmlFor="Buyer Name">Please Enter Buyer Name</label>
         <input
