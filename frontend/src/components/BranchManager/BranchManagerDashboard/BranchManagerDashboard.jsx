@@ -2,29 +2,26 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import BranchGraphDisplay from "./BranchGraphDisplay";
-
+import axiosWithHeader from "../../../utils/axiosWithHeader";
 function BranchManagerDashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState("");
   const [fetchTransitions, setFetchTransitions] = useState("");
   const [isFetchSubmit, setIsFetchSubmit] = useState(false);
   const { token } = useAuth();
-
+  const axiosInstance = axiosWithHeader(token);
   const handleSubmit = async (values) => {
     setIsLoading(true);
     setIsFetchSubmit(true);
 
     try {
-      const url = "/api/transition/branchmanagergettransition";
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { Authorization: token, "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-      if (!response.ok) {
+      const url = "/transition/branchmanagergettransition";
+
+      const response = await axiosInstance.post(url, values);
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to fetch");
       } else {
-        const responsejson = await response.json();
+        const responsejson = await response.data;
         setIsLoading(false);
         setFetchTransitions(responsejson);
       }
