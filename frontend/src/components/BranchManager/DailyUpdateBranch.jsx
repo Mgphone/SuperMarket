@@ -5,34 +5,31 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import firstTenDigits from "../../utils/firstTenDigits";
+import axiosWithHeader from "../../utils/axiosWithHeader";
 function DailyUpdateBranch({ setIsManagerDashboard, setIsDailyUpdateBranch }) {
-  /*
-  url api/branches/updatebranch method patch
-  find branch with id 
-  localhost:5000/branches/getallbranch to get branch id with header
-  i will use useeffect to fetch
-  then display branch name after that
-  form and submit to change it
-  */
-  // const [fetBranch, setFetchBranch] = useState("");
   const [branchName, setBranchName] = useState("");
   const [isError, setIsError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingTime, setIsLoadingTime] = useState(false);
+  const [openBranchError, setOpenBranchErrror] = useState(false);
   const { token } = useAuth();
-  const headers = { Authorization: token };
-  // const [openBranchError, setOpenBranchErrror] = useState(false);
-  const headersWithContent = {
-    ...headers,
-    "Content-Type": "application/json",
-  };
+  const axiosInstance = axiosWithHeader(token);
   //to get branch Name
   const fetchToGetBranchName = async () => {
-    const response = await fetch("/api/branches/getallbranch", { headers });
-    if (!response.ok) {
-      setIsError(isError);
+    setIsLoadingTime(true);
+    try {
+      const response = await axiosInstance("/branches/getallbranch");
+      if (response.status < 200 || response.status >= 300) {
+        setIsError("Error when fetching to get branch");
+      }
+      const responsesJson = await response.data;
+      setBranchName(responsesJson);
+      setIsLoadingTime(false);
+    } catch (error) {
+      console.error(error);
+      setOpenBranchErrror("Error to get time");
+      setIsLoadingTime(false);
     }
-    const responsesJson = await response.json();
-    setBranchName(responsesJson);
   };
   useEffect(() => {
     fetchToGetBranchName();
@@ -44,7 +41,7 @@ function DailyUpdateBranch({ setIsManagerDashboard, setIsDailyUpdateBranch }) {
     branchName.length > 0 &&
     branchName.map((item) => item.branch_name);
 
-  const fetchBrnachSaleTime =
+  const fetchBranchSaleTime =
     branchName &&
     branchName.length > 0 &&
     branchName.map((item) => item.dateOfSale);
@@ -63,24 +60,18 @@ function DailyUpdateBranch({ setIsManagerDashboard, setIsDailyUpdateBranch }) {
       currency: values.currency,
     };
     try {
-      const url = "/api/branches/updatebranch";
-      const response = await fetch(url, {
-        method: "PATCH",
-        headers: headersWithContent,
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
+      const url = "/branches/updatebranch";
+      const response = await axiosInstance.patch(url, formData);
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to create new Branch");
       }
-      const createBranchJSON = await response.json();
-      createBranchJSON;
-      toast("You update the branch");
+      const createBranchJSON = await response.data;
+      toast(createBranchJSON.message);
       setIsManagerDashboard(true);
       setIsDailyUpdateBranch(false);
     } catch (error) {
       console.error(error);
-      isError({ message: error });
+      isError("Error fetching to get time");
     }
   };
 
@@ -104,11 +95,14 @@ function DailyUpdateBranch({ setIsManagerDashboard, setIsDailyUpdateBranch }) {
     // <div className="updateDailyBranch">DailyUpdateBranch {fetBranchName}</div>
     <div className="creatnewbranch">
       <h1>Update Branch {fetBranchName}</h1>
-      {fetchBrnachSaleTime && (
+
+      {isLoadingTime && <div className="loader"></div>}
+      {fetchBranchSaleTime && (
         <h5>
-          Current Server Sales date: {firstTenDigits(fetchBrnachSaleTime)}
+          Current Server Sales date: {firstTenDigits(fetchBranchSaleTime)}
         </h5>
       )}
+      {openBranchError && <h5>{openBranchError}</h5>}
       <form onSubmit={(e) => formik.handleSubmit(e)}>
         <label htmlFor="OpeningAmount">
           Opening Amount

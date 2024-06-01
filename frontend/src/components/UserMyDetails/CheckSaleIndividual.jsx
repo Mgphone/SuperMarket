@@ -3,6 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import "../../styles/CheckSaleIndividual.css";
 import changeTimeToLocalTime from "../../utils/changeTimeToLocalTime";
 import TransitionViewDetails from "./TransitionViewDetails";
+import axiosWithHeader from "../../utils/axiosWithHeader";
 function CheckSaleIndividual() {
   const [fetchTransitions, setFetchTransitions] = useState([]);
   const [fetchTransionCount, setFetchTransitionCount] = useState();
@@ -12,19 +13,18 @@ function CheckSaleIndividual() {
   const { token } = useAuth();
   const [isViewDetails, setIsViewDetails] = useState(false);
   const [viewDetailId, setViewDetailId] = useState("");
+  const axionsInstance = axiosWithHeader(token);
   const fetchBack = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(
-        `/api/transition/getindividual?queryLimit=${queryLimit}`,
-        {
-          headers: { Authorization: token },
-        }
+
+      const response = await axionsInstance(
+        `/transition/getindividual?queryLimit=${queryLimit}`
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         setIsFetchingError({ message: "API fetching error" });
       }
-      const responseJson = await response.json();
+      const responseJson = await response.data;
       setFetchTransitions(responseJson.findTransition);
       setFetchTransitionCount(responseJson.transitionLength);
       setIsLoading(false);

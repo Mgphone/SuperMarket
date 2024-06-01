@@ -1,24 +1,25 @@
 import { useEffect, useState } from "react";
 import firstTenDigits from "../../../utils/firstTenDigits";
 import { toast } from "react-toastify";
-function ViewBranch({ singleBranch, headers, setAllBranches }) {
-  const url = `/api/branches/getsinglebranch/${singleBranch}`;
+import axiosWithHeader from "../../../utils/axiosWithHeader";
+function ViewBranch({ singleBranch, token, setAllBranches }) {
+  // const url = `/api/branches/getsinglebranch/${singleBranch}`;
   const [fetchSingleBranch, setFetchSingleBranch] = useState("");
   const [fetchUserData, setFetchUserData] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
+  const axiosInstance = axiosWithHeader(token);
   const fetchData = async () => {
     try {
       const [users, branches] = await Promise.all([
-        fetch("/api/username/findalluser", { headers }),
-        fetch(`${url}`, { headers }),
+        axiosInstance("/username/findalluser"),
+        axiosInstance(`/branches/getsinglebranch/${singleBranch}`),
       ]);
-      if (!users.ok && !branches.ok) {
+      if (!users.data && !branches.data) {
         throw new Error("Failed to fetch data");
       }
-      const usersJson = await users.json();
-      const branchJson = await branches.json();
+      const usersJson = await users.data;
+      const branchJson = await branches.data;
       setFetchUserData(usersJson);
       setFetchSingleBranch(branchJson);
       setIsLoading(false);
@@ -35,12 +36,11 @@ function ViewBranch({ singleBranch, headers, setAllBranches }) {
     const confirmDelete = window.confirm("Are You sure to delete");
     if (confirmDelete) {
       try {
-        const url = `api/users/delete/${value}`;
-        const response = await fetch(url, { method: "DELETE", headers });
-        if (!response.ok) {
+        const response = await axiosInstance.delete(`/users/delete/${value}`);
+        if (response.status !== 200) {
           throw new Error("Failed to delete User");
         }
-        const deleteJson = await response.json();
+        const deleteJson = await response.data;
         deleteJson;
         toast(deleteJson.message);
         fetchData();

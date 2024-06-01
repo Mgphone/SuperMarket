@@ -10,17 +10,18 @@ import {
 } from "recharts";
 import { useAuth } from "../../contexts/AuthContext";
 import { useEffect, useState } from "react";
+import axiosWithHeader from "../../utils/axiosWithHeader";
 function GraphLineChart({ fetchTransitions }) {
   const [fetchData, setFetchData] = useState([]);
   const { token } = useAuth();
+  const axiosInstance = axiosWithHeader(token);
   const apiCall = async () => {
     try {
-      const url = "/api/branches/getallbranch";
-      const response = await fetch(url, { headers: { Authorization: token } });
-      if (!response.ok) {
+      const response = await axiosInstance("/branches/getallbranch");
+      if (response.status !== 200) {
         throw new Error();
       }
-      const responseJson = await response.json();
+      const responseJson = await response.data;
       setFetchData(responseJson);
     } catch (error) {
       console.error(error);

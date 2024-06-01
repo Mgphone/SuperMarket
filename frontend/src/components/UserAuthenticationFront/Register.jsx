@@ -5,16 +5,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import "./userauthentication.css";
 import { toast } from "react-toastify";
-
+import axiosWithHeader from "../../utils/axiosWithHeader";
 function Signup() {
   const [registerError, setRegisterError] = useState("");
   const [iserror, setIserror] = useState("");
   const [allBranch, setAllBranch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const { decodedToken, token } = useAuth();
-  const headers = { Authorization: token };
-  const headersWithContent = { ...headers, "Content-Type": "application/json" };
+  // const headers = { Authorization: token };
+  // const headersWithContent = { ...headers, "Content-Type": "application/json" };
   const navigate = useNavigate();
+  const axiosInstance = axiosWithHeader(token);
   const validationSchema = Yup.object({
     username: Yup.string()
       .email("username should be email address")
@@ -52,25 +53,21 @@ function Signup() {
       branch: values.choosebranch,
     };
     try {
-      const response = await fetch(`/api/users/register`, {
-        method: "POST",
-        headers: headersWithContent,
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        const responseData = await response.json();
-        setRegisterError(`${responseData.message}`);
-      } else if (response.ok) {
-        const responseData = await response.json();
-        toast(`${responseData.message}`);
-        if (decodedToken.role === "super_user") {
-          navigate("/homesuper");
-        } else {
-          navigate("/homebranch");
-        }
+      const response = await axiosInstance.post("/users/register", formData);
+      if (response.status < 200 || response.status >= 300) {
+        setRegisterError("There is an error when creating your user");
+      }
+      const responseData = await response.data;
+      // toast(`${responseData.message}`);
+      toast(responseData.message);
+      if (decodedToken.role === "super_user") {
+        navigate("/homesuper");
+      } else {
+        navigate("/homebranch");
       }
     } catch (error) {
       console.error(error);
+      setRegisterError(error.response.data.message);
     }
   };
   const formik = useFormik({
@@ -90,12 +87,11 @@ function Signup() {
   const radioValue = ["branch_manager", "branch_seller"];
   const fetchBranch = async () => {
     try {
-      const response = await fetch("api/branches/getallbranch", { headers });
-      if (!response.ok) {
+      const response = await axiosInstance("/branches/getallbranch");
+      if (response.status !== 200) {
         throw new Error("Failed to fetch branch");
       }
-      const branches = await response.json();
-      branches;
+      const branches = await response.data;
       setAllBranch(branches);
       setIsLoading(false);
     } catch (error) {

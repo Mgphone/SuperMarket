@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import axiosCustom from "../../utils/axiosWithoutToken";
 function RegisterSuper({ role }) {
   const navigate = useNavigate();
   const [registerError, setRegisterError] = useState("");
@@ -45,24 +45,18 @@ function RegisterSuper({ role }) {
     };
 
     try {
-      const response = await fetch(`/api/users/superregister`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await axiosCustom.post("/users/superregister", formData);
 
-      if (response.ok) {
-        const responseData = await response.json();
-        toast(`${responseData.message}`);
-        navigate("/homesuper");
-      } else if (!response.ok) {
-        const dataresponse = await response.json();
-        setRegisterError(`${dataresponse.message}`);
+      if (response.status !== 200) {
+        const responseData = await response.data;
+        setRegisterError(responseData.message);
       }
+      const responseData = await response.data;
+      toast(`${responseData.message}`);
+      navigate("/homesuper");
     } catch (error) {
       console.error(error);
+      setRegisterError(error.response.data.message);
     }
   };
   const formik = useFormik({

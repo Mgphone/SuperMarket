@@ -36,11 +36,6 @@ function Home() {
   });
   const handleSubmit = async (values) => {
     try {
-      // console.log(
-      //   "This is your actual login" +
-      //     axiosInstance.defaults.baseURL +
-      //     "/users/login"
-      // );
       const response = await axiosInstance.post("/users/login", values);
 
       if (response.status === 200) {
@@ -48,7 +43,6 @@ function Home() {
         if (token) {
           logIn(token);
           const decode = jwtDecode(token);
-          // console.log(JSON.stringify(decode));
           if (decode.role == "super_user") {
             navigate("/homesuper");
           } else if (decode.role == "branch_seller") {
@@ -69,49 +63,6 @@ function Home() {
       setLoginError(true);
     }
   };
-  // const handleSubmit = async (values) => {
-  //   try {
-  //     console.log("This is my URL" + url);
-  //     // const response = await fetch(
-  //     // `${url}/users/login`,
-  //     const response = await fetch(`/api/users/login`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(values),
-  //     });
-
-  //     const responseData = await response.json(); // <-- This line retrieves the response data
-
-  //     console.log("this is response" + JSON.stringify(responseData));
-  //     const tokenchecker = response.headers.get("Authorization");
-  //     console.log("this is token" + tokenchecker);
-  //     if (response.ok) {
-  //       const token = response.headers.get("Authorization");
-  //       if (token) {
-  //         logIn(token);
-  //         const decode = jwtDecode(token);
-  //         // console.log(JSON.stringify(decode));
-  //         if (decode.role == "super_user") {
-  //           navigate("/homesuper");
-  //         } else if (decode.role == "branch_seller") {
-  //           navigate("/homenormal");
-  //         } else if (decode.role == "branch_manager") {
-  //           navigate("/homebranch");
-  //         } else {
-  //           <Notfound />;
-  //         }
-  //       } else if (!token) {
-  //         setLoginError(true);
-  //       }
-  //     } else {
-  //       setLoginError(true);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error during login", error);
-  //   }
-  // };
 
   return (
     <div>

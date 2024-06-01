@@ -3,7 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import UserResetPassword from "../UserAuthenticationFront/UserResetPassword";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import axiosWithHeader from "../../utils/axiosWithHeader";
 import "react-toastify/dist/ReactToastify.css";
 function SuperUserManage() {
   const { token, decodedToken } = useAuth();
@@ -15,17 +15,18 @@ function SuperUserManage() {
   const [resetValue, setResetValue] = useState("");
   const headers = { Authorization: token };
   const navigate = useNavigate();
+  const axiosInstance = axiosWithHeader(token);
   const fetchData = async () => {
     try {
       const [users, branches] = await Promise.all([
-        fetch("/api/username/findalluser", { headers }),
-        fetch("/api/branches/getallbranch", { headers }),
+        axiosInstance("/username/findalluser"),
+        axiosInstance("/branches/getallbranch"),
       ]);
-      if (!users.ok && !branches.ok) {
+      if (!users.data && !branches.data) {
         throw new Error("Failed to fetch data");
       }
-      const usersJson = await users.json();
-      const branchJson = await branches.json();
+      const usersJson = await users.data;
+      const branchJson = await branches.data;
       setUserData(usersJson);
       setBranchData(branchJson);
       setIsLoading(false);
@@ -53,14 +54,11 @@ function SuperUserManage() {
     const confirmDelete = window.confirm("Are you ready to delete?");
     if (confirmDelete) {
       try {
-        const response = await fetch(`/api/users/delete/${value}`, {
-          method: "DELETE",
-          headers,
-        });
-        if (!response.ok) {
+        const response = await axiosInstance.delete(`/users/delete/${value}`);
+        if (response.status !== 200) {
           throw new Error("Failed to delete user");
         }
-        const deleteJson = await response.json();
+        const deleteJson = await response.data;
         deleteJson;
         toast(deleteJson.message);
       } catch (error) {
@@ -142,8 +140,7 @@ function SuperUserManage() {
             <UserResetPassword
               setIsResetPassword={setIsResetPassword}
               resetValue={resetValue}
-              headers={headers}
-              setError={setError}
+              token={token}
             />
           )}
         </div>

@@ -3,7 +3,8 @@ import firstTenDigits from "../../../utils/firstTenDigits";
 import { useAuth } from "../../../contexts/AuthContext";
 import ChangeRateForm from "./ChangeRateForm";
 import { toast } from "react-toastify";
-
+import axiosWithHeader from "../../../utils/axiosWithHeader";
+import axiosCustom from "../../../utils/axiosWithoutToken";
 function SuperUserRate() {
   const [isLoading, setIsLoading] = useState(true);
   const [isFetchError, setIsFetchError] = useState(false);
@@ -13,12 +14,12 @@ function SuperUserRate() {
   const [isupdateForm, setIsUpdateForm] = useState(false);
   const [iscreateForm, setIsCreateForm] = useState(false);
   const { token } = useAuth();
-
+  const axiosInstance = axiosWithHeader(token);
   const fetchGetRate = async () => {
     try {
-      const response = await fetch("/api/rate/getrate");
-      if (response.ok) {
-        const responseJson = await response.json();
+      const response = await axiosCustom("/rate/getrate");
+      if (response.status >= 200 && response.status < 300) {
+        const responseJson = await response.data;
         setFetchRate(responseJson);
         setIsLoading(false);
       } else {
@@ -45,17 +46,12 @@ function SuperUserRate() {
     const confirmDelete = window.confirm("Are You Sure to Delete");
 
     if (confirmDelete) {
-      const url = "/api/rate/deleterate";
       try {
-        const response = await fetch(url, {
-          method: "DELETE",
-          headers: { Authorization: token },
-        });
-        if (!response.ok) {
+        const response = await axiosInstance.delete("/rate/deleterate");
+        if (response.status < 200 || response.status >= 300) {
           throw new Error("Failed To Delete Rate");
         }
-        const responseJSON = await response.json();
-        responseJSON;
+        const responseJSON = await response.data;
         toast(responseJSON.message);
         fetchGetRate();
       } catch (error) {

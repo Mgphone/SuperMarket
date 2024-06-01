@@ -3,6 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import "../../styles/UserDetails.css";
 import UpdatePassword from "./UpdatePassword";
 import CheckSaleIndividual from "./CheckSaleIndividual";
+import axiosWithHeader from "../../utils/axiosWithHeader";
 function UserDetail() {
   const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
@@ -11,18 +12,15 @@ function UserDetail() {
   const [isReset, setIsReset] = useState(false);
   const [isCheckSale, setIsCheckSale] = useState(false);
 
+  const axiosInstance = axiosWithHeader(token);
   const fetchUserDetails = async () => {
     try {
-      const response = await fetch("/api/username/getsingleuser/", {
-        headers: { Authorization: token },
-      });
-      if (!response.ok) {
+      const response = await axiosInstance.get("/username/getsingleuser");
+      if (response.status !== 200) {
         const errorMessage = "fetch is not okay need to find out";
         setIsError({ message: errorMessage });
       }
-      const responseJson = await response.json();
-      responseJson;
-      setFetchUserData(responseJson);
+      setFetchUserData(response.data);
       setIsLoading(false);
     } catch (error) {
       console.error(error);

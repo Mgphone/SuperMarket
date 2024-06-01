@@ -8,7 +8,6 @@ function SuperBranchManage() {
   const [checkAllBranches, setALlCheckBranches] = useState(false);
   //context
   const { token } = useAuth();
-  const headers = { Authorization: token };
   const handleNewBranch = () => {
     setOpenNewBranch((prev) => !prev);
     setALlCheckBranches(false);
@@ -43,9 +42,9 @@ function SuperBranchManage() {
         </button>
       </div>
       {openNewBranch && (
-        <OpenNewBranchSuper handleclose={handleclose} headers={headers} />
+        <OpenNewBranchSuper handleclose={handleclose} token={token} />
       )}
-      {checkAllBranches && <CheckAllBranchSuper headers={headers} />}
+      {checkAllBranches && <CheckAllBranchSuper token={token} />}
     </div>
   );
 }

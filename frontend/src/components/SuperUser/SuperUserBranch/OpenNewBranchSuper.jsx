@@ -2,13 +2,9 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-
-function OpenNewBranchSuper({ handleclose, headers }) {
+import axiosWithHeader from "../../../utils/axiosWithHeader";
+function OpenNewBranchSuper({ handleclose, token }) {
   const [openBranchError, setOpenBranchErrror] = useState(false);
-  const headersWithContent = {
-    ...headers,
-    "Content-Type": "application/json",
-  };
 
   const validationSchema = Yup.object({
     branchname: Yup.string().required("Please Fill out branchname field"),
@@ -17,7 +13,7 @@ function OpenNewBranchSuper({ handleclose, headers }) {
       .min(1, "Please select at lease one Option of currency")
       .required("Please select at lease one Value of currency"),
   });
-
+  const axiosInstance = axiosWithHeader(token);
   const handleSubmit = async (values) => {
     const formData = {
       branchname: values.branchname,
@@ -26,17 +22,14 @@ function OpenNewBranchSuper({ handleclose, headers }) {
     };
 
     try {
-      const url = "/api/branches/createbranch";
-      const response = await fetch(url, {
-        method: "POST",
-        headers: headersWithContent,
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
+      const response = await axiosInstance.post(
+        "/branches/createbranch",
+        formData
+      );
+      if (response.status !== 200) {
         throw new Error("Failed to create new Branch");
       }
-      const createBranchJSON = await response.json();
+      const createBranchJSON = await response.data;
       // createBranchJSON;
       toast(createBranchJSON.message);
       handleclose();

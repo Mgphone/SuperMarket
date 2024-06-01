@@ -45,7 +45,7 @@ function OtherCurrencyForm({ buyingCurrency, rates }) {
     try {
       const response = await fetchsellingform(formData, token);
       if (response.success) {
-        toast("Successful");
+        toast(`Successful Create The ${buyingCurrency} Transition`);
       } else {
         toast(response.message.message);
       }

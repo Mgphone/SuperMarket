@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-
+// import axiosWithHeader from "../../utils/axiosWithHeader";
+import axios from "axios";
 function UpdatePassword({ userDetails, setIsReset }) {
   const [fetchError, setFetchError] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const url = import.meta.env.VITE_BACK_URL;
   const handleClose = () => {
     setIsReset(false);
   };
@@ -34,24 +36,28 @@ function UpdatePassword({ userDetails, setIsReset }) {
       oldpassword: values.oldpassword,
       newpassword: values.newpassword1,
     };
+    const axiosInstance = axios.create({
+      baseURL: url,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     try {
       setIsLoading(true);
-      const response = await fetch("/api/users/update", {
-        method: "PATCH",
-        body: JSON.stringify(formData),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (!response.ok) {
+
+      const response = await axiosInstance.patch("/users/update", formData);
+      if (response.status !== 200) {
         setIsLoading(false);
         throw new Error(`API request failed with status ${response.status}`);
       }
-      const responsejson = await response.json();
+      const responsejson = await response.data;
       toast(responsejson.message);
       setIsLoading(false);
       setIsReset(false);
     } catch (error) {
       console.error(error);
       setFetchError(error);
+      setIsLoading(false);
     }
   };
 

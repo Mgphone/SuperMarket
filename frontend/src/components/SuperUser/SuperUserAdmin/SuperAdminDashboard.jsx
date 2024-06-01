@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import SuperUserAllBranchesTransitions from "./SuperUserAllBranchesTransitions";
 import SuperUserSingleBranchTransitions from "./SuperUserSingleBranchTransitions";
+import axiosWithHeader from "../../../utils/axiosWithHeader";
 function SuperAdminDashboard() {
   const { token } = useAuth();
   const [branchName, setBranchName] = useState("");
@@ -25,14 +26,14 @@ function SuperAdminDashboard() {
     setFetchTransitions("");
     setIsfetchSubmit(false);
   };
+  const axiosInstance = axiosWithHeader(token);
   const fetchBranchName = async () => {
     try {
-      const url = "/api/branches/getallbranch";
-      const response = await fetch(url, { headers: { Authorization: token } });
-      if (!response.ok) {
+      const response = await axiosInstance("/branches/getallbranch");
+      if (response.statusText !== "OK") {
         throw new Error("Failed to fetch Username");
       }
-      const branchJson = await response.json();
+      const branchJson = await response.data;
       setBranchName(branchJson);
       setIsLoading(false);
       setIsfetchSubmit(true);
@@ -49,25 +50,21 @@ function SuperAdminDashboard() {
     let url;
     const checkingUrl = Object.keys(values).length;
     if (checkingUrl === 1) {
-      url = "/api/transition/supertransitionfromallbranches ";
+      url = "/transition/supertransitionfromallbranches";
     } else if (checkingUrl === 2) {
-      url = "/api/transition/supertransitionfromonebranch";
+      url = "/transition/supertransitionfromonebranch";
     } else {
       setIserror("Something Wrong ");
     }
 
     try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { Authorization: token, "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
+      const response = await axiosInstance.post(url, values);
       setIsFetchLoading(true);
       setIsFetchError("");
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error("Failed to fetch transition data");
       }
-      const responseJSON = await response.json();
+      const responseJSON = await response.data;
       setFetchTransitions(responseJSON);
       setIsFetchLoading(false);
       setIsfetchSubmit(true);

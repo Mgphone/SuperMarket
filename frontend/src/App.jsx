@@ -8,6 +8,7 @@ import { AuthProvider } from "./contexts/AuthContext.jsx";
 import HomeNormalUser from "./pages/HomeNormalUser";
 import Notfound from "./components/NotFound/Notfound.jsx";
 import HomeBranchManager from "./pages/HomeBranchManager.jsx";
+import ForgotPassword from "./components/UserAuthenticationFront/Forgotpassword.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/homesuper" element={<HomeSuperUser />} />
           <Route path="/homenormal" element={<HomeNormalUser />} />
           <Route path="/homebranch" element={<HomeBranchManager />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="*" element={<Notfound />} />
         </Routes>
       </AuthProvider>

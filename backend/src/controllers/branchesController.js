@@ -212,7 +212,9 @@ const BranchesController = {
           );
 
           const findBranch = await Branches.findOne({ _id: result.branch });
-          return res.status(200).json(findBranch);
+          return res
+            .status(200)
+            .json({ message: "Update Daily Amount and currency" });
         } else {
           return res
             .status(403)

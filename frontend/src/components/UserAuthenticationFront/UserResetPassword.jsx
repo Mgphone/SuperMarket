@@ -1,12 +1,11 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-function UserResetPassword({
-  setIsResetPassword,
-  resetValue,
-  headers,
-  setError,
-}) {
+import axiosWithHeader from "../../utils/axiosWithHeader";
+import { useState } from "react";
+function UserResetPassword({ setIsResetPassword, resetValue, token }) {
+  const [resetPasswordError, setResetPasswordError] = useState("");
+  const axiosInstance = axiosWithHeader(token);
   const handleReset = () => {
     setIsResetPassword(false);
   };
@@ -22,28 +21,21 @@ function UserResetPassword({
   });
   const handleSubmit = async (values) => {
     const formData = { newpassword: values.password };
-    const url = `/api/users/resetpassword/${resetValue}`;
-    const headersWithContent = {
-      ...headers,
-      "Content-Type": "application/json",
-    };
     try {
-      const response = await fetch(url, {
-        method: "PATCH",
-        headers: headersWithContent,
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
+      const response = await axiosInstance.patch(
+        `/users/resetpassword/${resetValue}`,
+        formData
+      );
+      if (response.status >= 200 && response.status < 300) {
+        const editJson = await response.data;
+        toast(editJson.message);
+        setIsResetPassword(false);
+      } else {
         throw new Error("Failed to edit passsword");
       }
-      const editJson = await response.json();
-      editJson;
-      toast(editJson.message);
-
-      setIsResetPassword(false);
     } catch (error) {
       console.error(error);
-      setError(error);
+      setResetPasswordError("Can Not change Password!!!");
     }
   };
   return (
@@ -64,8 +56,11 @@ function UserResetPassword({
           ) : (
             ""
           )}
-          <button onClick={handleReset}>Close</button>
           <button type="submit">Change Password</button>
+          <button onClick={handleReset}>Close</button>
+          {resetPasswordError && (
+            <div className="error">{resetPasswordError}</div>
+          )}
         </form>
       </div>
     </>
