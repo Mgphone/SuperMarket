@@ -18,7 +18,7 @@ function GraphLineChart({ fetchTransitions }) {
   const apiCall = async () => {
     try {
       const response = await axiosInstance("/branches/getallbranch");
-      if (response.status !== 200) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error();
       }
       const responseJson = await response.data;

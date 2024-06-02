@@ -26,7 +26,7 @@ function OpenNewBranchSuper({ handleclose, token }) {
         "/branches/createbranch",
         formData
       );
-      if (response.status !== 200) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to create new Branch");
       }
       const createBranchJSON = await response.data;

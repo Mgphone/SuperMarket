@@ -46,7 +46,7 @@ function UpdatePassword({ userDetails, setIsReset }) {
       setIsLoading(true);
 
       const response = await axiosInstance.patch("/users/update", formData);
-      if (response.status !== 200) {
+      if (response.status < 200 || response.status >= 300) {
         setIsLoading(false);
         throw new Error(`API request failed with status ${response.status}`);
       }

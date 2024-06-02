@@ -47,7 +47,7 @@ function RegisterSuper({ role }) {
     try {
       const response = await axiosCustom.post("/users/superregister", formData);
 
-      if (response.status !== 200) {
+      if (response.status < 200 || response.status >= 300) {
         const responseData = await response.data;
         setRegisterError(responseData.message);
       }

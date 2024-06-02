@@ -16,7 +16,7 @@ function UserDetail() {
   const fetchUserDetails = async () => {
     try {
       const response = await axiosInstance.get("/username/getsingleuser");
-      if (response.status !== 200) {
+      if (response.status < 200 || response.status >= 300) {
         const errorMessage = "fetch is not okay need to find out";
         setIsError({ message: errorMessage });
       }

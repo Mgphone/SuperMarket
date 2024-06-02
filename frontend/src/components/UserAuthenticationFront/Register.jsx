@@ -88,7 +88,7 @@ function Signup() {
   const fetchBranch = async () => {
     try {
       const response = await axiosInstance("/branches/getallbranch");
-      if (response.status !== 200) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to fetch branch");
       }
       const branches = await response.data;

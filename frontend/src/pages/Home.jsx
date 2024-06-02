@@ -38,7 +38,7 @@ function Home() {
     try {
       const response = await axiosInstance.post("/users/login", values);
 
-      if (response.status === 200) {
+      if (response.status >= 200 && response.status < 300) {
         const token = response.headers["authorization"];
         if (token) {
           logIn(token);

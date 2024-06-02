@@ -30,7 +30,7 @@ function SuperAdminDashboard() {
   const fetchBranchName = async () => {
     try {
       const response = await axiosInstance("/branches/getallbranch");
-      if (response.statusText !== "OK") {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to fetch Username");
       }
       const branchJson = await response.data;

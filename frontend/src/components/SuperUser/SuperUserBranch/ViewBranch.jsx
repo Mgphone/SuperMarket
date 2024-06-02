@@ -37,7 +37,7 @@ function ViewBranch({ singleBranch, token, setAllBranches }) {
     if (confirmDelete) {
       try {
         const response = await axiosInstance.delete(`/users/delete/${value}`);
-        if (response.status !== 200) {
+        if (response.status < 200 || response.status >= 300) {
           throw new Error("Failed to delete User");
         }
         const deleteJson = await response.data;
